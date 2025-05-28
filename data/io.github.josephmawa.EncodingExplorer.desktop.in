@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Encoding Explorer
+Exec=io.github.josephmawa.EncodingExplorer
+Icon=io.github.josephmawa.EncodingExplorer
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

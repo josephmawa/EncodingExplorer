@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.josephmawa.EncodingExplorer</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <name>Encoding Explorer</name>
+  <summary>Keep the summary shorter, between 10 and 35 characters</summary>
+  <description>
+    <p>No description</p>
+  </description>
+
+  <developer id="tld.vendor">
+    <name>Joseph Mawa</name>
+  </developer>
+
+  <url type="homepage">https://github.com/josephmawa/EncodingExplorer</url>
+  <url type="vcs-browser">https://github.com/josephmawa/EncodingExplorer</url>
+  <url type="bugtracker">https://github.com/josephmawa/EncodingExplorer/issues</url>
+  <url type="translate">https://github.com/josephmawa/EncodingExplorer/blob/main/README.md#contributing</url>
+  <url type="help">https://github.com/josephmawa/EncodingExplorer/issues</url>
+
+  <translation type="gettext">EncodingExplorer</translation>
+  <launchable type="desktop-id">io.github.josephmawa.EncodingExplorer.desktop</launchable>
+  <content_rating type="oars-1.1" />
+
+  <branding>
+    <color type="primary" scheme_preference="light">#ff00ff</color>
+    <color type="primary" scheme_preference="dark">#993d3d</color>
+  </branding>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/josephmawa/EncodingExplorer/main/screenshots/encoding-explorer-dark-mode.png</image>
+      <caption>Encoding Explorer in dark mode</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/josephmawa/EncodingExplorer/main/screenshots/encoding-explorer-dark-mode.png</image>
+      <caption>Encoding Explorer in dark mode</caption>
+    </screenshot>
+  </screenshots>
+
+  <releases>
+    <release version="0.1.0" date="2025-05-30">
+      <description translate="no">
+        <p>Release description</p>
+        <ul>
+          <li>Initial release</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+
+</component>

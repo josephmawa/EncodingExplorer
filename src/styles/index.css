@@ -1,0 +1,8 @@
+.color-scheme-row {
+  padding: 10px;
+}
+
+
+.border-right {
+  border-right: 1px solid @borders;
+}

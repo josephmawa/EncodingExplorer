@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/io/github/josephmawa/EncodingExplorer/js">
+    <file compressed="yes">about.js</file>
+    <file compressed="yes">app.js</file>
+    <file compressed="yes">main.js</file>
+    <file compressed="yes">pref.js</file>
+    <file compressed="yes">win.js</file>
+  </gresource>
+</gresources>

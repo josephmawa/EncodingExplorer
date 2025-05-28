@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/io/github/josephmawa/EncodingExplorer">
+    <file preprocess="xml-stripblanks" compressed="yes" alias="win.ui">ui/win.ui</file>
+    <file preprocess="xml-stripblanks" compressed="yes" alias="gtk/help-overlay.ui">ui/help.ui</file>
+    <file preprocess="xml-stripblanks" compressed="yes" alias="pref.ui">ui/pref.ui</file>
+  </gresource>
+  <gresource prefix="/io/github/josephmawa/EncodingExplorer">
+    <file compressed="yes" alias="index.css">styles/index.css</file>
+  </gresource>
+</gresources>

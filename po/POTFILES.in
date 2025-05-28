@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/io.github.josephmawa.EncodingExplorer.desktop.in
+data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in
+data/io.github.josephmawa.EncodingExplorer.gschema.xml
+src/main.js
+src/window.js
+src/window.ui
