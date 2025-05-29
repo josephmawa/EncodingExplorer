@@ -186,6 +186,30 @@
                     </child>
                   </object>
                 </child>
+                <!-- <child>
+                  <object class="GtkRevealer">
+                    <property name="transition-duration">300</property>
+                    <property name="transition-type">slide-up</property>
+                    <binding name="reveal-child">
+                      <lookup name="active">bottom_panel_toggle_button</lookup>
+                    </binding>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label">&#x000062;</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label">LATIN SMALL LETTER B</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child> -->
               </object>
             </property>
             <child type="bottom">
@@ -224,7 +248,7 @@
                   </object>
                 </child>
                 <child type="end">
-                  <object class="GtkToggleButton">
+                  <object class="GtkToggleButton" id="bottom_panel_toggle_button">
                     <property name="icon-name">encoding-explorer-panel-bottom-symbolic</property>
                     <property name="action-name">win.toggle-bottom-panel</property>
                     <property name="tooltip-text" translatable="yes" context="Toggle bottom panel">Toggle Bottom Panel</property>
