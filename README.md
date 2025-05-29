@@ -10,10 +10,10 @@
   </a>
 </div>
 <p align="center">
-  <img src="./screenshots/encoding-explorer-dark-mode.png" alt="Encoding Explorer in dark mode" width="902" height="696"/>
+  <img src="./screenshots/encoding-explorer-dark-mode.png" alt="Encoding Explorer in dark mode" width="770" height="729"/>
 </p>
 <p align="center">
-  <img src="./screenshots/encoding-explorer-light-mode.png" alt="Encoding Explorer in light mode" width="902" height="696"/>
+  <img src="./screenshots/encoding-explorer-light-mode.png" alt="Encoding Explorer in light mode" width="770" height="729"/>
 </p>
 
 <!-- markdownlint-enable -->
