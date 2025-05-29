@@ -10,6 +10,7 @@
       <object class="AdwToastOverlay" id="toast_overlay">
         <child>
           <object class="AdwToolbarView">
+            <property name="top-bar-style">raised</property>
             <child type="top">
               <object class="AdwHeaderBar">
                 <child type="end">
@@ -41,48 +42,120 @@
                             <child>
                               <object class="GtkPaned">
                                 <property name="start-child">
-                                  <object class="GtkScrolledWindow" id="text_scrolled_win">
-                                    <property name="name">text</property>
-                                    <property name="propagate-natural-height">true</property>
-                                    <property name="propagate-natural-width">true</property>
-                                    <property name="hexpand">true</property>
-                                    <property name="vexpand">true</property>
-                                    <property name="child">
-                                      <object class="GtkSourceView" id="source_view_text">
-                                        <property name="monospace">true</property>
-                                        <property name="auto-indent">true</property>
-                                        <property name="indent-on-tab">true</property>
-                                        <property name="indent-width">2</property>
-                                        <property name="insert-spaces-instead-of-tabs">true</property>
-                                        <property name="show-line-marks">true</property>
-                                        <property name="show-line-numbers">true</property>
-                                        <property name="smart-backspace">true</property>
-                                        <property name="tab-width">2</property>
-                                        <property name="wrap-mode">word</property>
+                                  <object class="AdwToolbarView">
+                                    <child type="top">
+                                      <object class="GtkCenterBox">
+                                        <style>
+                                          <class name="toolbar" />
+                                          <class name="panel-header" />
+                                        </style>
+                                        <property name="height-request">46</property>
+                                        <child type="start">
+                                          <object class="GtkBox">
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">&lt;b&gt;Text&lt;/b&gt;</property>
+                                                <property name="use-markup">true</property>
+                                                <style>
+                                                  <class name="dim-label" />
+                                                </style>
+                                              </object>
+                                            </child>
+                                            <child>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <property name="content">
+                                      <object class="GtkScrolledWindow" id="text_scrolled_win">
+                                        <property name="name">text</property>
+                                        <property name="propagate-natural-height">true</property>
+                                        <property name="propagate-natural-width">true</property>
+                                        <property name="hexpand">true</property>
+                                        <property name="vexpand">true</property>
+                                        <property name="child">
+                                          <object class="GtkSourceView" id="source_view_text">
+                                            <property name="monospace">true</property>
+                                            <property name="auto-indent">true</property>
+                                            <property name="indent-on-tab">true</property>
+                                            <property name="indent-width">2</property>
+                                            <property name="insert-spaces-instead-of-tabs">true</property>
+                                            <property name="show-line-marks">true</property>
+                                            <property name="show-line-numbers">true</property>
+                                            <property name="smart-backspace">true</property>
+                                            <property name="tab-width">2</property>
+                                            <property name="wrap-mode">word</property>
+                                          </object>
+                                        </property>
                                       </object>
                                     </property>
                                   </object>
                                 </property>
                                 <property name="end-child">
-                                  <object class="GtkScrolledWindow" id="encoding_scrolled_win">
-                                    <property name="name">encoding</property>
-                                    <property name="propagate-natural-height">true</property>
-                                    <property name="propagate-natural-width">true</property>
-                                    <property name="hexpand">true</property>
-                                    <property name="vexpand">true</property>
-                                    <property name="child">
-                                      <object class="GtkSourceView" id="source_view_encoding">
-                                        <property name="monospace">true</property>
-                                        <property name="auto-indent">true</property>
-                                        <property name="indent-on-tab">true</property>
-                                        <property name="indent-width">2</property>
-                                        <property name="insert-spaces-instead-of-tabs">true</property>
-                                        <property name="show-line-marks">true</property>
-                                        <property name="show-line-numbers">true</property>
-                                        <property name="smart-backspace">true</property>
-                                        <property name="tab-width">2</property>
-                                        <property name="wrap-mode">word</property>
-                                        <property name="editable">false</property>
+                                  <object class="AdwToolbarView">
+                                    <child type="top">
+                                      <object class="GtkCenterBox">
+                                        <style>
+                                          <class name="toolbar" />
+                                          <class name="panel-header" />
+                                        </style>
+                                        <property name="height-request">46</property>
+                                        <child type="start">
+                                          <object class="GtkBox">
+                                            <property name="spacing">16</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">&lt;b&gt;Encoding&lt;/b&gt;</property>
+                                                <property name="use-markup">true</property>
+                                                <style>
+                                                  <class name="dim-label" />
+                                                </style>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkDropDown" id="dropdown_encoding">
+                                                <property name="model">
+                                                  <object class="GtkStringList">
+                                                    <items>
+                                                      <item>ASCII</item>
+                                                      <item>UTF-8</item>
+                                                      <item>UTF-16</item>
+                                                      <item>UTF-32</item>
+                                                      <item>UCS-2</item>
+                                                      <item>UCS-4</item>
+                                                    </items>
+                                                  </object>
+                                                </property>
+                                                <property name="tooltip-text" translatable="yes">Switch Encoding</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <property name="content">
+                                      <object class="GtkScrolledWindow" id="encoding_scrolled_win">
+                                        <property name="name">encoding</property>
+                                        <property name="propagate-natural-height">true</property>
+                                        <property name="propagate-natural-width">true</property>
+                                        <property name="hexpand">true</property>
+                                        <property name="vexpand">true</property>
+                                        <property name="child">
+                                          <object class="GtkSourceView" id="source_view_encoding">
+                                            <property name="monospace">true</property>
+                                            <property name="auto-indent">true</property>
+                                            <property name="indent-on-tab">true</property>
+                                            <property name="indent-width">2</property>
+                                            <property name="insert-spaces-instead-of-tabs">true</property>
+                                            <property name="show-line-marks">true</property>
+                                            <property name="show-line-numbers">true</property>
+                                            <property name="smart-backspace">true</property>
+                                            <property name="tab-width">2</property>
+                                            <property name="wrap-mode">word</property>
+                                            <property name="editable">false</property>
+                                          </object>
+                                        </property>
                                       </object>
                                     </property>
                                   </object>
@@ -90,14 +163,6 @@
                               </object>
                             </child>
                           </object>
-                        </property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkStackPage">
-                        <property name="name">comparison_mode_view</property>
-                        <property name="child">
-                          <object class="GtkBox"></object>
                         </property>
                       </object>
                     </child>
@@ -113,6 +178,52 @@
                 </child>
               </object>
             </property>
+            <child type="bottom">
+              <object class="GtkCenterBox">
+                <style>
+                  <class name="toolbar" />
+                  <class name="panel-header" />
+                </style>
+                <child type="start">
+                  <object class="GtkBox">
+                    <property name="spacing">16</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <binding name="label">
+                          <lookup name="string" type="GtkStringObject">
+                            <lookup name="selected_item">dropdown_encoding</lookup>
+                          </lookup>
+                        </binding>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Binary</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">34 Characters</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">34 KiB</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkToggleButton">
+                    <property name="icon-name">encoding-explorer-panel-bottom-symbolic</property>
+                    <property name="tooltip-text" translatable="yes" context="Navigate back to the main screen">Toggle Bottom Panel</property>
+                    <accessibility>
+                      <property name="label" translatable="yes" context="accessibility">Toggle Bottom Panel</property>
+                    </accessibility>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
         </child>
       </object>

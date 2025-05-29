@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="4.2333493mm"
+   height="4.2333336mm"
+   viewBox="0 0 4.2333493 4.2333336"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-102.92291,-45.772925)">
+    <g
+       transform="matrix(0.26458333,0,0,-0.26458333,97.631318,128.32292)"
+       id="g8487">
+      <title
+         id="title1404">builder-view-bottom-pane</title>
+      <rect
+         style="color:#bebebe;overflow:visible;fill:none;stroke-width:2;marker:none"
+         id="rect8489"
+         width="16"
+         height="16"
+         x="19.99975"
+         y="296" />
+      <g
+         id="g2819"
+         transform="translate(-1,3.9999334)">
+        <g
+           id="layer1-3-2"
+           transform="matrix(3.7795275,0,0,-3.7795275,191.85698,1602.5649)"
+           style="display:inline;fill:#3584e4" />
+        <path
+           style="color:#000000;display:inline;fill:#2e3436;stroke-linecap:square;stroke-linejoin:round;enable-background:new"
+           d="m 23.9998,307.01082 c -1.6447,0 -3,-1.3553 -3,-3 v -8 c 0,-1.6447 1.3553,-3 3,-3 h 10 c 1.6447,0 3,1.3553 3,3 v 8 c 0,1.6447 -1.3553,3 -3,3 z m 0,-2 h 10 c 0.5713,0 1,-0.4287 1,-1 v -8 c 0,-0.5713 -0.4287,-1 -1,-1 h -10 c -0.5713,0 -1,0.4287 -1,1 v 8 c 0,0.5713 0.4287,1 1,1 z"
+           id="path130646-6-1" />
+        <g
+           id="g2922"
+           transform="matrix(0,1,-1.166666,0,379.01224,274.01109)">
+          <rect
+             transform="rotate(90)"
+             style="color:#bebebe;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#2e3436;fill-opacity:0.35;stroke:none;stroke-width:0.948675;marker:none"
+             id="rect10511-9"
+             width="12.000007"
+             height="4.499999"
+             x="294.01089"
+             y="-24.499796" />
+          <rect
+             style="display:inline;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-dashoffset:26.4;stroke-opacity:1"
+             id="rect29147-2"
+             width="1"
+             height="12"
+             x="23.9998"
+             y="-306.01083"
+             transform="scale(1,-1)" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

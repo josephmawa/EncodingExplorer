@@ -3,6 +3,7 @@
 }
 
 
-.border-right {
-  border-right: 1px solid @borders;
+.panel-header {
+  padding-left: 12px;
+  padding-right: 12px;
 }

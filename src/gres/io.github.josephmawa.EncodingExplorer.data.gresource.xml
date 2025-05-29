@@ -8,4 +8,7 @@
   <gresource prefix="/io/github/josephmawa/EncodingExplorer">
     <file compressed="yes" alias="index.css">styles/index.css</file>
   </gresource>
+  <gresource prefix="/io/github/josephmawa/EncodingExplorer/icons">
+    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-panel-bottom-symbolic.svg">icons/panel-bottom-symbolic.svg</file>
+  </gresource>
 </gresources>
