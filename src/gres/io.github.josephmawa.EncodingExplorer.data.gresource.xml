@@ -10,5 +10,6 @@
   </gresource>
   <gresource prefix="/io/github/josephmawa/EncodingExplorer/icons">
     <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-panel-bottom-symbolic.svg">icons/panel-bottom-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-edit-copy-symbolic.svg">icons/edit-copy-symbolic.svg</file>
   </gresource>
 </gresources>

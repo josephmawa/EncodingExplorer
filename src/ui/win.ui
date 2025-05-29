@@ -132,6 +132,16 @@
                                             </child>
                                           </object>
                                         </child>
+                                        <child type="end">
+                                          <object class="GtkButton">
+                                            <property name="icon-name">encoding-explorer-edit-copy-symbolic</property>
+                                            <property name="action-name">win.copy-encoded-text</property>
+                                            <property name="tooltip-text" translatable="yes" context="Copy encoded text to clipboard">Copy Encoding</property>
+                                            <accessibility>
+                                              <property name="label" translatable="yes" context="accessibility">Copy Encoding</property>
+                                            </accessibility>
+                                          </object>
+                                        </child>
                                       </object>
                                     </child>
                                     <property name="content">
@@ -216,7 +226,8 @@
                 <child type="end">
                   <object class="GtkToggleButton">
                     <property name="icon-name">encoding-explorer-panel-bottom-symbolic</property>
-                    <property name="tooltip-text" translatable="yes" context="Navigate back to the main screen">Toggle Bottom Panel</property>
+                    <property name="action-name">win.toggle-bottom-panel</property>
+                    <property name="tooltip-text" translatable="yes" context="Toggle bottom panel">Toggle Bottom Panel</property>
                     <accessibility>
                       <property name="label" translatable="yes" context="accessibility">Toggle Bottom Panel</property>
                     </accessibility>

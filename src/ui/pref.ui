@@ -4,7 +4,6 @@
   <requires lib="Adw" version="1.5" />
   <template class="PrefDialog" parent="AdwPreferencesDialog">
     <property name="content_width">300</property>
-    <property name="content_height">450</property>
     <property name="title" translatable="yes">Preferences</property>
     <property name="search-enabled">true</property>
     <property name="presentation-mode">floating</property>
@@ -19,10 +18,8 @@
             <child>
               <object class="AdwPreferencesRow">
                 <style>
-                  <class name="color-scheme-row" />
+                  <class name="pref-row-padding" />
                 </style>
-                <property name="title" translatable="yes">Color theme</property>
-                <property name="title_selectable">true</property>
                 <child>
                   <object class="GtkBox">
                     <property name="orientation">horizontal</property>
@@ -73,6 +70,59 @@
                     </child>
                   </object>
                 </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">Endianness</property>
+            <property name="description" translatable="yes">Select byte order</property>
+            <child>
+              <object class="AdwPreferencesRow">
+                <style>
+                  <class name="pref-row-padding" />
+                </style>
+                <child>
+                  <object class="GtkCheckButton" id="le">
+                    <property name="label" translatable="yes" context="Little Endian">Little Endian</property>
+                    <property name="active">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesRow">
+                <style>
+                  <class name="pref-row-padding" />
+                </style>
+                <child>
+                  <object class="GtkCheckButton" id="be">
+                    <property name="label" translatable="yes" context="Big Endian">Big Endian</property>
+                    <property name="group">le</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">Radix</property>
+            <property name="description" translatable="yes">Select number base</property>
+            <child>
+              <object class="AdwComboRow" id="radix">
+                <property name="title" translatable="yes">Number base</property>
+                <property name="model">
+                  <object class="GtkStringList">
+                    <items>
+                      <item>Binary</item>
+                      <item>Octal</item>
+                      <item>Decimal</item>
+                      <item>Hexadecimal</item>
+                    </items>
+                  </object>
+                </property>
               </object>
             </child>
           </object>
