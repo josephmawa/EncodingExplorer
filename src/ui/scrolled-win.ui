@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <requires lib="gtk" version="4.0" />
+    <requires lib="Adw" version="1.0" />
+    <template class="ScrolledWin" parent="GtkScrolledWindow">
+        <property name="propagate-natural-height">true</property>
+        <property name="propagate-natural-width">true</property>
+        <property name="hexpand">true</property>
+        <property name="vexpand">true</property>
+    </template>
+</interface>

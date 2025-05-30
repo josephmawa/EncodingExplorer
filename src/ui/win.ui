@@ -68,11 +68,7 @@
                                       </object>
                                     </child>
                                     <property name="content">
-                                      <object class="GtkScrolledWindow" id="text_scrolled_win">
-                                        <property name="propagate-natural-height">true</property>
-                                        <property name="propagate-natural-width">true</property>
-                                        <property name="hexpand">true</property>
-                                        <property name="vexpand">true</property>
+                                      <object class="ScrolledWin" id="text_scrolled_win">
                                         <property name="child">
                                           <object class="SourceView" id="source_view_text" />
                                         </property>
@@ -133,11 +129,7 @@
                                       </object>
                                     </child>
                                     <property name="content">
-                                      <object class="GtkScrolledWindow" id="encoding_scrolled_win">
-                                        <property name="propagate-natural-height">true</property>
-                                        <property name="propagate-natural-width">true</property>
-                                        <property name="hexpand">true</property>
-                                        <property name="vexpand">true</property>
+                                      <object class="ScrolledWin" id="encoding_scrolled_win">
                                         <property name="child">
                                           <object class="SourceView" id="source_view_encoding">
                                             <property name="editable">false</property>
