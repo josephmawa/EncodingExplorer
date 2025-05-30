@@ -6,6 +6,14 @@ import GLib from "gi://GLib";
 import GtkSource from "gi://GtkSource?version=5";
 
 GObject.type_ensure(GtkSource.View.$gtype);
+/**
+ * NOTE:
+ * Import source-view.js after registering GtkSource.View
+ * in the GObject type system because the SourceView custom
+ * widget is a subclass of GtkSource.View. You have to use
+ * GObject.type_ensure method as above.
+ */
+import "./source-view.js";
 const textEncoder = new TextEncoder();
 
 export const EncodingExplorerWindow = GObject.registerClass(
@@ -71,7 +79,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
     encodeText = () => {
       const text = this.buffer_text.text;
-      
+
       const codeUnits = [...textEncoder.encode(text)];
       const encodedText = codeUnits.map((codeUnit) => {
         return codeUnit.toString(2).padStart(8, "0");
