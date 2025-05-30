@@ -13,7 +13,7 @@ GObject.type_ensure(GtkSource.View.$gtype);
  * widget is a subclass of GtkSource.View. You have to use
  * GObject.type_ensure method as above.
  */
-import "./source-view.js";
+import "./src-view.js";
 const textEncoder = new TextEncoder();
 
 export const EncodingExplorerWindow = GObject.registerClass(

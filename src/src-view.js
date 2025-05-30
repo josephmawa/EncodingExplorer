@@ -4,7 +4,7 @@ import GtkSource from "gi://GtkSource?version=5";
 export const SourceView = GObject.registerClass(
   {
     GTypeName: "SourceView",
-    Template: getResourceURI("source-view.ui"),
+    Template: getResourceURI("src-view.ui"),
   },
   class SourceView extends GtkSource.View {
     constructor(options = {}) {
