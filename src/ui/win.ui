@@ -31,7 +31,7 @@
                 <property name="spacing">10</property>
                 <child>
                   <object class="GtkStack" id="encoding_explorer_stack">
-                    <property name="transition_type">crossfade</property>
+                    <property name="transition-type">crossfade</property>
                     <child>
                       <object class="GtkStackPage">
                         <property name="name">explorer_mode_view</property>
@@ -146,10 +146,20 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkStackPage">
+                      <object class="GtkStackPage" id="iee_mode_view">
                         <property name="name">iee_mode_view</property>
                         <property name="child">
-                          <object class="GtkBox"></object>
+                          <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="spacing">12</property>
+                            <property name="homogeneous">true</property>
+                            <property name="margin-top">12</property>
+                            <property name="margin-bottom">12</property>
+                            <property name="margin-start">12</property>
+                            <property name="margin-end">12</property>
+                          </object>
                         </property>
                       </object>
                     </child>

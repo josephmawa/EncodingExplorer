@@ -108,6 +108,38 @@
         </child>
         <child>
           <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">Mode</property>
+            <property name="description" translatable="yes">Select encoding mode</property>
+            <child>
+              <object class="AdwPreferencesRow">
+                <style>
+                  <class name="pref-row-padding" />
+                </style>
+                <child>
+                  <object class="GtkCheckButton" id="text-encoding">
+                    <property name="label" translatable="yes" context="Text Encoding">Text Encoding</property>
+                    <property name="active">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesRow">
+                <style>
+                  <class name="pref-row-padding" />
+                </style>
+                <child>
+                  <object class="GtkCheckButton" id="ieee-754">
+                    <property name="label" translatable="yes" context="IEEE 754">IEEE 754</property>
+                    <property name="group">text-encoding</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Radix</property>
             <property name="description" translatable="yes">Select number base</property>
             <child>
