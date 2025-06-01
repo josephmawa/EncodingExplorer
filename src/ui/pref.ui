@@ -116,7 +116,7 @@
                   <class name="pref-row-padding" />
                 </style>
                 <child>
-                  <object class="GtkCheckButton" id="text-encoding">
+                  <object class="GtkCheckButton" id="text_encoding">
                     <property name="label" translatable="yes" context="Text Encoding">Text Encoding</property>
                     <property name="active">true</property>
                   </object>
@@ -129,9 +129,9 @@
                   <class name="pref-row-padding" />
                 </style>
                 <child>
-                  <object class="GtkCheckButton" id="ieee-754">
+                  <object class="GtkCheckButton" id="ieee_754">
                     <property name="label" translatable="yes" context="IEEE 754">IEEE 754</property>
-                    <property name="group">text-encoding</property>
+                    <property name="group">text_encoding</property>
                   </object>
                 </child>
               </object>

@@ -18,5 +18,19 @@
       </choices>
       <default>"system"</default>
     </key>
+    <key name="endianness" type="s">
+      <choices>
+        <choice value="le" />
+        <choice value="be" />
+      </choices>
+      <default>"le"</default>
+    </key>
+    <key name="encoding-mode" type="s">
+      <choices>
+        <choice value="text_encoding" />
+        <choice value="ieee_754" />
+      </choices>
+      <default>"text_encoding"</default>
+    </key>
   </schema>
 </schemalist>

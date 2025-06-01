@@ -32,9 +32,6 @@
                 <child>
                   <object class="GtkStack" id="encoding_explorer_stack">
                     <property name="transition-type">crossfade</property>
-                    <binding name="visible-child-name">
-                      <lookup name="name">iee_mode_view</lookup>
-                    </binding>
                     <!-- Text Encoding View -->
                     <child>
                       <object class="GtkStackPage">
