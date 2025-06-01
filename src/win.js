@@ -24,7 +24,9 @@ export const EncodingExplorerWindow = GObject.registerClass(
     InternalChildren: [
       "toast_overlay",
       "source_view_text",
-      "source_view_encoding",
+      "source_view_number",
+      "source_view_text_encoding",
+      "source_view_number_encoding",
     ],
   },
   class EncodingExplorerWindow extends Adw.ApplicationWindow {
@@ -39,7 +41,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
     createBuffer = () => {
       this.buffer_text = new GtkSource.Buffer();
-      this.buffer_encoding = new GtkSource.Buffer();
+      this.buffer_text_encoding = new GtkSource.Buffer();
 
       if (!this.handleBufferChange) {
         this.handleBufferChange = this.debounce(this.encodeText, 300);
@@ -75,7 +77,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
       );
 
       this._source_view_text.buffer = this.buffer_text;
-      this._source_view_encoding.buffer = this.buffer_encoding;
+      this._source_view_text_encoding.buffer = this.buffer_text_encoding;
     };
 
     encodeText = () => {
@@ -86,7 +88,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         return codeUnit.toString(2).padStart(8, "0");
       });
 
-      this.buffer_encoding.text = encodedText.join(" ");
+      this.buffer_text_encoding.text = encodedText.join(" ");
     };
 
     bindSettings = () => {
@@ -155,7 +157,9 @@ export const EncodingExplorerWindow = GObject.registerClass(
       const scheme = schemeManager.get_scheme(editorColorScheme);
 
       this._source_view_text.buffer.set_style_scheme(scheme);
-      this._source_view_encoding.buffer.set_style_scheme(scheme);
+      this._source_view_number.buffer.set_style_scheme(scheme);
+      this._source_view_text_encoding.buffer.set_style_scheme(scheme);
+      this._source_view_number_encoding.buffer.set_style_scheme(scheme);
     };
 
     displayToast = (message) => {

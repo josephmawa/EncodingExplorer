@@ -32,6 +32,10 @@
                 <child>
                   <object class="GtkStack" id="encoding_explorer_stack">
                     <property name="transition-type">crossfade</property>
+                    <binding name="visible-child-name">
+                      <lookup name="name">iee_mode_view</lookup>
+                    </binding>
+                    <!-- Text Encoding View -->
                     <child>
                       <object class="GtkStackPage">
                         <property name="name">explorer_mode_view</property>
@@ -41,6 +45,7 @@
                             <property name="vexpand">true</property>
                             <child>
                               <object class="GtkPaned">
+                                <!-- Text Pane -->
                                 <property name="start-child">
                                   <object class="AdwToolbarView">
                                     <child type="top">
@@ -68,7 +73,7 @@
                                       </object>
                                     </child>
                                     <property name="content">
-                                      <object class="ScrolledWin" id="text_scrolled_win">
+                                      <object class="ScrolledWin">
                                         <property name="child">
                                           <object class="SourceView" id="source_view_text" />
                                         </property>
@@ -76,6 +81,7 @@
                                     </property>
                                   </object>
                                 </property>
+                                <!-- Encoding Pane -->
                                 <property name="end-child">
                                   <object class="AdwToolbarView">
                                     <child type="top">
@@ -129,9 +135,9 @@
                                       </object>
                                     </child>
                                     <property name="content">
-                                      <object class="ScrolledWin" id="encoding_scrolled_win">
+                                      <object class="ScrolledWin">
                                         <property name="child">
-                                          <object class="SourceView" id="source_view_encoding">
+                                          <object class="SourceView" id="source_view_text_encoding">
                                             <property name="editable">false</property>
                                           </object>
                                         </property>
@@ -145,27 +151,91 @@
                         </property>
                       </object>
                     </child>
+                    <!-- IEE-754 Floating Point Encoding View -->
                     <child>
                       <object class="GtkStackPage" id="iee_mode_view">
                         <property name="name">iee_mode_view</property>
                         <property name="child">
                           <object class="GtkBox">
-                            <property name="orientation">vertical</property>
-                            <property name="halign">center</property>
-                            <property name="valign">center</property>
-                            <property name="spacing">12</property>
-                            <property name="homogeneous">true</property>
-                            <property name="margin-top">12</property>
-                            <property name="margin-bottom">12</property>
-                            <property name="margin-start">12</property>
-                            <property name="margin-end">12</property>
+                            <property name="hexpand">true</property>
+                            <property name="vexpand">true</property>
+                            <child>
+                              <object class="GtkPaned">
+                                <!-- Number Pane -->
+                                <property name="start-child">
+                                  <object class="AdwToolbarView">
+                                    <child type="top">
+                                      <object class="GtkCenterBox">
+                                        <style>
+                                          <class name="toolbar" />
+                                          <class name="panel-header" />
+                                        </style>
+                                        <property name="height-request">46</property>
+                                        <child type="start">
+                                          <object class="GtkLabel">
+                                            <property name="label" translatable="yes">&lt;b&gt;Number&lt;/b&gt;</property>
+                                            <property name="use-markup">true</property>
+                                            <style>
+                                              <class name="dim-label" />
+                                            </style>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <property name="content">
+                                      <object class="ScrolledWin">
+                                        <property name="child">
+                                          <object class="SourceView" id="source_view_number">
+                                            <property name="show-line-numbers">false</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </property>
+                                <!-- Encoding View -->
+                                <property name="end-child">
+                                  <object class="AdwToolbarView">
+                                    <child type="top">
+                                      <object class="GtkCenterBox">
+                                        <style>
+                                          <class name="toolbar" />
+                                          <class name="panel-header" />
+                                        </style>
+                                        <property name="height-request">46</property>
+                                        <child type="start">
+                                          <object class="GtkLabel">
+                                            <property name="label" translatable="yes">&lt;b&gt;IEE-754 Floating Point&lt;/b&gt;</property>
+                                            <property name="use-markup">true</property>
+                                            <style>
+                                              <class name="dim-label" />
+                                            </style>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <property name="content">
+                                      <object class="ScrolledWin">
+                                        <property name="child">
+                                          <object class="SourceView" id="source_view_number_encoding">
+                                            <property name="editable">false</property>
+                                            <property name="show-line-numbers">false</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
                           </object>
                         </property>
                       </object>
                     </child>
                   </object>
                 </child>
-                <!-- <child>
+                <!-- Revealer -->
+                <child>
                   <object class="GtkRevealer">
                     <property name="transition-duration">300</property>
                     <property name="transition-type">slide-up</property>
@@ -188,9 +258,10 @@
                       </object>
                     </child>
                   </object>
-                </child> -->
+                </child>
               </object>
             </property>
+            <!-- Bottom Panel -->
             <child type="bottom">
               <object class="GtkCenterBox">
                 <style>
