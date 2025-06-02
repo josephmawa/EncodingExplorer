@@ -2,16 +2,31 @@ import Adw from "gi://Adw";
 import GObject from "gi://GObject";
 import Gio from "gi://Gio";
 
-const themes = ["system", "light", "dark"];
-const endianness = ["le", "be"];
-const encodingMode = ["text_encoding", "ieee_754"];
+/**
+ * These CheckButton Ids should be the same as
+ * their corresponding settings in the gschema.
+ *
+ */
+const themeSettingsCheckBtnIds = ["system", "light", "dark"];
+const endiannessSettingsCheckBtnIds = ["le", "be"];
+const encodingModeSettingsCheckBtnIds = ["text_encoding", "ieee_754"];
 
 export const PrefDialog = GObject.registerClass(
   {
     GTypeName: "PrefDialog",
     Template: getResourceURI("pref.ui"),
-    InternalChildren: [...themes, ...endianness, ...encodingMode],
+    InternalChildren: [
+      ...themeSettingsCheckBtnIds,
+      ...endiannessSettingsCheckBtnIds,
+      ...encodingModeSettingsCheckBtnIds,
+    ],
     Properties: {
+      /**
+       * There is no way of directly binding gschema settings
+       * to the CheckButtons. The settings are first bound to
+       * these properties and these properties are bound to the
+       * CheckButtons' active properties.
+       */
       theme: GObject.ParamSpec.string(
         "theme",
         "Theme",
@@ -59,44 +74,28 @@ export const PrefDialog = GObject.registerClass(
         Gio.SettingsBindFlags.DEFAULT
       );
 
-      for (const theme of themes) {
-        this.bind_property_full(
-          "theme",
-          this[`_${theme}`],
-          "active",
-          GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
-          (binding, currTheme) => [true, currTheme === theme],
-          (binding, active) => [active, theme]
-        );
+      for (const checkBtnId of themeSettingsCheckBtnIds) {
+        this.bindCheckBtns("theme", checkBtnId);
       }
 
-      for (const currEndianness of endianness) {
-        this.bind_property_full(
-          "endianness",
-          this[`_${currEndianness}`],
-          "active",
-          GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
-          (binding, pickedEndianness) => [
-            true,
-            pickedEndianness === currEndianness,
-          ],
-          (binding, active) => [active, currEndianness]
-        );
+      for (const checkBtnId of endiannessSettingsCheckBtnIds) {
+        this.bindCheckBtns("endianness", checkBtnId);
       }
 
-      for (const mode of encodingMode) {
-        this.bind_property_full(
-          "encoding_mode",
-          this[`_${mode}`],
-          "active",
-          GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
-          (binding, currEncodingMode) => [
-            true,
-            currEncodingMode === mode,
-          ],
-          (binding, active) => [active, mode]
-        );
+      for (const checkBtnId of encodingModeSettingsCheckBtnIds) {
+        this.bindCheckBtns("encoding_mode", checkBtnId);
       }
     }
+
+    bindCheckBtns = (sourceProp, btnId) => {
+      this.bind_property_full(
+        sourceProp,
+        this[`_${btnId}`],
+        "active",
+        GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
+        (binding, setting) => [true, setting === btnId],
+        (binding, active) => [active, btnId]
+      );
+    };
   }
 );
