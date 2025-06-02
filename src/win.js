@@ -23,17 +23,29 @@ export const EncodingExplorerWindow = GObject.registerClass(
     Template: getResourceURI("win.ui"),
     InternalChildren: [
       "toast_overlay",
+      "encoding_stack",
+      "dropdown_encoding",
       "source_view_text",
       "source_view_number",
       "source_view_text_encoding",
       "source_view_number_encoding",
     ],
+    Properties: {
+      encoding: GObject.ParamSpec.string(
+        "encoding",
+        "Encoding",
+        "Text encoding",
+        GObject.ParamFlags.READWRITE,
+        ""
+      ),
+    },
   },
   class EncodingExplorerWindow extends Adw.ApplicationWindow {
     constructor(application) {
       super({ application });
 
       this.loadStyles();
+      this.createToast();
       this.createBuffer();
       this.bindSettings();
       this.setColorScheme();
@@ -96,6 +108,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.settings = Gio.Settings.new(pkg.name);
       }
 
+      // Window settings
       this.settings.bind(
         "window-width",
         this,
@@ -114,7 +127,49 @@ export const EncodingExplorerWindow = GObject.registerClass(
         "maximized",
         Gio.SettingsBindFlags.DEFAULT
       );
+
+      // Encoding settings
+      this.settings.bind(
+        "encoding",
+        this,
+        "encoding",
+        Gio.SettingsBindFlags.DEFAULT
+      );
+      this.bindEncoding();
+
+      this.settings.bind(
+        "encoding-mode",
+        this._encoding_stack,
+        "visible-child-name",
+        Gio.SettingsBindFlags.DEFAULT
+      );
+
       this.settings.connect("changed::preferred-theme", this.setColorScheme);
+    };
+
+    bindEncoding = () => {
+      this.bind_property_full(
+        "encoding",
+        this._dropdown_encoding,
+        "selected",
+        GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
+        (binding, encoding) => {
+          let selected;
+          let model = this._dropdown_encoding.model;
+          for (let i = 0; i < model.n_items; i++) {
+            if (model.get_item(i)?.string === encoding) {
+              selected = i;
+              break;
+            }
+          }
+          return [true, selected];
+        },
+        (binding, selected) => {
+          const encoding =
+            this._dropdown_encoding.model.get_item(selected)?.string;
+          return [true, encoding];
+        }
+      );
     };
 
     loadStyles = () => {
@@ -160,6 +215,10 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this._source_view_number.buffer.set_style_scheme(scheme);
       this._source_view_text_encoding.buffer.set_style_scheme(scheme);
       this._source_view_number_encoding.buffer.set_style_scheme(scheme);
+    };
+
+    createToast = () => {
+      this.toast = new Adw.Toast({ timeout: 1 });
     };
 
     displayToast = (message) => {

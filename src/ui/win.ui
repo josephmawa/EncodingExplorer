@@ -30,12 +30,12 @@
                 <property name="vexpand">true</property>
                 <property name="spacing">10</property>
                 <child>
-                  <object class="GtkStack" id="encoding_explorer_stack">
+                  <object class="GtkStack" id="encoding_stack">
                     <property name="transition-type">crossfade</property>
                     <!-- Text Encoding View -->
                     <child>
                       <object class="GtkStackPage">
-                        <property name="name">explorer_mode_view</property>
+                        <property name="name">text_encoding</property>
                         <property name="child">
                           <object class="GtkBox">
                             <property name="hexpand">true</property>
@@ -151,7 +151,7 @@
                     <!-- IEE-754 Floating Point Encoding View -->
                     <child>
                       <object class="GtkStackPage" id="iee_mode_view">
-                        <property name="name">iee_mode_view</property>
+                        <property name="name">ieee_754</property>
                         <property name="child">
                           <object class="GtkBox">
                             <property name="hexpand">true</property>
