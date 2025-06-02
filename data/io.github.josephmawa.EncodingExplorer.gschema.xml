@@ -32,5 +32,14 @@
       </choices>
       <default>"text_encoding"</default>
     </key>
+    <key name="radix" type="s">
+      <choices>
+        <choice value="Binary" />
+        <choice value="Octal" />
+        <choice value="Decimal" />
+        <choice value="Hexadecimal" />
+      </choices>
+      <default>"Binary"</default>
+    </key>
   </schema>
 </schemalist>

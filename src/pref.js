@@ -16,6 +16,7 @@ export const PrefDialog = GObject.registerClass(
     GTypeName: "PrefDialog",
     Template: getResourceURI("pref.ui"),
     InternalChildren: [
+      "radix",
       ...themeSettingsCheckBtnIds,
       ...endiannessSettingsCheckBtnIds,
       ...encodingModeSettingsCheckBtnIds,
@@ -48,6 +49,13 @@ export const PrefDialog = GObject.registerClass(
         GObject.ParamFlags.READWRITE,
         ""
       ),
+      radix: GObject.ParamSpec.string(
+        "radix",
+        "Radix",
+        "Number base",
+        GObject.ParamFlags.READWRITE,
+        ""
+      ),
     },
   },
   class PrefDialog extends Adw.PreferencesDialog {
@@ -73,6 +81,7 @@ export const PrefDialog = GObject.registerClass(
         "encoding_mode",
         Gio.SettingsBindFlags.DEFAULT
       );
+      this.settings.bind("radix", this, "radix", Gio.SettingsBindFlags.DEFAULT);
 
       for (const checkBtnId of themeSettingsCheckBtnIds) {
         this.bindCheckBtns("theme", checkBtnId);
@@ -85,6 +94,28 @@ export const PrefDialog = GObject.registerClass(
       for (const checkBtnId of encodingModeSettingsCheckBtnIds) {
         this.bindCheckBtns("encoding_mode", checkBtnId);
       }
+
+      this.bind_property_full(
+        "radix",
+        this._radix,
+        "selected",
+        GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
+        (binding, radix) => {
+          let selected;
+          let model = this._radix.model;
+          for (let i = 0; i < model.n_items; i++) {
+            if (model.get_item(i)?.string === radix) {
+              selected = i;
+              break;
+            }
+          }
+          return [true, selected];
+        },
+        (binding, selected) => {
+          const radix = this._radix.model.get_item(selected)?.string;
+          return [true, radix];
+        }
+      );
     }
 
     bindCheckBtns = (sourceProp, btnId) => {
