@@ -2,6 +2,7 @@ import GObject from "gi://GObject";
 import Adw from "gi://Adw";
 import Gtk from "gi://Gtk";
 import Gio from "gi://Gio";
+import Gdk from "gi://Gdk";
 import GLib from "gi://GLib";
 import GtkSource from "gi://GtkSource?version=5";
 
@@ -15,6 +16,7 @@ GObject.type_ensure(GtkSource.View.$gtype);
  */
 import "./src-view.js";
 import "./scrolled-win.js";
+
 const textEncoder = new TextEncoder();
 
 export const EncodingExplorerWindow = GObject.registerClass(
@@ -46,11 +48,26 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
       this.loadStyles();
       this.createToast();
+      this.createActions();
       this.createBuffer();
       this.bindSettings();
       this.setColorScheme();
     }
 
+    createActions = () => {
+      const copyEncoding = Gio.SimpleAction.new("copy-encoded-text", null);
+      copyEncoding.connect("activate", () => {
+        const text = this.buffer_text_encoding.text;
+        if (!text) {
+          this.displayToast(_("No encoding to copy"));
+          return;
+        }
+        this.copyToClipboard(text);
+        this.displayToast("Copied encoding");
+      });
+
+      this.add_action(copyEncoding);
+    };
     createBuffer = () => {
       this.buffer_text = new GtkSource.Buffer();
       this.buffer_text_encoding = new GtkSource.Buffer();
@@ -94,13 +111,92 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
     encodeText = () => {
       const text = this.buffer_text.text;
+      const radix = this.settings.get_string("radix");
+      const encoding = this.settings.get_string("encoding");
 
-      const codeUnits = [...textEncoder.encode(text)];
-      const encodedText = codeUnits.map((codeUnit) => {
-        return codeUnit.toString(2).padStart(8, "0");
+      const locale = new Intl.DateTimeFormat().resolvedOptions().locale;
+      const segmenter = new Intl.Segmenter(locale, {
+        granularity: "grapheme",
       });
 
-      this.buffer_text_encoding.text = encodedText.join(" ");
+      const segments = [...segmenter.segment(text)]
+        .map(({ segment }) => {
+          const codePoints = [];
+          for (const character of segment) {
+            codePoints.push(character.codePointAt(0));
+          }
+          return codePoints;
+        })
+        .flat(Infinity);
+
+      switch (encoding) {
+        case "ASCII": {
+          const isValidAscii = segments.every((codePoint) => codePoint <= 127);
+          if (!isValidAscii) {
+            this.displayToast("Invalid ASCII");
+            break;
+          }
+
+          const codeUnits = [...textEncoder.encode(text)];
+          const encodedText = codeUnits.map((codeUnit) => {
+            return codeUnit.toString(2).padStart(7, "0");
+          });
+          this.buffer_text_encoding.text = encodedText.join(" ");
+          break;
+        }
+        case "UTF-8": {
+          const codeUnits = [...textEncoder.encode(text)];
+          const encodedText = codeUnits.map((codeUnit) => {
+            return codeUnit.toString(2).padStart(8, "0");
+          });
+          this.buffer_text_encoding.text = encodedText.join(" ");
+          break;
+        }
+        case "UTF-16": {
+          const isValidUTF16 = segments.every((codePoint) => {
+            return (
+              (codePoint >= 0x0000 && codePoint < 0xd800) ||
+              (codePoint > 0xdfff && codePoint <= 0x10ffff)
+            );
+          });
+
+          if (!isValidUTF16) {
+            this.displayToast(_("Lone Surrogate"));
+            break;
+          }
+          const codeUnits = segments
+            .map((codePoint) => {
+              if (codePoint > 0xffff) {
+                const highSurrogate = 0xd800 + ((codePoint - 0x10000) >> 10);
+                const lowSurrogate = 0xdc00 + ((codePoint - 0x10000) & 0x3ff);
+                /**
+                 * FIXME:
+                 * This is a temporary solution. It doesn't take into account
+                 * Endianness.
+                 */
+                return [
+                  highSurrogate.toString(16, "0"),
+                  lowSurrogate.toString(16, "0"),
+                ];
+              }
+
+              return codePoint.toString(2).padStart(16, "0");
+            })
+            .flat(Infinity);
+
+          this.buffer_text_encoding.text = codeUnits.join(" ");
+          break;
+        }
+        case "UTF-32":
+          break;
+        case "UCS-2":
+          break;
+        case "UCS-4":
+          break;
+
+        default:
+          break;
+      }
     };
 
     bindSettings = () => {
@@ -144,6 +240,8 @@ export const EncodingExplorerWindow = GObject.registerClass(
         Gio.SettingsBindFlags.DEFAULT
       );
 
+      this.settings.connect("changed::radix", this.encodeText);
+      this.settings.connect("changed::encoding", this.encodeText);
       this.settings.connect("changed::preferred-theme", this.setColorScheme);
     };
 
@@ -219,6 +317,12 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
     createToast = () => {
       this.toast = new Adw.Toast({ timeout: 1 });
+    };
+
+    copyToClipboard = (text) => {
+      const clipboard = this.display.get_clipboard();
+      const contentProvider = Gdk.ContentProvider.new_for_value(text);
+      clipboard.set_content(contentProvider);
     };
 
     displayToast = (message) => {
