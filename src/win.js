@@ -17,6 +17,8 @@ GObject.type_ensure(GtkSource.View.$gtype);
 import "./src-view.js";
 import "./scrolled-win.js";
 
+import { radixObject, getMaxLength } from "./util.js";
+
 const textEncoder = new TextEncoder();
 
 export const EncodingExplorerWindow = GObject.registerClass(
@@ -112,6 +114,8 @@ export const EncodingExplorerWindow = GObject.registerClass(
     encodeText = () => {
       const text = this.buffer_text.text;
       const radix = this.settings.get_string("radix");
+      const base = radixObject[radix];
+      const maxLength = getMaxLength(base);
       const encoding = this.settings.get_string("encoding");
 
       const locale = new Intl.DateTimeFormat().resolvedOptions().locale;
@@ -119,19 +123,20 @@ export const EncodingExplorerWindow = GObject.registerClass(
         granularity: "grapheme",
       });
 
-      const segments = [...segmenter.segment(text)]
-        .map(({ segment }) => {
-          const codePoints = [];
-          for (const character of segment) {
-            codePoints.push(character.codePointAt(0));
-          }
-          return codePoints;
-        })
-        .flat(Infinity);
+      const segments = [...segmenter.segment(text)];
 
       switch (encoding) {
         case "ASCII": {
-          const isValidAscii = segments.every((codePoint) => codePoint <= 127);
+          const codePoints = segments
+            .map(({ segment }) => {
+              return [...segment].map((character) => character.codePointAt(0));
+            })
+            .flat(Infinity);
+
+          const isValidAscii = codePoints.every(
+            (codePoint) => codePoint <= 127
+          );
+
           if (!isValidAscii) {
             this.displayToast("Invalid ASCII");
             break;
@@ -139,7 +144,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
           const codeUnits = [...textEncoder.encode(text)];
           const encodedText = codeUnits.map((codeUnit) => {
-            return codeUnit.toString(2).padStart(7, "0");
+            return codeUnit.toString(base).padStart(maxLength, "0");
           });
           this.buffer_text_encoding.text = encodedText.join(" ");
           break;
@@ -147,13 +152,19 @@ export const EncodingExplorerWindow = GObject.registerClass(
         case "UTF-8": {
           const codeUnits = [...textEncoder.encode(text)];
           const encodedText = codeUnits.map((codeUnit) => {
-            return codeUnit.toString(2).padStart(8, "0");
+            return codeUnit.toString(base).padStart(maxLength, "0");
           });
           this.buffer_text_encoding.text = encodedText.join(" ");
           break;
         }
         case "UTF-16": {
-          const isValidUTF16 = segments.every((codePoint) => {
+          const codePoints = segments
+            .map(({ segment }) => {
+              return [...segment].map((character) => character.codePointAt(0));
+            })
+            .flat(Infinity);
+
+          const isValidUTF16 = codePoints.every((codePoint) => {
             return (
               (codePoint >= 0x0000 && codePoint < 0xd800) ||
               (codePoint > 0xdfff && codePoint <= 0x10ffff)
@@ -164,36 +175,65 @@ export const EncodingExplorerWindow = GObject.registerClass(
             this.displayToast(_("Lone Surrogate"));
             break;
           }
-          const codeUnits = segments
+
+          const codeUnits = codePoints
             .map((codePoint) => {
               if (codePoint > 0xffff) {
                 const highSurrogate = 0xd800 + ((codePoint - 0x10000) >> 10);
                 const lowSurrogate = 0xdc00 + ((codePoint - 0x10000) & 0x3ff);
-                /**
-                 * FIXME:
-                 * This is a temporary solution. It doesn't take into account
-                 * Endianness.
-                 */
-                return [
-                  highSurrogate.toString(16, "0"),
-                  lowSurrogate.toString(16, "0"),
-                ];
+                return [highSurrogate, lowSurrogate];
               }
 
-              return codePoint.toString(2).padStart(16, "0");
+              return codePoint;
             })
             .flat(Infinity);
 
-          this.buffer_text_encoding.text = codeUnits.join(" ");
+          const arrayBuffer = new ArrayBuffer(codeUnits.length * 2);
+          const dataView = new DataView(arrayBuffer);
+          for (
+            let i = dataView.byteOffset, j = 0;
+            i < dataView.byteLength;
+            i += 2, j++
+          ) {
+            dataView.setUint16(i, codeUnits[j], false);
+          }
+
+          const encodedText = [...new Uint8Array(arrayBuffer)].map((byte) => {
+            return byte.toString(base).padStart(maxLength, "0");
+          });
+
+          this.buffer_text_encoding.text = encodedText.join(" ");
           break;
         }
-        case "UTF-32":
+        case "UCS-4":
+        case "UTF-32": {
+          const codePoints = segments
+            .map(({ segment }) => {
+              return [...segment].map((character) => character.codePointAt(0));
+            })
+            .flat(Infinity);
+
+          const arrayBuffer = new ArrayBuffer(codePoints.length * 4);
+          const dataView = new DataView(arrayBuffer);
+
+          for (
+            let i = dataView.byteOffset, j = 0;
+            i < dataView.byteLength;
+            i += 4, j++
+          ) {
+            dataView.setUint32(i, codePoints[j], false);
+          }
+
+          const encodedText = [...new Uint8Array(arrayBuffer)].map((byte) => {
+            return byte.toString(base).padStart(maxLength, "0");
+          });
+
+          this.buffer_text_encoding.text = encodedText.join(" ");
+
           break;
+        }
         case "UCS-2":
           break;
-        case "UCS-4":
-          break;
-
         default:
           break;
       }

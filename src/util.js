@@ -1,3 +1,16 @@
+export const radixObject = {
+  Binary: 2,
+  Octal: 8,
+  Decimal: 10,
+  Hexadecimal: 16,
+};
+
+export function getMaxLength(base) {
+  if (base === 2) return 8;
+  if (base === 8 || base === 10) return 3;
+  return 2;
+}
+
 export class Encode {
   constructor() {
     this.utf8Encode = new TextEncoder().encode;
