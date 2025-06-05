@@ -240,8 +240,6 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
           break;
         }
-        case "UCS-2":
-          break;
         default:
           break;
       }

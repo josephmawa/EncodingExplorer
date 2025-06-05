@@ -47,7 +47,6 @@
         <choice value="UTF-8" />
         <choice value="UTF-16" />
         <choice value="UTF-32" />
-        <choice value="UCS-2" />
         <choice value="UCS-4" />
       </choices>
       <default>"UTF-8"</default>
