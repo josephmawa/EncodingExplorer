@@ -92,29 +92,47 @@
                                           <object class="GtkBox">
                                             <property name="spacing">16</property>
                                             <child>
-                                              <object class="GtkLabel">
-                                                <property name="label" translatable="yes">&lt;b&gt;Encoding&lt;/b&gt;</property>
-                                                <property name="use-markup">true</property>
-                                                <style>
-                                                  <class name="dim-label" />
-                                                </style>
+                                              <object class="GtkBox">
+                                                <property name="spacing">6</property>
+                                                <child>
+                                                  <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">&lt;b&gt;Encoding&lt;/b&gt;</property>
+                                                    <property name="use-markup">true</property>
+                                                    <style>
+                                                      <class name="dim-label" />
+                                                    </style>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkDropDown" id="dropdown_encoding">
+                                                    <property name="model">
+                                                      <object class="GtkStringList">
+                                                        <items>
+                                                          <item>ASCII</item>
+                                                          <item>UTF-8</item>
+                                                          <item>UTF-16</item>
+                                                          <item>UTF-32</item>
+                                                          <item>UCS-2</item>
+                                                          <item>UCS-4</item>
+                                                        </items>
+                                                      </object>
+                                                    </property>
+                                                    <property name="tooltip-text" translatable="yes">Switch Encoding</property>
+                                                  </object>
+                                                </child>
                                               </object>
                                             </child>
                                             <child>
-                                              <object class="GtkDropDown" id="dropdown_encoding">
-                                                <property name="model">
-                                                  <object class="GtkStringList">
-                                                    <items>
-                                                      <item>ASCII</item>
-                                                      <item>UTF-8</item>
-                                                      <item>UTF-16</item>
-                                                      <item>UTF-32</item>
-                                                      <item>UCS-2</item>
-                                                      <item>UCS-4</item>
-                                                    </items>
-                                                  </object>
-                                                </property>
-                                                <property name="tooltip-text" translatable="yes">Switch Encoding</property>
+                                              <object class="GtkButton">
+                                                <property name="icon-name">encoding-explorer-view-more-symbolic</property>
+                                                <property name="action-name">win.open-more-settings</property>
+                                                <property name="tooltip-text" translatable="yes" context="accessibility">More Settings</property>
+                                                <style>
+                                                  <class name="flat" />
+                                                </style>
+                                                <accessibility>
+                                                  <property name="label" translatable="yes" context="accessibility">More Settings</property>
+                                                </accessibility>
                                               </object>
                                             </child>
                                           </object>

@@ -8,7 +8,6 @@ import Gio from "gi://Gio";
  *
  */
 const themeSettingsCheckBtnIds = ["system", "light", "dark"];
-const endiannessSettingsCheckBtnIds = ["le", "be"];
 const encodingModeSettingsCheckBtnIds = ["text_encoding", "ieee_754"];
 
 export const PrefDialog = GObject.registerClass(
@@ -16,9 +15,7 @@ export const PrefDialog = GObject.registerClass(
     GTypeName: "PrefDialog",
     Template: getResourceURI("pref.ui"),
     InternalChildren: [
-      "radix",
       ...themeSettingsCheckBtnIds,
-      ...endiannessSettingsCheckBtnIds,
       ...encodingModeSettingsCheckBtnIds,
     ],
     Properties: {
@@ -35,24 +32,10 @@ export const PrefDialog = GObject.registerClass(
         GObject.ParamFlags.READWRITE,
         ""
       ),
-      endianness: GObject.ParamSpec.string(
-        "endianness",
-        "Endianness",
-        "Machine endianness",
-        GObject.ParamFlags.READWRITE,
-        ""
-      ),
       encoding_mode: GObject.ParamSpec.string(
         "encoding_mode",
         "encoding-mode",
         "Encoding Mode",
-        GObject.ParamFlags.READWRITE,
-        ""
-      ),
-      radix: GObject.ParamSpec.string(
-        "radix",
-        "Radix",
-        "Number base",
         GObject.ParamFlags.READWRITE,
         ""
       ),
@@ -70,52 +53,19 @@ export const PrefDialog = GObject.registerClass(
         Gio.SettingsBindFlags.DEFAULT
       );
       this.settings.bind(
-        "endianness",
-        this,
-        "endianness",
-        Gio.SettingsBindFlags.DEFAULT
-      );
-      this.settings.bind(
         "encoding-mode",
         this,
         "encoding_mode",
         Gio.SettingsBindFlags.DEFAULT
       );
-      this.settings.bind("radix", this, "radix", Gio.SettingsBindFlags.DEFAULT);
 
       for (const checkBtnId of themeSettingsCheckBtnIds) {
         this.bindCheckBtns("theme", checkBtnId);
       }
 
-      for (const checkBtnId of endiannessSettingsCheckBtnIds) {
-        this.bindCheckBtns("endianness", checkBtnId);
-      }
-
       for (const checkBtnId of encodingModeSettingsCheckBtnIds) {
         this.bindCheckBtns("encoding_mode", checkBtnId);
       }
-
-      this.bind_property_full(
-        "radix",
-        this._radix,
-        "selected",
-        GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
-        (binding, radix) => {
-          let selected;
-          let model = this._radix.model;
-          for (let i = 0; i < model.n_items; i++) {
-            if (model.get_item(i)?.string === radix) {
-              selected = i;
-              break;
-            }
-          }
-          return [true, selected];
-        },
-        (binding, selected) => {
-          const radix = this._radix.model.get_item(selected)?.string;
-          return [true, radix];
-        }
-      );
     }
 
     bindCheckBtns = (sourceProp, btnId) => {

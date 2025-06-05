@@ -76,38 +76,6 @@
         </child>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">Endianness</property>
-            <property name="description" translatable="yes">Select byte order</property>
-            <child>
-              <object class="AdwPreferencesRow">
-                <style>
-                  <class name="pref-row-padding" />
-                </style>
-                <child>
-                  <object class="GtkCheckButton" id="le">
-                    <property name="label" translatable="yes" context="Little Endian">Little Endian</property>
-                    <property name="active">true</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="AdwPreferencesRow">
-                <style>
-                  <class name="pref-row-padding" />
-                </style>
-                <child>
-                  <object class="GtkCheckButton" id="be">
-                    <property name="label" translatable="yes" context="Big Endian">Big Endian</property>
-                    <property name="group">le</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Mode</property>
             <property name="description" translatable="yes">Select encoding mode</property>
             <child>
@@ -134,27 +102,6 @@
                     <property name="group">text_encoding</property>
                   </object>
                 </child>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">Radix</property>
-            <property name="description" translatable="yes">Select number base</property>
-            <child>
-              <object class="AdwComboRow" id="radix">
-                <property name="title" translatable="yes">Number base</property>
-                <property name="model">
-                  <object class="GtkStringList">
-                    <items>
-                      <item>Binary</item>
-                      <item>Octal</item>
-                      <item>Decimal</item>
-                      <item>Hexadecimal</item>
-                    </items>
-                  </object>
-                </property>
               </object>
             </child>
           </object>

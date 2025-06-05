@@ -3,6 +3,7 @@
   <gresource prefix="/io/github/josephmawa/EncodingExplorer">
     <file preprocess="xml-stripblanks" compressed="yes" alias="win.ui">ui/win.ui</file>
     <file preprocess="xml-stripblanks" compressed="yes" alias="gtk/help-overlay.ui">ui/help.ui</file>
+    <file preprocess="xml-stripblanks" compressed="yes" alias="more-settings.ui">ui/more-settings.ui</file>
     <file preprocess="xml-stripblanks" compressed="yes" alias="pref.ui">ui/pref.ui</file>
     <file preprocess="xml-stripblanks" compressed="yes" alias="src-view.ui">ui/src-view.ui</file>
     <file preprocess="xml-stripblanks" compressed="yes" alias="scrolled-win.ui">ui/scrolled-win.ui</file>
@@ -13,5 +14,6 @@
   <gresource prefix="/io/github/josephmawa/EncodingExplorer/icons">
     <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-panel-bottom-symbolic.svg">icons/panel-bottom-symbolic.svg</file>
     <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-edit-copy-symbolic.svg">icons/edit-copy-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-view-more-symbolic.svg">icons/view-more-symbolic.svg</file>
   </gresource>
 </gresources>

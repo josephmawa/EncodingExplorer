@@ -18,6 +18,7 @@ import "./src-view.js";
 import "./scrolled-win.js";
 
 import { radixObject, getMaxLength } from "./util.js";
+import { MoreSettings } from "./more-settings.js";
 
 const textEncoder = new TextEncoder();
 
@@ -68,7 +69,14 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.displayToast("Copied encoding");
       });
 
+      const openMoreSettings = Gio.SimpleAction.new("open-more-settings", null);
+      openMoreSettings.connect("activate", () => {
+        const moreSettings = new MoreSettings()
+        moreSettings.present(this)
+      });
+
       this.add_action(copyEncoding);
+      this.add_action(openMoreSettings);
     };
     createBuffer = () => {
       this.buffer_text = new GtkSource.Buffer();
