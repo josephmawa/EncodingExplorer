@@ -287,6 +287,9 @@
                     <property name="spacing">16</property>
                     <child>
                       <object class="GtkLabel">
+                        <style>
+                          <class name="dim-label" />
+                        </style>
                         <binding name="label">
                           <lookup name="string" type="GtkStringObject">
                             <lookup name="selected_item">dropdown_encoding</lookup>
@@ -297,16 +300,25 @@
                     <child>
                       <object class="GtkLabel">
                         <property name="label">Binary</property>
+                        <style>
+                          <class name="dim-label" />
+                        </style>
                       </object>
                     </child>
                     <child>
                       <object class="GtkLabel">
                         <property name="label">34 Characters</property>
+                        <style>
+                          <class name="dim-label" />
+                        </style>
                       </object>
                     </child>
                     <child>
                       <object class="GtkLabel">
                         <property name="label">34 KiB</property>
+                        <style>
+                          <class name="dim-label" />
+                        </style>
                       </object>
                     </child>
                   </object>

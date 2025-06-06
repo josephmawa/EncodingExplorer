@@ -71,8 +71,8 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
       const openMoreSettings = Gio.SimpleAction.new("open-more-settings", null);
       openMoreSettings.connect("activate", () => {
-        const moreSettings = new MoreSettings()
-        moreSettings.present(this)
+        const moreSettings = new MoreSettings();
+        moreSettings.present(this);
       });
 
       this.add_action(copyEncoding);
@@ -125,6 +125,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
       const base = radixObject[radix];
       const maxLength = getMaxLength(base);
       const encoding = this.settings.get_string("encoding");
+      const endianness = this.settings.get_string("endianness");
 
       const locale = new Intl.DateTimeFormat().resolvedOptions().locale;
       const segmenter = new Intl.Segmenter(locale, {
@@ -203,7 +204,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
             i < dataView.byteLength;
             i += 2, j++
           ) {
-            dataView.setUint16(i, codeUnits[j], false);
+            dataView.setUint16(i, codeUnits[j], endianness === "le");
           }
 
           const encodedText = [...new Uint8Array(arrayBuffer)].map((byte) => {
@@ -229,7 +230,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
             i < dataView.byteLength;
             i += 4, j++
           ) {
-            dataView.setUint32(i, codePoints[j], false);
+            dataView.setUint32(i, codePoints[j], endianness === "le");
           }
 
           const encodedText = [...new Uint8Array(arrayBuffer)].map((byte) => {
