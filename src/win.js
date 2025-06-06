@@ -34,6 +34,8 @@ export const EncodingExplorerWindow = GObject.registerClass(
       "source_view_number",
       "source_view_text_encoding",
       "source_view_number_encoding",
+      "prev_char_btn",
+      "next_char_btn",
     ],
     Properties: {
       encoding: GObject.ParamSpec.string(
@@ -75,8 +77,26 @@ export const EncodingExplorerWindow = GObject.registerClass(
         moreSettings.present(this);
       });
 
+      const moveMark = Gio.SimpleAction.new(
+        "move-mark",
+        GLib.VariantType.new("s")
+      );
+
+      moveMark.connect("activate", (action, param) => {
+        const direction = param.unpack();
+        const { index, text, encoding } = this.offsets;
+        if (
+          (text.length === 0 && encoding.length === 0) ||
+          (direction === "forward" && index === text.length - 1) ||
+          (direction === "backward" && index === 0)
+        ) {
+          return;
+        }
+      });
+
       this.add_action(copyEncoding);
       this.add_action(openMoreSettings);
+      this.add_action(moveMark);
     };
     createBuffer = () => {
       this.buffer_text = new GtkSource.Buffer();
@@ -87,6 +107,12 @@ export const EncodingExplorerWindow = GObject.registerClass(
       }
 
       this.buffer_text.connect("changed", this.handleBufferChange);
+
+      this.offsets = {
+        index: 0,
+        text: [],
+        encoding: [],
+      };
 
       const tagTableText = this.buffer_text.tag_table;
 
@@ -251,7 +277,6 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.settings = Gio.Settings.new(pkg.name);
       }
 
-      // Window settings
       this.settings.bind(
         "window-width",
         this,
@@ -271,7 +296,6 @@ export const EncodingExplorerWindow = GObject.registerClass(
         Gio.SettingsBindFlags.DEFAULT
       );
 
-      // Encoding settings
       this.settings.bind(
         "encoding",
         this,

@@ -63,7 +63,40 @@
                                                 </style>
                                               </object>
                                             </child>
+                                          </object>
+                                        </child>
+                                        <child type="end">
+                                          <object class="GtkBox">
+                                            <style>
+                                              <class name="linked" />
+                                            </style>
                                             <child>
+                                              <object class="GtkButton" id="prev_char_btn">
+                                                <property name="icon-name">go-previous-symbolic</property>
+                                                <property name="action-name">win.move-mark</property>
+                                                <property name="action-target">"backward"</property>
+                                                <property name="tooltip-text" translatable="yes" context="Move to previous character">Previous Character</property>
+                                                <style>
+                                                  <class name="flat" />
+                                                </style>
+                                                <accessibility>
+                                                  <property name="label" translatable="yes" context="Move to previous character">Previous Character</property>
+                                                </accessibility>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="next_char_btn">
+                                                <property name="icon-name">go-previous-symbolic-rtl</property>
+                                                <property name="action-name">win.move-mark</property>
+                                                <property name="action-target">"forward"</property>
+                                                <property name="tooltip-text" translatable="yes" context="Move to next character">Next character</property>
+                                                <style>
+                                                  <class name="flat" />
+                                                </style>
+                                                <accessibility>
+                                                  <property name="label" translatable="yes" context="Move to next character">Next character</property>
+                                                </accessibility>
+                                              </object>
                                             </child>
                                           </object>
                                         </child>
