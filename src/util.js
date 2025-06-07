@@ -5,6 +5,14 @@ export const radixObject = {
   Hexadecimal: 16,
 };
 
+export function clamp(min, max, num) {
+  return Math.max(min, Math.min(num, max));
+}
+
+export function getRadix(radix) {
+  return radixObject[radix];
+}
+
 export function getMaxLength(base) {
   if (base === 2) return 8;
   if (base === 8 || base === 10) return 3;

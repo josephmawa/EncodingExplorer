@@ -18,7 +18,8 @@ import "./src-view.js";
 import "./scrolled-win.js";
 
 import {
-  radixObject,
+  clamp,
+  getRadix,
   getMaxLength,
   getTextOffsets,
   getEncodingOffsets,
@@ -26,6 +27,13 @@ import {
 import { MoreSettings } from "./more-settings.js";
 
 const textEncoder = new TextEncoder();
+const locale = new Intl.DateTimeFormat().resolvedOptions().locale;
+const segmenter = new Intl.Segmenter(locale, {
+  granularity: "grapheme",
+});
+
+const padChar = "0";
+const codeUnitSeparator = " ";
 
 export const EncodingExplorerWindow = GObject.registerClass(
   {
@@ -73,7 +81,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
           return;
         }
         this.copyToClipboard(text);
-        this.displayToast("Copied encoding");
+        this.displayToast(_("Copied encoding"));
       });
 
       const openMoreSettings = Gio.SimpleAction.new("open-more-settings", null);
@@ -101,11 +109,11 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.removeTags();
 
         if (direction === "forward") {
-          this.offsets.index++;
+          this.offsets.index = clamp(0, text.length - 1, index + 1);
         }
 
         if (direction === "backward") {
-          this.offsets.index--;
+          this.offsets.index = clamp(0, text.length - 1, index - 1);
         }
         const [txtOffsetA, txtOffsetB] = text[this.offsets.index];
         const [encOffsetA, encOffsetB] = encoding[this.offsets.index];
@@ -126,6 +134,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this.add_action(openMoreSettings);
       this.add_action(moveMark);
     };
+
     createBuffer = () => {
       this.buffer_text = new GtkSource.Buffer();
       this.buffer_text_encoding = new GtkSource.Buffer();
@@ -181,133 +190,136 @@ export const EncodingExplorerWindow = GObject.registerClass(
       const encoding = this.settings.get_string("encoding");
       const endianness = this.settings.get_string("endianness");
 
-      const base = radixObject[radix];
+      const base = getRadix(radix);
       const maxLength = getMaxLength(base);
-
-      const locale = new Intl.DateTimeFormat().resolvedOptions().locale;
-      const segmenter = new Intl.Segmenter(locale, {
-        granularity: "grapheme",
-      });
-
       const segments = [...segmenter.segment(text)];
-      this.offsets.text = getTextOffsets(segments);
 
-      switch (encoding) {
-        case "ASCII": {
-          let isValidAscii = true;
-          for (const { segment } of segments) {
-            const codePoints = [...segment].map((character) => {
-              return character.codePointAt(0);
-            });
-            if (codePoints.length > 1) {
-              isValidAscii = false;
-              break;
-            }
-          }
-
-          if (!isValidAscii) {
-            this.displayToast("Invalid ASCII");
+      if (encoding === "ASCII") {
+        let isValidAscii = true;
+        for (const { segment } of segments) {
+          const codePoints = [...segment].map((character) => {
+            return character.codePointAt(0);
+          });
+          if (
+            codePoints.length > 1 ||
+            codePoints.some((codePoint) => codePoint > 127)
+          ) {
+            isValidAscii = false;
             break;
           }
-
-          const codeUnits = Array.from(textEncoder.encode(text), (codeUnit) => {
-            return codeUnit.toString(base).padStart(maxLength, "0");
-          });
-          this.offsets.encoding = getEncodingOffsets(codeUnits);
-          this.buffer_text_encoding.text = codeUnits.join(" ");
-          break;
         }
-        case "UTF-8": {
-          const encodedCodePoints = segments.map(({ segment }) => {
-            const codeUnits = [...textEncoder.encode(segment)];
-            const encodedCodeUnits = codeUnits.map((codeUnit) => {
-              return codeUnit.toString(base).padStart(maxLength, "0");
-            });
 
-            return encodedCodeUnits.join(" ");
-          });
-
-          this.offsets.encoding = getEncodingOffsets(encodedCodePoints);
-          this.buffer_text_encoding.text = encodedCodePoints.join(" ");
-          break;
+        if (!isValidAscii) {
+          this.displayToast(_("Invalid ASCII"));
+          return;
         }
-        case "UTF-16": {
-          const codePoints = segments
-            .map(({ segment }) => {
-              return [...segment].map((character) => character.codePointAt(0));
+
+        const codeUnits = Array.from(textEncoder.encode(text), (codeUnit) => {
+          return codeUnit.toString(base).padStart(maxLength, padChar);
+        });
+
+        this.offsets.text = getTextOffsets(segments);
+        this.offsets.encoding = getEncodingOffsets(codeUnits);
+        this.buffer_text_encoding.text = codeUnits.join(codeUnitSeparator);
+        return;
+      }
+
+      if (encoding === "UTF-8") {
+        const encodedCodePoints = segments.map(({ segment }) => {
+          return [...textEncoder.encode(segment)]
+            .map((codeUnit) => {
+              return codeUnit.toString(base).padStart(maxLength, padChar);
             })
-            .flat(Infinity);
+            .join(codeUnitSeparator);
+        });
 
-          const isValidUTF16 = codePoints.every((codePoint) => {
+        this.offsets.text = getTextOffsets(segments);
+        this.offsets.encoding = getEncodingOffsets(encodedCodePoints);
+        this.buffer_text_encoding.text =
+          encodedCodePoints.join(codeUnitSeparator);
+        return;
+      }
+
+      if (encoding === "UTF-16") {
+        const codePoints = segments.map(({ segment }) => {
+          return [...segment].map((character) => character.codePointAt(0));
+        });
+        const isValidUTF16 = codePoints.every((codePointsArray) => {
+          return codePointsArray.every((codePoint) => {
             return (
               (codePoint >= 0x0000 && codePoint < 0xd800) ||
               (codePoint > 0xdfff && codePoint <= 0x10ffff)
             );
           });
+        });
 
-          if (!isValidUTF16) {
-            this.displayToast(_("Lone Surrogate"));
-            break;
-          }
+        if (!isValidUTF16) {
+          this.displayToast(_("Lone Surrogate"));
+          return;
+        }
 
-          const codeUnits = codePoints
+        const codeUnits = codePoints.map((codePointsArray) => {
+          return codePointsArray
             .map((codePoint) => {
               if (codePoint > 0xffff) {
                 const highSurrogate = 0xd800 + ((codePoint - 0x10000) >> 10);
                 const lowSurrogate = 0xdc00 + ((codePoint - 0x10000) & 0x3ff);
-                return [highSurrogate, lowSurrogate];
+
+                const arrayBuffer = new ArrayBuffer(4);
+                const dataView = new DataView(arrayBuffer);
+
+                dataView.setUint16(0, highSurrogate, endianness === "le");
+                dataView.setUint16(2, lowSurrogate, endianness === "le");
+
+                return [...new Uint8Array(arrayBuffer)]
+                  .map((byte) => {
+                    return byte.toString(base).padStart(maxLength, padChar);
+                  })
+                  .join(" ");
               }
 
-              return codePoint;
+              const arrayBuffer = new ArrayBuffer(2);
+              const dataView = new DataView(arrayBuffer);
+              dataView.setUint16(0, codePoint, endianness === "le");
+
+              return [...new Uint8Array(arrayBuffer)]
+                .map((byte) => {
+                  return byte.toString(base).padStart(maxLength, padChar);
+                })
+                .join(codeUnitSeparator);
             })
-            .flat(Infinity);
+            .join(codeUnitSeparator);
+        });
 
-          const arrayBuffer = new ArrayBuffer(codeUnits.length * 2);
-          const dataView = new DataView(arrayBuffer);
-          for (
-            let i = dataView.byteOffset, j = 0;
-            i < dataView.byteLength;
-            i += 2, j++
-          ) {
-            dataView.setUint16(i, codeUnits[j], endianness === "le");
-          }
+        this.offsets.text = getTextOffsets(segments);
+        this.offsets.encoding = getEncodingOffsets(codeUnits);
+        this.buffer_text_encoding.text = codeUnits.join(codeUnitSeparator);
+        return;
+      }
 
-          const encodedText = [...new Uint8Array(arrayBuffer)].map((byte) => {
-            return byte.toString(base).padStart(maxLength, "0");
-          });
+      if (["UTF-32", "USC-4"].includes(encoding)) {
+        const codePoints = segments
+          .map(({ segment }) => {
+            return [...segment].map((character) => character.codePointAt(0));
+          })
+          .flat(Infinity);
 
-          this.buffer_text_encoding.text = encodedText.join(" ");
-          break;
+        const arrayBuffer = new ArrayBuffer(codePoints.length * 4);
+        const dataView = new DataView(arrayBuffer);
+
+        for (
+          let i = dataView.byteOffset, j = 0;
+          i < dataView.byteLength;
+          i += 4, j++
+        ) {
+          dataView.setUint32(i, codePoints[j], endianness === "le");
         }
-        case "UCS-4":
-        case "UTF-32": {
-          const codePoints = segments
-            .map(({ segment }) => {
-              return [...segment].map((character) => character.codePointAt(0));
-            })
-            .flat(Infinity);
 
-          const arrayBuffer = new ArrayBuffer(codePoints.length * 4);
-          const dataView = new DataView(arrayBuffer);
+        const encodedText = [...new Uint8Array(arrayBuffer)].map((byte) => {
+          return byte.toString(base).padStart(maxLength, "0");
+        });
 
-          for (
-            let i = dataView.byteOffset, j = 0;
-            i < dataView.byteLength;
-            i += 4, j++
-          ) {
-            dataView.setUint32(i, codePoints[j], endianness === "le");
-          }
-
-          const encodedText = [...new Uint8Array(arrayBuffer)].map((byte) => {
-            return byte.toString(base).padStart(maxLength, "0");
-          });
-
-          this.buffer_text_encoding.text = encodedText.join(" ");
-
-          break;
-        }
-        default:
-          break;
+        this.buffer_text_encoding.text = encodedText.join(" ");
       }
     };
 
@@ -352,6 +364,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
       this.settings.connect("changed::radix", this.encodeText);
       this.settings.connect("changed::encoding", this.encodeText);
+      this.settings.connect("changed::endianness", this.encodeText);
       this.settings.connect("changed::preferred-theme", this.setColorScheme);
     };
 
