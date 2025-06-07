@@ -275,7 +275,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
                   .map((byte) => {
                     return byte.toString(base).padStart(maxLength, padChar);
                   })
-                  .join(" ");
+                  .join(codeUnitSeparator);
               }
 
               const arrayBuffer = new ArrayBuffer(2);
