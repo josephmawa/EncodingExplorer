@@ -11,6 +11,33 @@ export function getMaxLength(base) {
   return 2;
 }
 
+export function getTextOffsets(segments) {
+  const textOffsets = [];
+  let i = 0;
+
+  for (const { segment } of segments) {
+    const codePoints = [...segment].length;
+    textOffsets.push([i, i + codePoints]);
+    i += codePoints;
+  }
+
+  return textOffsets;
+}
+
+export function getEncodingOffsets(encoding, byteSep = " ") {
+  const encodingOffsets = [];
+  let encodedStr = "";
+
+  for (const byte of encoding) {
+    encodedStr = encodedStr.length
+      ? encodedStr + byteSep + byte
+      : encodedStr + byte;
+    encodingOffsets.push([encodedStr.length - byte.length, encodedStr.length]);
+  }
+
+  return encodingOffsets;
+}
+
 export class Encode {
   constructor() {
     this.utf8Encode = new TextEncoder().encode;

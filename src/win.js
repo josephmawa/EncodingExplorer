@@ -17,7 +17,12 @@ GObject.type_ensure(GtkSource.View.$gtype);
 import "./src-view.js";
 import "./scrolled-win.js";
 
-import { radixObject, getMaxLength } from "./util.js";
+import {
+  radixObject,
+  getMaxLength,
+  getTextOffsets,
+  getEncodingOffsets,
+} from "./util.js";
 import { MoreSettings } from "./more-settings.js";
 
 const textEncoder = new TextEncoder();
@@ -92,6 +97,29 @@ export const EncodingExplorerWindow = GObject.registerClass(
         ) {
           return;
         }
+
+        this.removeTags();
+
+        if (direction === "forward") {
+          this.offsets.index++;
+        }
+
+        if (direction === "backward") {
+          this.offsets.index--;
+        }
+        const [txtOffsetA, txtOffsetB] = text[this.offsets.index];
+        const [encOffsetA, encOffsetB] = encoding[this.offsets.index];
+
+        this.buffer_text.apply_tag_by_name(
+          "blueForeground",
+          this.buffer_text.get_iter_at_offset(txtOffsetA),
+          this.buffer_text.get_iter_at_offset(txtOffsetB)
+        );
+        this.buffer_text_encoding.apply_tag_by_name(
+          "blueForeground",
+          this.buffer_text_encoding.get_iter_at_offset(encOffsetA),
+          this.buffer_text_encoding.get_iter_at_offset(encOffsetB)
+        );
       });
 
       this.add_action(copyEncoding);
@@ -115,29 +143,18 @@ export const EncodingExplorerWindow = GObject.registerClass(
       };
 
       const tagTableText = this.buffer_text.tag_table;
+      const tagTableEncoding = this.buffer_text_encoding.tag_table;
 
       tagTableText.add(
         new Gtk.TextTag({
-          name: "redForeground",
-          foreground: "#b30000",
+          name: "blueForeground",
+          foreground: "#1a5fb4",
         })
       );
-      tagTableText.add(
-        new Gtk.TextTag({
-          name: "redBackground",
-          background: "#fadad7",
-        })
-      );
-      tagTableText.add(
+      tagTableEncoding.add(
         new Gtk.TextTag({
           name: "blueForeground",
-          foreground: "#406619",
-        })
-      );
-      tagTableText.add(
-        new Gtk.TextTag({
-          name: "blueBackground",
-          background: "#eaf2c2",
+          foreground: "#1a5fb4",
         })
       );
 
@@ -145,13 +162,27 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this._source_view_text_encoding.buffer = this.buffer_text_encoding;
     };
 
+    removeTags = () => {
+      this.buffer_text.remove_tag_by_name(
+        "blueForeground",
+        this.buffer_text.get_start_iter(),
+        this.buffer_text.get_end_iter()
+      );
+      this.buffer_text_encoding.remove_tag_by_name(
+        "blueForeground",
+        this.buffer_text_encoding.get_start_iter(),
+        this.buffer_text_encoding.get_end_iter()
+      );
+    };
+
     encodeText = () => {
       const text = this.buffer_text.text;
       const radix = this.settings.get_string("radix");
-      const base = radixObject[radix];
-      const maxLength = getMaxLength(base);
       const encoding = this.settings.get_string("encoding");
       const endianness = this.settings.get_string("endianness");
+
+      const base = radixObject[radix];
+      const maxLength = getMaxLength(base);
 
       const locale = new Intl.DateTimeFormat().resolvedOptions().locale;
       const segmenter = new Intl.Segmenter(locale, {
@@ -159,37 +190,45 @@ export const EncodingExplorerWindow = GObject.registerClass(
       });
 
       const segments = [...segmenter.segment(text)];
+      this.offsets.text = getTextOffsets(segments);
 
       switch (encoding) {
         case "ASCII": {
-          const codePoints = segments
-            .map(({ segment }) => {
-              return [...segment].map((character) => character.codePointAt(0));
-            })
-            .flat(Infinity);
-
-          const isValidAscii = codePoints.every(
-            (codePoint) => codePoint <= 127
-          );
+          let isValidAscii = true;
+          for (const { segment } of segments) {
+            const codePoints = [...segment].map((character) => {
+              return character.codePointAt(0);
+            });
+            if (codePoints.length > 1) {
+              isValidAscii = false;
+              break;
+            }
+          }
 
           if (!isValidAscii) {
             this.displayToast("Invalid ASCII");
             break;
           }
 
-          const codeUnits = [...textEncoder.encode(text)];
-          const encodedText = codeUnits.map((codeUnit) => {
+          const codeUnits = Array.from(textEncoder.encode(text), (codeUnit) => {
             return codeUnit.toString(base).padStart(maxLength, "0");
           });
-          this.buffer_text_encoding.text = encodedText.join(" ");
+          this.offsets.encoding = getEncodingOffsets(codeUnits);
+          this.buffer_text_encoding.text = codeUnits.join(" ");
           break;
         }
         case "UTF-8": {
-          const codeUnits = [...textEncoder.encode(text)];
-          const encodedText = codeUnits.map((codeUnit) => {
-            return codeUnit.toString(base).padStart(maxLength, "0");
+          const encodedCodePoints = segments.map(({ segment }) => {
+            const codeUnits = [...textEncoder.encode(segment)];
+            const encodedCodeUnits = codeUnits.map((codeUnit) => {
+              return codeUnit.toString(base).padStart(maxLength, "0");
+            });
+
+            return encodedCodeUnits.join(" ");
           });
-          this.buffer_text_encoding.text = encodedText.join(" ");
+
+          this.offsets.encoding = getEncodingOffsets(encodedCodePoints);
+          this.buffer_text_encoding.text = encodedCodePoints.join(" ");
           break;
         }
         case "UTF-16": {
