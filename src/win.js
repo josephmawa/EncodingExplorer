@@ -137,8 +137,19 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.buffer_text.get_iter_at_offset(txtOffsetA),
         this.buffer_text.get_iter_at_offset(txtOffsetB)
       );
+      this.buffer_text.apply_tag_by_name(
+        "blueBackground",
+        this.buffer_text.get_iter_at_offset(txtOffsetA),
+        this.buffer_text.get_iter_at_offset(txtOffsetB)
+      );
+
       this.buffer_text_encoding.apply_tag_by_name(
         "blueForeground",
+        this.buffer_text_encoding.get_iter_at_offset(encOffsetA),
+        this.buffer_text_encoding.get_iter_at_offset(encOffsetB)
+      );
+      this.buffer_text_encoding.apply_tag_by_name(
+        "blueBackground",
         this.buffer_text_encoding.get_iter_at_offset(encOffsetA),
         this.buffer_text_encoding.get_iter_at_offset(encOffsetB)
       );
@@ -166,13 +177,26 @@ export const EncodingExplorerWindow = GObject.registerClass(
       tagTableText.add(
         new Gtk.TextTag({
           name: "blueForeground",
-          foreground: "#1a5fb4",
+          foreground: "#406619",
+        })
+      );
+      tagTableText.add(
+        new Gtk.TextTag({
+          name: "blueBackground",
+          background: "#eaf2c2",
+        })
+      );
+
+      tagTableEncoding.add(
+        new Gtk.TextTag({
+          name: "blueForeground",
+          foreground: "#406619",
         })
       );
       tagTableEncoding.add(
         new Gtk.TextTag({
-          name: "blueForeground",
-          foreground: "#1a5fb4",
+          name: "blueBackground",
+          background: "#eaf2c2",
         })
       );
 
@@ -186,8 +210,19 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.buffer_text.get_start_iter(),
         this.buffer_text.get_end_iter()
       );
+      this.buffer_text.remove_tag_by_name(
+        "blueBackground",
+        this.buffer_text.get_start_iter(),
+        this.buffer_text.get_end_iter()
+      );
+
       this.buffer_text_encoding.remove_tag_by_name(
         "blueForeground",
+        this.buffer_text_encoding.get_start_iter(),
+        this.buffer_text_encoding.get_end_iter()
+      );
+      this.buffer_text_encoding.remove_tag_by_name(
+        "blueBackground",
         this.buffer_text_encoding.get_start_iter(),
         this.buffer_text_encoding.get_end_iter()
       );
