@@ -104,8 +104,6 @@ export const EncodingExplorerWindow = GObject.registerClass(
           return;
         }
 
-        this.removeTags();
-
         if (direction === "forward") {
           this.offsets.index = clamp(0, text.length - 1, index + 1);
         }
@@ -113,24 +111,37 @@ export const EncodingExplorerWindow = GObject.registerClass(
         if (direction === "backward") {
           this.offsets.index = clamp(0, text.length - 1, index - 1);
         }
-        const [txtOffsetA, txtOffsetB] = text[this.offsets.index];
-        const [encOffsetA, encOffsetB] = encoding[this.offsets.index];
 
-        this.buffer_text.apply_tag_by_name(
-          "blueForeground",
-          this.buffer_text.get_iter_at_offset(txtOffsetA),
-          this.buffer_text.get_iter_at_offset(txtOffsetB)
-        );
-        this.buffer_text_encoding.apply_tag_by_name(
-          "blueForeground",
-          this.buffer_text_encoding.get_iter_at_offset(encOffsetA),
-          this.buffer_text_encoding.get_iter_at_offset(encOffsetB)
-        );
+        this.createTags();
       });
 
       this.add_action(copyEncoding);
       this.add_action(openMoreSettings);
       this.add_action(moveMark);
+    };
+
+    createTags = () => {
+      const { index, text, encoding } = this.offsets;
+      if (!text.length && !encoding.length) {
+        this.removeTags();
+        return;
+      }
+
+      this.removeTags();
+      this.offsets.index = clamp(0, text.length ? text.length - 1 : 0, index);
+      const [txtOffsetA, txtOffsetB] = text[this.offsets.index];
+      const [encOffsetA, encOffsetB] = encoding[this.offsets.index];
+
+      this.buffer_text.apply_tag_by_name(
+        "blueForeground",
+        this.buffer_text.get_iter_at_offset(txtOffsetA),
+        this.buffer_text.get_iter_at_offset(txtOffsetB)
+      );
+      this.buffer_text_encoding.apply_tag_by_name(
+        "blueForeground",
+        this.buffer_text_encoding.get_iter_at_offset(encOffsetA),
+        this.buffer_text_encoding.get_iter_at_offset(encOffsetB)
+      );
     };
 
     createBuffer = () => {
@@ -197,7 +208,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
           const codePoints = [...segment].map((character) => {
             return character.codePointAt(0);
           });
-          
+
           if (
             codePoints.length > 1 ||
             codePoints.some((codePoint) => codePoint > 127)
@@ -214,6 +225,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.offsets.text = getTextOffsets(segments);
         this.offsets.encoding = getEncodingOffsets(codeUnits);
         this.buffer_text_encoding.text = codeUnits.join(byteSeparator);
+        this.createTags();
         return;
       }
 
@@ -229,6 +241,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.offsets.text = getTextOffsets(segments);
         this.offsets.encoding = getEncodingOffsets(encodedCodePoints);
         this.buffer_text_encoding.text = encodedCodePoints.join(byteSeparator);
+        this.createTags();
         return;
       }
 
@@ -286,6 +299,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.offsets.text = getTextOffsets(segments);
         this.offsets.encoding = getEncodingOffsets(codeUnits);
         this.buffer_text_encoding.text = codeUnits.join(byteSeparator);
+        this.createTags();
         return;
       }
 
@@ -310,6 +324,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.offsets.text = getTextOffsets(segments);
         this.offsets.encoding = getEncodingOffsets(encodedSegments);
         this.buffer_text_encoding.text = encodedSegments.join(byteSeparator);
+        this.createTags();
       }
     };
 
