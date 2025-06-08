@@ -38,160 +38,252 @@
                         <property name="name">text_encoding</property>
                         <property name="child">
                           <object class="GtkBox">
-                            <property name="hexpand">true</property>
-                            <property name="vexpand">true</property>
+                            <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkPaned">
-                                <!-- Text Pane -->
-                                <property name="start-child">
-                                  <object class="AdwToolbarView">
-                                    <child type="top">
-                                      <object class="GtkCenterBox">
-                                        <style>
-                                          <class name="toolbar" />
-                                          <class name="panel-header" />
-                                        </style>
-                                        <property name="height-request">46</property>
-                                        <child type="start">
-                                          <object class="GtkBox">
-                                            <child>
-                                              <object class="GtkLabel">
-                                                <property name="label" translatable="yes">&lt;b&gt;Text&lt;/b&gt;</property>
-                                                <property name="use-markup">true</property>
-                                                <style>
-                                                  <class name="dim-label" />
-                                                </style>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child type="end">
-                                          <object class="GtkBox">
+                              <object class="GtkBox">
+                                <property name="hexpand">true</property>
+                                <property name="vexpand">true</property>
+                                <child>
+                                  <object class="GtkPaned">
+                                    <!-- Text Pane -->
+                                    <property name="start-child">
+                                      <object class="AdwToolbarView">
+                                        <child type="top">
+                                          <object class="GtkCenterBox">
                                             <style>
-                                              <class name="linked" />
+                                              <class name="toolbar" />
+                                              <class name="panel-header" />
                                             </style>
-                                            <child>
-                                              <object class="GtkButton">
-                                                <property name="icon-name">go-previous-symbolic</property>
-                                                <property name="action-name">win.move-mark</property>
-                                                <property name="action-target">"backward"</property>
-                                                <property name="tooltip-text" translatable="yes" context="Move to previous character">Previous Character</property>
-                                                <style>
-                                                  <class name="flat" />
-                                                </style>
-                                                <accessibility>
-                                                  <property name="label" translatable="yes" context="Move to previous character">Previous Character</property>
-                                                </accessibility>
-                                              </object>
-                                            </child>
-                                            <child>
-                                              <object class="GtkButton">
-                                                <property name="icon-name">go-previous-symbolic-rtl</property>
-                                                <property name="action-name">win.move-mark</property>
-                                                <property name="action-target">"forward"</property>
-                                                <property name="tooltip-text" translatable="yes" context="Move to next character">Next character</property>
-                                                <style>
-                                                  <class name="flat" />
-                                                </style>
-                                                <accessibility>
-                                                  <property name="label" translatable="yes" context="Move to next character">Next character</property>
-                                                </accessibility>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </child>
-                                    <property name="content">
-                                      <object class="ScrolledWin">
-                                        <property name="child">
-                                          <object class="SourceView" id="source_view_text" />
-                                        </property>
-                                      </object>
-                                    </property>
-                                  </object>
-                                </property>
-                                <!-- Encoding Pane -->
-                                <property name="end-child">
-                                  <object class="AdwToolbarView">
-                                    <child type="top">
-                                      <object class="GtkCenterBox">
-                                        <style>
-                                          <class name="toolbar" />
-                                          <class name="panel-header" />
-                                        </style>
-                                        <property name="height-request">46</property>
-                                        <child type="start">
-                                          <object class="GtkBox">
-                                            <property name="spacing">16</property>
-                                            <child>
+                                            <property name="height-request">46</property>
+                                            <child type="start">
                                               <object class="GtkBox">
-                                                <property name="spacing">6</property>
                                                 <child>
                                                   <object class="GtkLabel">
-                                                    <property name="label" translatable="yes">&lt;b&gt;Encoding&lt;/b&gt;</property>
+                                                    <property name="label" translatable="yes">&lt;b&gt;Text&lt;/b&gt;</property>
                                                     <property name="use-markup">true</property>
                                                     <style>
                                                       <class name="dim-label" />
                                                     </style>
                                                   </object>
                                                 </child>
+                                              </object>
+                                            </child>
+                                            <child type="end">
+                                              <object class="GtkBox">
+                                                <style>
+                                                  <class name="linked" />
+                                                </style>
                                                 <child>
-                                                  <object class="GtkDropDown" id="dropdown_encoding">
-                                                    <property name="model">
-                                                      <object class="GtkStringList">
-                                                        <items>
-                                                          <item>ASCII</item>
-                                                          <item>UTF-8</item>
-                                                          <item>UTF-16</item>
-                                                          <item>UTF-32</item>
-                                                          <item>UCS-4</item>
-                                                        </items>
-                                                      </object>
-                                                    </property>
-                                                    <property name="tooltip-text" translatable="yes">Switch Encoding</property>
+                                                  <object class="GtkButton">
+                                                    <property name="icon-name">go-previous-symbolic</property>
+                                                    <property name="action-name">win.move-mark</property>
+                                                    <property name="action-target">"backward"</property>
+                                                    <property name="tooltip-text" translatable="yes" context="Move to previous character">Previous Character</property>
+                                                    <style>
+                                                      <class name="flat" />
+                                                    </style>
+                                                    <accessibility>
+                                                      <property name="label" translatable="yes" context="Move to previous character">Previous Character</property>
+                                                    </accessibility>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkButton">
+                                                    <property name="icon-name">go-previous-symbolic-rtl</property>
+                                                    <property name="action-name">win.move-mark</property>
+                                                    <property name="action-target">"forward"</property>
+                                                    <property name="tooltip-text" translatable="yes" context="Move to next character">Next character</property>
+                                                    <style>
+                                                      <class name="flat" />
+                                                    </style>
+                                                    <accessibility>
+                                                      <property name="label" translatable="yes" context="Move to next character">Next character</property>
+                                                    </accessibility>
                                                   </object>
                                                 </child>
                                               </object>
                                             </child>
-                                            <child>
+                                          </object>
+                                        </child>
+                                        <property name="content">
+                                          <object class="ScrolledWin">
+                                            <property name="child">
+                                              <object class="SourceView" id="source_view_text" />
+                                            </property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </property>
+                                    <!-- Encoding Pane -->
+                                    <property name="end-child">
+                                      <object class="AdwToolbarView">
+                                        <child type="top">
+                                          <object class="GtkCenterBox">
+                                            <style>
+                                              <class name="toolbar" />
+                                              <class name="panel-header" />
+                                            </style>
+                                            <property name="height-request">46</property>
+                                            <child type="start">
+                                              <object class="GtkBox">
+                                                <property name="spacing">16</property>
+                                                <child>
+                                                  <object class="GtkBox">
+                                                    <property name="spacing">6</property>
+                                                    <child>
+                                                      <object class="GtkLabel">
+                                                        <property name="label" translatable="yes">&lt;b&gt;Encoding&lt;/b&gt;</property>
+                                                        <property name="use-markup">true</property>
+                                                        <style>
+                                                          <class name="dim-label" />
+                                                        </style>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkDropDown" id="dropdown_encoding">
+                                                        <property name="model">
+                                                          <object class="GtkStringList">
+                                                            <items>
+                                                              <item>ASCII</item>
+                                                              <item>UTF-8</item>
+                                                              <item>UTF-16</item>
+                                                              <item>UTF-32</item>
+                                                              <item>UCS-4</item>
+                                                            </items>
+                                                          </object>
+                                                        </property>
+                                                        <property name="tooltip-text" translatable="yes">Switch Encoding</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkButton">
+                                                    <property name="icon-name">encoding-explorer-view-more-symbolic</property>
+                                                    <property name="action-name">win.open-more-settings</property>
+                                                    <property name="tooltip-text" translatable="yes" context="accessibility">More Settings</property>
+                                                    <style>
+                                                      <class name="flat" />
+                                                    </style>
+                                                    <accessibility>
+                                                      <property name="label" translatable="yes" context="accessibility">More Settings</property>
+                                                    </accessibility>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child type="end">
                                               <object class="GtkButton">
-                                                <property name="icon-name">encoding-explorer-view-more-symbolic</property>
-                                                <property name="action-name">win.open-more-settings</property>
-                                                <property name="tooltip-text" translatable="yes" context="accessibility">More Settings</property>
-                                                <style>
-                                                  <class name="flat" />
-                                                </style>
+                                                <property name="icon-name">encoding-explorer-edit-copy-symbolic</property>
+                                                <property name="action-name">win.copy-encoded-text</property>
+                                                <property name="tooltip-text" translatable="yes" context="Copy encoded text to clipboard">Copy Encoding</property>
                                                 <accessibility>
-                                                  <property name="label" translatable="yes" context="accessibility">More Settings</property>
+                                                  <property name="label" translatable="yes" context="accessibility">Copy Encoding</property>
                                                 </accessibility>
                                               </object>
                                             </child>
                                           </object>
                                         </child>
-                                        <child type="end">
-                                          <object class="GtkButton">
-                                            <property name="icon-name">encoding-explorer-edit-copy-symbolic</property>
-                                            <property name="action-name">win.copy-encoded-text</property>
-                                            <property name="tooltip-text" translatable="yes" context="Copy encoded text to clipboard">Copy Encoding</property>
-                                            <accessibility>
-                                              <property name="label" translatable="yes" context="accessibility">Copy Encoding</property>
-                                            </accessibility>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </child>
-                                    <property name="content">
-                                      <object class="ScrolledWin">
-                                        <property name="child">
-                                          <object class="SourceView" id="source_view_text_encoding">
-                                            <property name="editable">false</property>
+                                        <property name="content">
+                                          <object class="ScrolledWin">
+                                            <property name="child">
+                                              <object class="SourceView" id="source_view_text_encoding">
+                                                <property name="editable">false</property>
+                                              </object>
+                                            </property>
                                           </object>
                                         </property>
                                       </object>
                                     </property>
                                   </object>
-                                </property>
+                                </child>
+                              </object>
+                            </child>
+                            <!-- Revealer -->
+                            <child>
+                              <object class="GtkRevealer">
+                                <property name="transition-duration">300</property>
+                                <property name="transition-type">slide-up</property>
+                                <binding name="reveal-child">
+                                  <lookup name="active">bottom_panel_toggle_button</lookup>
+                                </binding>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label">&#x000062;</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label">LATIN SMALL LETTER B</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <!-- Bottom Panel -->
+                            <child>
+                              <object class="GtkCenterBox">
+                                <style>
+                                  <class name="panel-header" />
+                                </style>
+                                <child type="start">
+                                  <object class="GtkBox">
+                                    <property name="spacing">16</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <style>
+                                          <class name="dim-label" />
+                                        </style>
+                                        <binding name="label">
+                                          <lookup name="string" type="GtkStringObject">
+                                            <lookup name="selected_item">dropdown_encoding</lookup>
+                                          </lookup>
+                                        </binding>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label">Binary</property>
+                                        <style>
+                                          <class name="dim-label" />
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label">34 Characters</property>
+                                        <style>
+                                          <class name="dim-label" />
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label">34 KiB</property>
+                                        <style>
+                                          <class name="dim-label" />
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child type="end">
+                                  <object class="GtkToggleButton" id="bottom_panel_toggle_button">
+                                    <style>
+                                      <class name="flat" />
+                                    </style>
+                                    <property name="icon-name">encoding-explorer-panel-bottom-symbolic</property>
+                                    <property name="action-name">win.toggle-bottom-panel</property>
+                                    <property name="tooltip-text" translatable="yes" context="Toggle bottom panel">Toggle Bottom Panel</property>
+                                    <accessibility>
+                                      <property name="label" translatable="yes" context="accessibility">Toggle Bottom Panel</property>
+                                    </accessibility>
+                                  </object>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -281,93 +373,8 @@
                     </child>
                   </object>
                 </child>
-                <!-- Revealer -->
-                <child>
-                  <object class="GtkRevealer">
-                    <property name="transition-duration">300</property>
-                    <property name="transition-type">slide-up</property>
-                    <binding name="reveal-child">
-                      <lookup name="active">bottom_panel_toggle_button</lookup>
-                    </binding>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label">&#x000062;</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label">LATIN SMALL LETTER B</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
               </object>
             </property>
-            <!-- Bottom Panel -->
-            <child type="bottom">
-              <object class="GtkCenterBox">
-                <style>
-                  <class name="toolbar" />
-                  <class name="panel-header" />
-                </style>
-                <child type="start">
-                  <object class="GtkBox">
-                    <property name="spacing">16</property>
-                    <child>
-                      <object class="GtkLabel">
-                        <style>
-                          <class name="dim-label" />
-                        </style>
-                        <binding name="label">
-                          <lookup name="string" type="GtkStringObject">
-                            <lookup name="selected_item">dropdown_encoding</lookup>
-                          </lookup>
-                        </binding>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label">Binary</property>
-                        <style>
-                          <class name="dim-label" />
-                        </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label">34 Characters</property>
-                        <style>
-                          <class name="dim-label" />
-                        </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label">34 KiB</property>
-                        <style>
-                          <class name="dim-label" />
-                        </style>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="end">
-                  <object class="GtkToggleButton" id="bottom_panel_toggle_button">
-                    <property name="icon-name">encoding-explorer-panel-bottom-symbolic</property>
-                    <property name="action-name">win.toggle-bottom-panel</property>
-                    <property name="tooltip-text" translatable="yes" context="Toggle bottom panel">Toggle Bottom Panel</property>
-                    <accessibility>
-                      <property name="label" translatable="yes" context="accessibility">Toggle Bottom Panel</property>
-                    </accessibility>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
         </child>
       </object>
