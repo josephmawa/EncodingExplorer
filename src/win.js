@@ -343,7 +343,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         return;
       }
 
-      if (["UTF-32", "USC-4"].includes(encoding)) {
+      if (["UTF-32", "UCS-4"].includes(encoding)) {
         const arrayBuffer = new ArrayBuffer(4);
         const dataView = new DataView(arrayBuffer);
 
