@@ -9,6 +9,11 @@ export function clamp(min, max, num) {
   return Math.max(min, Math.min(num, max));
 }
 
+export function round(number, decPlaces = 0) {
+  const multiple = Math.pow(10, decPlaces);
+  return Math.round(number * multiple) / multiple;
+}
+
 export function getRadix(radix) {
   return radixObject[radix];
 }
@@ -46,41 +51,23 @@ export function getEncodingOffsets(encoding, byteSep = " ") {
   return encodingOffsets;
 }
 
-export class Encode {
-  constructor() {
-    this.utf8Encode = new TextEncoder().encode;
-    this.radixObject = {
-      Binary: 2,
-      Octal: 8,
-      Decimal: 10,
-      Hexadecimal: 16,
-    };
-  }
+export function formatBytes(bytes) {
+  if (bytes === 0) return "0 Bytes";
 
-  convertBase = (codeUnitsArr, radix) => {
-    let maxLength;
+  const units = [
+    "Bytes",
+    "KiB",
+    "MiB",
+    "GiB",
+    "TiB",
+    "PiB",
+    "EiB",
+    "ZiB",
+    "YiB",
+  ];
+  const base = 1024;
+  const index = Math.floor(Math.log(bytes) / Math.log(base));
+  const formattedBytes = round(bytes / Math.pow(base, index), 2);
 
-    if (radix === 2) {
-      maxLength = 8;
-    } else if (radix === 8 || radix === 10) {
-      maxLength = 3;
-    } else if (radix === 16) {
-      maxLength = 2;
-    } else {
-      throw new Error("Base must be 2, 8, 10, or 16");
-    }
-
-    return codeUnitsArr
-      .map((codeUnit) => {
-        return codeUnit.toString(radix).padStart(maxLength, "0");
-      })
-      .join(" ");
-  };
-
-  ascii = (string, radix) => {};
-
-  utf8 = (string, radix) => {
-    const codeUnits = [...this.utf8Encode(string)];
-    return this.convertBase(codeUnits, this.radixObject[radix]);
-  };
+  return `${formattedBytes} ${units[index]}`;
 }

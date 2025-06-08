@@ -246,7 +246,7 @@
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel">
+                                      <object class="GtkLabel" id="endianness_label">
                                         <property name="label">LE</property>
                                         <style>
                                           <class name="dim-label" />
@@ -254,7 +254,7 @@
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel">
+                                      <object class="GtkLabel" id="radix_label">
                                         <property name="label">Binary</property>
                                         <style>
                                           <class name="dim-label" />
@@ -263,7 +263,9 @@
                                     </child>
                                     <child>
                                       <object class="GtkLabel">
-                                        <property name="label">34 Characters</property>
+                                        <binding name="label">
+                                          <lookup name="char_count">EncodingExplorerWindow</lookup>
+                                        </binding>
                                         <style>
                                           <class name="dim-label" />
                                         </style>
@@ -271,7 +273,9 @@
                                     </child>
                                     <child>
                                       <object class="GtkLabel">
-                                        <property name="label">34 KiB</property>
+                                        <binding name="label">
+                                          <lookup name="text_size">EncodingExplorerWindow</lookup>
+                                        </binding>
                                         <style>
                                           <class name="dim-label" />
                                         </style>

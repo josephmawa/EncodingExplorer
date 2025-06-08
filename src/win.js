@@ -20,6 +20,7 @@ import "./scrolled-win.js";
 import {
   clamp,
   getRadix,
+  formatBytes,
   getMaxLength,
   getTextOffsets,
   getEncodingOffsets,
@@ -42,6 +43,8 @@ export const EncodingExplorerWindow = GObject.registerClass(
     InternalChildren: [
       "toast_overlay",
       "encoding_stack",
+      "radix_label",
+      "endianness_label",
       "dropdown_encoding",
       "source_view_text",
       "source_view_number",
@@ -54,7 +57,28 @@ export const EncodingExplorerWindow = GObject.registerClass(
         "Encoding",
         "Text encoding",
         GObject.ParamFlags.READWRITE,
-        ""
+        "UTF-8"
+      ),
+      endianness: GObject.ParamSpec.string(
+        "endianness",
+        "Endianness",
+        "Byte order",
+        GObject.ParamFlags.READWRITE,
+        "LE"
+      ),
+      char_count: GObject.ParamSpec.string(
+        "char_count",
+        "charCount",
+        "Number of characters in the text",
+        GObject.ParamFlags.READWRITE,
+        "0 Characters"
+      ),
+      text_size: GObject.ParamSpec.string(
+        "text_size",
+        "textSize",
+        "Size of text buffer",
+        GObject.ParamFlags.READWRITE,
+        "0 Bytes"
       ),
     },
   },
@@ -401,6 +425,21 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this.bindEncoding();
 
       this.settings.bind(
+        "endianness",
+        this,
+        "endianness",
+        Gio.SettingsBindFlags.DEFAULT
+      );
+      this.bindEndianness();
+
+      this.settings.bind(
+        "radix",
+        this._radix_label,
+        "label",
+        Gio.SettingsBindFlags.DEFAULT
+      );
+
+      this.settings.bind(
         "encoding-mode",
         this._encoding_stack,
         "visible-child-name",
@@ -411,6 +450,19 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this.settings.connect("changed::encoding", this.encodeText);
       this.settings.connect("changed::endianness", this.encodeText);
       this.settings.connect("changed::preferred-theme", this.setColorScheme);
+    };
+
+    bindEndianness = () => {
+      this.bind_property_full(
+        "endianness",
+        this._endianness_label,
+        "label",
+        GObject.BindingFlags.SYNC_CREATE,
+        (binding, endianness) => {
+          return [true, endianness.toUpperCase()];
+        },
+        null
+      );
     };
 
     bindEncoding = () => {
