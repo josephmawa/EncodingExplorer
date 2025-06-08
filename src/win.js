@@ -230,6 +230,11 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
     encodeText = () => {
       const text = this.buffer_text.text;
+      if (text.length * 2 > 5_000) {
+        this.displayToast(_("Text is too large"));
+        this.buffer_text.text = "";
+        return;
+      }
       const radix = this.settings.get_string("radix");
       const encoding = this.settings.get_string("encoding");
       const endianness = this.settings.get_string("endianness");
