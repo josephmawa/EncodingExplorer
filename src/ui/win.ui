@@ -247,6 +247,14 @@
                                     </child>
                                     <child>
                                       <object class="GtkLabel">
+                                        <property name="label">LE</property>
+                                        <style>
+                                          <class name="dim-label" />
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
                                         <property name="label">Binary</property>
                                         <style>
                                           <class name="dim-label" />
