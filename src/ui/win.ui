@@ -71,7 +71,7 @@
                                               <class name="linked" />
                                             </style>
                                             <child>
-                                              <object class="GtkButton" id="prev_char_btn">
+                                              <object class="GtkButton">
                                                 <property name="icon-name">go-previous-symbolic</property>
                                                 <property name="action-name">win.move-mark</property>
                                                 <property name="action-target">"backward"</property>
@@ -85,7 +85,7 @@
                                               </object>
                                             </child>
                                             <child>
-                                              <object class="GtkButton" id="next_char_btn">
+                                              <object class="GtkButton">
                                                 <property name="icon-name">go-previous-symbolic-rtl</property>
                                                 <property name="action-name">win.move-mark</property>
                                                 <property name="action-target">"forward"</property>
