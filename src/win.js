@@ -17,10 +17,23 @@ GObject.type_ensure(GtkSource.View.$gtype);
 import "./src-view.js";
 import "./scrolled-win.js";
 
-import { radixObject, getMaxLength } from "./util.js";
+import {
+  clamp,
+  getRadix,
+  getMaxLength,
+  getTextOffsets,
+  getEncodingOffsets,
+} from "./util.js";
 import { MoreSettings } from "./more-settings.js";
 
 const textEncoder = new TextEncoder();
+const locale = new Intl.DateTimeFormat().resolvedOptions().locale;
+const segmenter = new Intl.Segmenter(locale, {
+  granularity: "grapheme",
+});
+
+const padChar = "0";
+const byteSeparator = " ";
 
 export const EncodingExplorerWindow = GObject.registerClass(
   {
@@ -66,18 +79,82 @@ export const EncodingExplorerWindow = GObject.registerClass(
           return;
         }
         this.copyToClipboard(text);
-        this.displayToast("Copied encoding");
+        this.displayToast(_("Copied encoding"));
       });
 
       const openMoreSettings = Gio.SimpleAction.new("open-more-settings", null);
       openMoreSettings.connect("activate", () => {
-        const moreSettings = new MoreSettings()
-        moreSettings.present(this)
+        const moreSettings = new MoreSettings();
+        moreSettings.present(this);
+      });
+
+      const moveMark = Gio.SimpleAction.new(
+        "move-mark",
+        GLib.VariantType.new("s")
+      );
+
+      moveMark.connect("activate", (action, param) => {
+        const direction = param.unpack();
+        const { index, text, encoding } = this.offsets;
+        if (
+          (text.length === 0 && encoding.length === 0) ||
+          (direction === "forward" && index === text.length - 1) ||
+          (direction === "backward" && index === 0)
+        ) {
+          return;
+        }
+
+        if (direction === "forward") {
+          this.offsets.index = clamp(0, text.length - 1, index + 1);
+        }
+
+        if (direction === "backward") {
+          this.offsets.index = clamp(0, text.length - 1, index - 1);
+        }
+
+        this.createTags();
       });
 
       this.add_action(copyEncoding);
       this.add_action(openMoreSettings);
+      this.add_action(moveMark);
     };
+
+    createTags = () => {
+      const { index, text, encoding } = this.offsets;
+      if (!text.length && !encoding.length) {
+        this.removeTags();
+        return;
+      }
+
+      this.removeTags();
+      this.offsets.index = clamp(0, text.length ? text.length - 1 : 0, index);
+      const [txtOffsetA, txtOffsetB] = text[this.offsets.index];
+      const [encOffsetA, encOffsetB] = encoding[this.offsets.index];
+
+      this.buffer_text.apply_tag_by_name(
+        "blueForeground",
+        this.buffer_text.get_iter_at_offset(txtOffsetA),
+        this.buffer_text.get_iter_at_offset(txtOffsetB)
+      );
+      this.buffer_text.apply_tag_by_name(
+        "blueBackground",
+        this.buffer_text.get_iter_at_offset(txtOffsetA),
+        this.buffer_text.get_iter_at_offset(txtOffsetB)
+      );
+
+      this.buffer_text_encoding.apply_tag_by_name(
+        "blueForeground",
+        this.buffer_text_encoding.get_iter_at_offset(encOffsetA),
+        this.buffer_text_encoding.get_iter_at_offset(encOffsetB)
+      );
+      this.buffer_text_encoding.apply_tag_by_name(
+        "blueBackground",
+        this.buffer_text_encoding.get_iter_at_offset(encOffsetA),
+        this.buffer_text_encoding.get_iter_at_offset(encOffsetB)
+      );
+    };
+
     createBuffer = () => {
       this.buffer_text = new GtkSource.Buffer();
       this.buffer_text_encoding = new GtkSource.Buffer();
@@ -88,20 +165,15 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
       this.buffer_text.connect("changed", this.handleBufferChange);
 
-      const tagTableText = this.buffer_text.tag_table;
+      this.offsets = {
+        index: 0,
+        text: [],
+        encoding: [],
+      };
 
-      tagTableText.add(
-        new Gtk.TextTag({
-          name: "redForeground",
-          foreground: "#b30000",
-        })
-      );
-      tagTableText.add(
-        new Gtk.TextTag({
-          name: "redBackground",
-          background: "#fadad7",
-        })
-      );
+      const tagTableText = this.buffer_text.tag_table;
+      const tagTableEncoding = this.buffer_text_encoding.tag_table;
+
       tagTableText.add(
         new Gtk.TextTag({
           name: "blueForeground",
@@ -115,133 +187,184 @@ export const EncodingExplorerWindow = GObject.registerClass(
         })
       );
 
+      tagTableEncoding.add(
+        new Gtk.TextTag({
+          name: "blueForeground",
+          foreground: "#406619",
+        })
+      );
+      tagTableEncoding.add(
+        new Gtk.TextTag({
+          name: "blueBackground",
+          background: "#eaf2c2",
+        })
+      );
+
       this._source_view_text.buffer = this.buffer_text;
       this._source_view_text_encoding.buffer = this.buffer_text_encoding;
     };
 
+    removeTags = () => {
+      this.buffer_text.remove_tag_by_name(
+        "blueForeground",
+        this.buffer_text.get_start_iter(),
+        this.buffer_text.get_end_iter()
+      );
+      this.buffer_text.remove_tag_by_name(
+        "blueBackground",
+        this.buffer_text.get_start_iter(),
+        this.buffer_text.get_end_iter()
+      );
+
+      this.buffer_text_encoding.remove_tag_by_name(
+        "blueForeground",
+        this.buffer_text_encoding.get_start_iter(),
+        this.buffer_text_encoding.get_end_iter()
+      );
+      this.buffer_text_encoding.remove_tag_by_name(
+        "blueBackground",
+        this.buffer_text_encoding.get_start_iter(),
+        this.buffer_text_encoding.get_end_iter()
+      );
+    };
+
     encodeText = () => {
       const text = this.buffer_text.text;
+      if (text.length * 2 > 5_000) {
+        this.displayToast(_("Text is too large"));
+        this.buffer_text.text = "";
+        return;
+      }
       const radix = this.settings.get_string("radix");
-      const base = radixObject[radix];
-      const maxLength = getMaxLength(base);
       const encoding = this.settings.get_string("encoding");
+      const endianness = this.settings.get_string("endianness");
 
-      const locale = new Intl.DateTimeFormat().resolvedOptions().locale;
-      const segmenter = new Intl.Segmenter(locale, {
-        granularity: "grapheme",
-      });
-
+      const base = getRadix(radix);
+      const maxLength = getMaxLength(base);
       const segments = [...segmenter.segment(text)];
 
-      switch (encoding) {
-        case "ASCII": {
-          const codePoints = segments
-            .map(({ segment }) => {
-              return [...segment].map((character) => character.codePointAt(0));
-            })
-            .flat(Infinity);
+      if (encoding === "ASCII") {
+        for (const { segment } of segments) {
+          const codePoints = [...segment].map((character) => {
+            return character.codePointAt(0);
+          });
 
-          const isValidAscii = codePoints.every(
-            (codePoint) => codePoint <= 127
-          );
-
-          if (!isValidAscii) {
-            this.displayToast("Invalid ASCII");
-            break;
+          if (
+            codePoints.length > 1 ||
+            codePoints.some((codePoint) => codePoint > 127)
+          ) {
+            this.displayToast(_("Invalid ASCII"));
+            return;
           }
+        }
 
-          const codeUnits = [...textEncoder.encode(text)];
-          const encodedText = codeUnits.map((codeUnit) => {
-            return codeUnit.toString(base).padStart(maxLength, "0");
-          });
-          this.buffer_text_encoding.text = encodedText.join(" ");
-          break;
-        }
-        case "UTF-8": {
-          const codeUnits = [...textEncoder.encode(text)];
-          const encodedText = codeUnits.map((codeUnit) => {
-            return codeUnit.toString(base).padStart(maxLength, "0");
-          });
-          this.buffer_text_encoding.text = encodedText.join(" ");
-          break;
-        }
-        case "UTF-16": {
-          const codePoints = segments
-            .map(({ segment }) => {
-              return [...segment].map((character) => character.codePointAt(0));
+        const codeUnits = [...textEncoder.encode(text)].map((codeUnit) => {
+          return codeUnit.toString(base).padStart(maxLength, padChar);
+        });
+
+        this.offsets.text = getTextOffsets(segments);
+        this.offsets.encoding = getEncodingOffsets(codeUnits);
+        this.buffer_text_encoding.text = codeUnits.join(byteSeparator);
+        this.createTags();
+        return;
+      }
+
+      if (encoding === "UTF-8") {
+        const encodedCodePoints = segments.map(({ segment }) => {
+          return [...textEncoder.encode(segment)]
+            .map((codeUnit) => {
+              return codeUnit.toString(base).padStart(maxLength, padChar);
             })
-            .flat(Infinity);
+            .join(byteSeparator);
+        });
 
-          const isValidUTF16 = codePoints.every((codePoint) => {
+        this.offsets.text = getTextOffsets(segments);
+        this.offsets.encoding = getEncodingOffsets(encodedCodePoints);
+        this.buffer_text_encoding.text = encodedCodePoints.join(byteSeparator);
+        this.createTags();
+        return;
+      }
+
+      if (encoding === "UTF-16") {
+        const codePoints = segments.map(({ segment }) => {
+          return [...segment].map((character) => character.codePointAt(0));
+        });
+        const isValidUTF16 = codePoints.every((codePointsArray) => {
+          return codePointsArray.every((codePoint) => {
             return (
               (codePoint >= 0x0000 && codePoint < 0xd800) ||
               (codePoint > 0xdfff && codePoint <= 0x10ffff)
             );
           });
+        });
 
-          if (!isValidUTF16) {
-            this.displayToast(_("Lone Surrogate"));
-            break;
-          }
+        if (!isValidUTF16) {
+          this.displayToast(_("Lone Surrogate"));
+          return;
+        }
 
-          const codeUnits = codePoints
+        const codeUnits = codePoints.map((codePointsArray) => {
+          return codePointsArray
             .map((codePoint) => {
               if (codePoint > 0xffff) {
                 const highSurrogate = 0xd800 + ((codePoint - 0x10000) >> 10);
                 const lowSurrogate = 0xdc00 + ((codePoint - 0x10000) & 0x3ff);
-                return [highSurrogate, lowSurrogate];
+
+                const arrayBuffer = new ArrayBuffer(4);
+                const dataView = new DataView(arrayBuffer);
+
+                dataView.setUint16(0, highSurrogate, endianness === "le");
+                dataView.setUint16(2, lowSurrogate, endianness === "le");
+
+                return [...new Uint8Array(arrayBuffer)]
+                  .map((byte) => {
+                    return byte.toString(base).padStart(maxLength, padChar);
+                  })
+                  .join(byteSeparator);
               }
 
-              return codePoint;
+              const arrayBuffer = new ArrayBuffer(2);
+              const dataView = new DataView(arrayBuffer);
+              dataView.setUint16(0, codePoint, endianness === "le");
+
+              return [...new Uint8Array(arrayBuffer)]
+                .map((byte) => {
+                  return byte.toString(base).padStart(maxLength, padChar);
+                })
+                .join(byteSeparator);
             })
-            .flat(Infinity);
+            .join(byteSeparator);
+        });
 
-          const arrayBuffer = new ArrayBuffer(codeUnits.length * 2);
-          const dataView = new DataView(arrayBuffer);
-          for (
-            let i = dataView.byteOffset, j = 0;
-            i < dataView.byteLength;
-            i += 2, j++
-          ) {
-            dataView.setUint16(i, codeUnits[j], false);
-          }
+        this.offsets.text = getTextOffsets(segments);
+        this.offsets.encoding = getEncodingOffsets(codeUnits);
+        this.buffer_text_encoding.text = codeUnits.join(byteSeparator);
+        this.createTags();
+        return;
+      }
 
-          const encodedText = [...new Uint8Array(arrayBuffer)].map((byte) => {
-            return byte.toString(base).padStart(maxLength, "0");
+      if (["UTF-32", "USC-4"].includes(encoding)) {
+        const arrayBuffer = new ArrayBuffer(4);
+        const dataView = new DataView(arrayBuffer);
+
+        const encodedSegments = segments.map(({ segment }) => {
+          const encodedCodePoints = [...segment].map((character) => {
+            const codePoint = character.codePointAt(0);
+            dataView.setUint32(0, codePoint, endianness === "le");
+            return [...new Uint8Array(arrayBuffer)]
+              .map((byte) => {
+                return byte.toString(base).padStart(maxLength, padChar);
+              })
+              .join(byteSeparator);
           });
 
-          this.buffer_text_encoding.text = encodedText.join(" ");
-          break;
-        }
-        case "UCS-4":
-        case "UTF-32": {
-          const codePoints = segments
-            .map(({ segment }) => {
-              return [...segment].map((character) => character.codePointAt(0));
-            })
-            .flat(Infinity);
+          return encodedCodePoints.join(byteSeparator);
+        });
 
-          const arrayBuffer = new ArrayBuffer(codePoints.length * 4);
-          const dataView = new DataView(arrayBuffer);
-
-          for (
-            let i = dataView.byteOffset, j = 0;
-            i < dataView.byteLength;
-            i += 4, j++
-          ) {
-            dataView.setUint32(i, codePoints[j], false);
-          }
-
-          const encodedText = [...new Uint8Array(arrayBuffer)].map((byte) => {
-            return byte.toString(base).padStart(maxLength, "0");
-          });
-
-          this.buffer_text_encoding.text = encodedText.join(" ");
-
-          break;
-        }
-        default:
-          break;
+        this.offsets.text = getTextOffsets(segments);
+        this.offsets.encoding = getEncodingOffsets(encodedSegments);
+        this.buffer_text_encoding.text = encodedSegments.join(byteSeparator);
+        this.createTags();
       }
     };
 
@@ -250,7 +373,6 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.settings = Gio.Settings.new(pkg.name);
       }
 
-      // Window settings
       this.settings.bind(
         "window-width",
         this,
@@ -270,7 +392,6 @@ export const EncodingExplorerWindow = GObject.registerClass(
         Gio.SettingsBindFlags.DEFAULT
       );
 
-      // Encoding settings
       this.settings.bind(
         "encoding",
         this,
@@ -288,6 +409,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
       this.settings.connect("changed::radix", this.encodeText);
       this.settings.connect("changed::encoding", this.encodeText);
+      this.settings.connect("changed::endianness", this.encodeText);
       this.settings.connect("changed::preferred-theme", this.setColorScheme);
     };
 

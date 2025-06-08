@@ -63,7 +63,40 @@
                                                 </style>
                                               </object>
                                             </child>
+                                          </object>
+                                        </child>
+                                        <child type="end">
+                                          <object class="GtkBox">
+                                            <style>
+                                              <class name="linked" />
+                                            </style>
                                             <child>
+                                              <object class="GtkButton">
+                                                <property name="icon-name">go-previous-symbolic</property>
+                                                <property name="action-name">win.move-mark</property>
+                                                <property name="action-target">"backward"</property>
+                                                <property name="tooltip-text" translatable="yes" context="Move to previous character">Previous Character</property>
+                                                <style>
+                                                  <class name="flat" />
+                                                </style>
+                                                <accessibility>
+                                                  <property name="label" translatable="yes" context="Move to previous character">Previous Character</property>
+                                                </accessibility>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton">
+                                                <property name="icon-name">go-previous-symbolic-rtl</property>
+                                                <property name="action-name">win.move-mark</property>
+                                                <property name="action-target">"forward"</property>
+                                                <property name="tooltip-text" translatable="yes" context="Move to next character">Next character</property>
+                                                <style>
+                                                  <class name="flat" />
+                                                </style>
+                                                <accessibility>
+                                                  <property name="label" translatable="yes" context="Move to next character">Next character</property>
+                                                </accessibility>
+                                              </object>
                                             </child>
                                           </object>
                                         </child>
@@ -287,6 +320,9 @@
                     <property name="spacing">16</property>
                     <child>
                       <object class="GtkLabel">
+                        <style>
+                          <class name="dim-label" />
+                        </style>
                         <binding name="label">
                           <lookup name="string" type="GtkStringObject">
                             <lookup name="selected_item">dropdown_encoding</lookup>
@@ -297,16 +333,25 @@
                     <child>
                       <object class="GtkLabel">
                         <property name="label">Binary</property>
+                        <style>
+                          <class name="dim-label" />
+                        </style>
                       </object>
                     </child>
                     <child>
                       <object class="GtkLabel">
                         <property name="label">34 Characters</property>
+                        <style>
+                          <class name="dim-label" />
+                        </style>
                       </object>
                     </child>
                     <child>
                       <object class="GtkLabel">
                         <property name="label">34 KiB</property>
+                        <style>
+                          <class name="dim-label" />
+                        </style>
                       </object>
                     </child>
                   </object>
