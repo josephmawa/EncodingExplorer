@@ -1,4 +1,4 @@
-export const radixObject = {
+const radixObject = {
   Binary: 2,
   Octal: 8,
   Decimal: 10,
@@ -49,25 +49,4 @@ export function getEncodingOffsets(encoding, byteSep = " ") {
   }
 
   return encodingOffsets;
-}
-
-export function formatBytes(bytes) {
-  if (bytes === 0) return "0 Bytes";
-
-  const units = [
-    "Bytes",
-    "KiB",
-    "MiB",
-    "GiB",
-    "TiB",
-    "PiB",
-    "EiB",
-    "ZiB",
-    "YiB",
-  ];
-  const base = 1024;
-  const index = Math.floor(Math.log(bytes) / Math.log(base));
-  const formattedBytes = round(bytes / Math.pow(base, index), 2);
-
-  return `${formattedBytes} ${units[index]}`;
 }

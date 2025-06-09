@@ -20,7 +20,6 @@ import "./scrolled-win.js";
 import {
   clamp,
   getRadix,
-  formatBytes,
   getMaxLength,
   getTextOffsets,
   getEncodingOffsets,
@@ -65,20 +64,6 @@ export const EncodingExplorerWindow = GObject.registerClass(
         "Byte order",
         GObject.ParamFlags.READWRITE,
         "LE"
-      ),
-      char_count: GObject.ParamSpec.string(
-        "char_count",
-        "charCount",
-        "Number of characters in the text",
-        GObject.ParamFlags.READWRITE,
-        "0 Characters"
-      ),
-      text_size: GObject.ParamSpec.string(
-        "text_size",
-        "textSize",
-        "Size of text buffer",
-        GObject.ParamFlags.READWRITE,
-        "0 Bytes"
       ),
     },
   },

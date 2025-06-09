@@ -261,26 +261,6 @@
                                         </style>
                                       </object>
                                     </child>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <binding name="label">
-                                          <lookup name="char_count">EncodingExplorerWindow</lookup>
-                                        </binding>
-                                        <style>
-                                          <class name="dim-label" />
-                                        </style>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <binding name="label">
-                                          <lookup name="text_size">EncodingExplorerWindow</lookup>
-                                        </binding>
-                                        <style>
-                                          <class name="dim-label" />
-                                        </style>
-                                      </object>
-                                    </child>
                                   </object>
                                 </child>
                                 <child type="end">
