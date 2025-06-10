@@ -84,6 +84,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this.createToast();
       this.createActions();
       this.createBuffer();
+      this.createNumberBuffer();
       /**
        * This method creates the floating
        * point format dropdown model. Create
@@ -179,6 +180,60 @@ export const EncodingExplorerWindow = GObject.registerClass(
       );
     };
 
+    createNumberBuffer = () => {
+      this.buffer_number = new GtkSource.Buffer();
+      this.buffer_number_encoding = new GtkSource.Buffer();
+
+      if (!this.handleTextBufferChange) {
+        this.handleTextBufferChange = this.debounce(this.encodeNumber, 300);
+      }
+      this.buffer_number.connect("changed", this.handleTextBufferChange);
+
+      this.buffer_number.connect(
+        "insert-text",
+        (textBuffer, location, text, len) => {
+          const bufferText = textBuffer.text;
+          const signalId = GObject.signal_lookup("insert-text", textBuffer);
+          const handlerId = GObject.signal_handler_find(
+            textBuffer,
+            GObject.SignalMatchType.ID,
+            signalId,
+            GLib.quark_to_string(0),
+            null,
+            null,
+            null
+          );
+
+          GObject.signal_handler_block(textBuffer, handlerId);
+          /**
+           * FIXME
+           * This Regex is AI generated. I'm not sure I completely
+           * understand what it does. It doesn't allow inserting a
+           * negative sign if the buffer already has some text.
+           *
+           * Besides, it checks for the validity of the current string
+           * in the text buffer concatenated with the text yet to be
+           * inserted. This makes it impossible to copy and paste text
+           * if there is already an existing text in the buffer. The same
+           * applies when inserting text in the middle of an existing text.
+           */
+          const numberRegex = /^(?:-?(\d+(\.\d*)?|\.\d+)|-)$/;
+          if (numberRegex.test(bufferText + text)) {
+            textBuffer.insert(location, text, len);
+          }
+
+          GObject.signal_handler_unblock(textBuffer, handlerId);
+          GObject.signal_stop_emission(
+            textBuffer,
+            signalId,
+            GLib.quark_to_string(0)
+          );
+        }
+      );
+      this._source_view_number.buffer = this.buffer_number;
+      this._source_view_number_encoding.buffer = this.buffer_number_encoding;
+    };
+
     createBuffer = () => {
       this.buffer_text = new GtkSource.Buffer();
       this.buffer_text_encoding = new GtkSource.Buffer();
@@ -250,6 +305,78 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.buffer_text_encoding.get_start_iter(),
         this.buffer_text_encoding.get_end_iter()
       );
+    };
+
+    encodeNumber = () => {
+      /**
+       * FIXME
+       * Use JavaScript library like bignumber.js to
+       * perform these kinds of encoding.
+       */
+      const text = this.buffer_number.text;
+      if (text === "-") return;
+
+      const number = +text;
+      if (Number.isNaN(number)) {
+        this.displayToast(_("Invalid number"));
+        return;
+      }
+
+      console.log(number.toString(10))
+      console.log(text)
+      if (number.toString(10) !== text) {
+        console.log("Number outside representable range");
+        return;
+      }
+
+      const format = this.settings.get_string("floating-point-format");
+
+      if (format === "half_precision") {
+        /**
+         * org.gnome.Platform//48 bundles gjs 1.84.2 which
+         * is based on SpiderMonkey 128. It doesn't have
+         * DataView.prototype.setFloat16 method yet.
+         */
+        this.displayToast("Not implemented yet");
+        return;
+        const arrayBuffer = new ArrayBuffer(2);
+        const dataView = new DataView(arrayBuffer);
+
+        dataView.setFloat16(0, number);
+        const encodedNumber = dataView
+          .getUint16(0)
+          .toString(2)
+          .padStart(16, padChar);
+        console.log(encodedNumber);
+        return;
+      }
+
+      if (format === "single_precision") {
+        const arrayBuffer = new ArrayBuffer(4);
+        const dataView = new DataView(arrayBuffer);
+
+        dataView.setFloat32(0, number);
+        const encodedNumber = dataView
+          .getUint32(0)
+          .toString(2)
+          .padStart(32, padChar);
+
+        this.buffer_number_encoding.text = encodedNumber;
+        return;
+      }
+
+      if (format === "double_precision") {
+        const arrayBuffer = new ArrayBuffer(8);
+        const dataView = new DataView(arrayBuffer);
+
+        dataView.setFloat64(0, number);
+        const encodedNumber = dataView
+          .getBigUint64(0)
+          .toString(2)
+          .padStart(64, padChar);
+        this.buffer_number_encoding.text = encodedNumber;
+        return;
+      }
     };
 
     encodeText = () => {
