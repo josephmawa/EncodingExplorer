@@ -23,6 +23,7 @@ import {
   getMaxLength,
   getTextOffsets,
   getEncodingOffsets,
+  floatingPointFormats,
 } from "./util.js";
 import { MoreSettings } from "./more-settings.js";
 
@@ -49,6 +50,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
       "source_view_number",
       "source_view_text_encoding",
       "source_view_number_encoding",
+      "dropdown_floating_point_format",
     ],
     Properties: {
       encoding: GObject.ParamSpec.string(
@@ -57,6 +59,13 @@ export const EncodingExplorerWindow = GObject.registerClass(
         "Text encoding",
         GObject.ParamFlags.READWRITE,
         "UTF-8"
+      ),
+      floating_point_format: GObject.ParamSpec.string(
+        "floating_point_format",
+        "floatingPointFormat",
+        "IEEE 754 encoding format",
+        GObject.ParamFlags.READWRITE,
+        "single_precision"
       ),
       endianness: GObject.ParamSpec.string(
         "endianness",
@@ -75,6 +84,12 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this.createToast();
       this.createActions();
       this.createBuffer();
+      /**
+       * This method creates the floating
+       * point format dropdown model. Create
+       * the model before binding settings.
+       */
+      this.createDropdownModel();
       this.bindSettings();
       this.setColorScheme();
     }
@@ -407,6 +422,12 @@ export const EncodingExplorerWindow = GObject.registerClass(
         "encoding",
         Gio.SettingsBindFlags.DEFAULT
       );
+      this.settings.bind(
+        "floating-point-format",
+        this,
+        "floating_point_format",
+        Gio.SettingsBindFlags.DEFAULT
+      );
       this.bindEncoding();
 
       this.settings.bind(
@@ -450,6 +471,18 @@ export const EncodingExplorerWindow = GObject.registerClass(
       );
     };
 
+    createDropdownModel = () => {
+      const formats = floatingPointFormats.map(({ format }) => format);
+      const model = Gtk.StringList.new(formats);
+      const expression = Gtk.PropertyExpression.new(
+        Gtk.StringObject,
+        null,
+        "string"
+      );
+      this._dropdown_floating_point_format.model = model;
+      this._dropdown_floating_point_format.expression = expression;
+    };
+
     bindEncoding = () => {
       this.bind_property_full(
         "encoding",
@@ -471,6 +504,38 @@ export const EncodingExplorerWindow = GObject.registerClass(
           const encoding =
             this._dropdown_encoding.model.get_item(selected)?.string;
           return [true, encoding];
+        }
+      );
+
+      this.bind_property_full(
+        "floating_point_format",
+        this._dropdown_floating_point_format,
+        "selected",
+        GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
+        (binding, encoding) => {
+          let selected;
+          const encodingObj = floatingPointFormats.find(
+            ({ key }) => key === encoding
+          );
+
+          const model = this._dropdown_floating_point_format.model;
+          for (let i = 0; i < model.n_items; i++) {
+            if (model.get_item(i).string === encodingObj.format) {
+              selected = i;
+              break;
+            }
+          }
+          return [true, selected];
+        },
+        (binding, selected) => {
+          const stringObj =
+            this._dropdown_floating_point_format.model.get_item(selected);
+
+          const encodingObj = floatingPointFormats.find(
+            ({ format }) => stringObj?.string === format
+          );
+
+          return [true, encodingObj?.key];
         }
       );
     };

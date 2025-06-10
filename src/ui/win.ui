@@ -335,12 +335,22 @@
                                         </style>
                                         <property name="height-request">46</property>
                                         <child type="start">
-                                          <object class="GtkLabel">
-                                            <property name="label" translatable="yes">&lt;b&gt;IEE-754 Floating Point&lt;/b&gt;</property>
-                                            <property name="use-markup">true</property>
-                                            <style>
-                                              <class name="dim-label" />
-                                            </style>
+                                          <object class="GtkBox">
+                                            <property name="spacing">16</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">&lt;b&gt;IEE-754 Floating Point&lt;/b&gt;</property>
+                                                <property name="use-markup">true</property>
+                                                <style>
+                                                  <class name="dim-label" />
+                                                </style>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkDropDown" id="dropdown_floating_point_format">
+                                                <property name="tooltip-text" translatable="yes">Switch floating point format</property>
+                                              </object>
+                                            </child>
                                           </object>
                                         </child>
                                       </object>

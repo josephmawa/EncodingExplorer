@@ -5,6 +5,21 @@ const radixObject = {
   Hexadecimal: 16,
 };
 
+export const floatingPointFormats = [
+  {
+    key: "half_precision",
+    format: _("Half Precision"),
+  },
+  {
+    key: "single_precision",
+    format: _("Single Precision"),
+  },
+  {
+    key: "double_precision",
+    format: _("Double Precision"),
+  },
+];
+
 export function clamp(min, max, num) {
   return Math.max(min, Math.min(num, max));
 }
