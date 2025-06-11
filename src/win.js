@@ -22,7 +22,9 @@ import {
   getRadix,
   getMaxLength,
   getTextOffsets,
+  getIEEEBitFields,
   getEncodingOffsets,
+  getIEEEEncodedString,
   floatingPointFormats,
 } from "./util.js";
 import { MoreSettings } from "./more-settings.js";
@@ -188,48 +190,8 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.handleTextBufferChange = this.debounce(this.encodeNumber, 300);
       }
       this.buffer_number.connect("changed", this.handleTextBufferChange);
+      this.buffer_number.connect("insert-text", this.insertTextHandler);
 
-      this.buffer_number.connect(
-        "insert-text",
-        (textBuffer, location, text, len) => {
-          const bufferText = textBuffer.text;
-          const signalId = GObject.signal_lookup("insert-text", textBuffer);
-          const handlerId = GObject.signal_handler_find(
-            textBuffer,
-            GObject.SignalMatchType.ID,
-            signalId,
-            GLib.quark_to_string(0),
-            null,
-            null,
-            null
-          );
-
-          GObject.signal_handler_block(textBuffer, handlerId);
-          /**
-           * FIXME
-           * This Regex is AI generated. I'm not sure I completely
-           * understand what it does. It doesn't allow inserting a
-           * negative sign if the buffer already has some text.
-           *
-           * Besides, it checks for the validity of the current string
-           * in the text buffer concatenated with the text yet to be
-           * inserted. This makes it impossible to copy and paste text
-           * if there is already an existing text in the buffer. The same
-           * applies when inserting text in the middle of an existing text.
-           */
-          const numberRegex = /^(?:-?(\d+(\.\d*)?|\.\d+)|-)$/;
-          if (numberRegex.test(bufferText + text)) {
-            textBuffer.insert(location, text, len);
-          }
-
-          GObject.signal_handler_unblock(textBuffer, handlerId);
-          GObject.signal_stop_emission(
-            textBuffer,
-            signalId,
-            GLib.quark_to_string(0)
-          );
-        }
-      );
       this._source_view_number.buffer = this.buffer_number;
       this._source_view_number_encoding.buffer = this.buffer_number_encoding;
     };
@@ -307,6 +269,45 @@ export const EncodingExplorerWindow = GObject.registerClass(
       );
     };
 
+    insertTextHandler = (textBuffer, location, text, len) => {
+      const bufferText = textBuffer.text;
+      const signalId = GObject.signal_lookup("insert-text", textBuffer);
+      const handlerId = GObject.signal_handler_find(
+        textBuffer,
+        GObject.SignalMatchType.ID,
+        signalId,
+        GLib.quark_to_string(0),
+        null,
+        null,
+        null
+      );
+
+      GObject.signal_handler_block(textBuffer, handlerId);
+      /**
+       * FIXME
+       * This Regex is AI generated. I'm not sure I completely
+       * understand what it does. It doesn't allow inserting a
+       * negative sign if the buffer already has some text.
+       *
+       * Besides, it checks for the validity of the current string
+       * in the text buffer concatenated with the text yet to be
+       * inserted. This makes it impossible to copy and paste text
+       * if there is already an existing text in the buffer. The same
+       * applies when inserting text in the middle of an existing text.
+       */
+      const numberRegex = /^(?:-?(\d+(\.\d*)?|\.\d+)|-)$/;
+      if (numberRegex.test(bufferText + text)) {
+        textBuffer.insert(location, text, len);
+      }
+
+      GObject.signal_handler_unblock(textBuffer, handlerId);
+      GObject.signal_stop_emission(
+        textBuffer,
+        signalId,
+        GLib.quark_to_string(0)
+      );
+    };
+
     encodeNumber = () => {
       /**
        * FIXME
@@ -319,13 +320,6 @@ export const EncodingExplorerWindow = GObject.registerClass(
       const number = +text;
       if (Number.isNaN(number)) {
         this.displayToast(_("Invalid number"));
-        return;
-      }
-
-      console.log(number.toString(10))
-      console.log(text)
-      if (number.toString(10) !== text) {
-        console.log("Number outside representable range");
         return;
       }
 
@@ -361,7 +355,17 @@ export const EncodingExplorerWindow = GObject.registerClass(
           .toString(2)
           .padStart(32, padChar);
 
-        this.buffer_number_encoding.text = encodedNumber;
+        const storedNumber = dataView.getFloat32(0);
+        const bitFields = getIEEEBitFields(encodedNumber, format);
+        const encodedString = getIEEEEncodedString(
+          bitFields,
+          number,
+          storedNumber
+        );
+
+        this.buffer_number_encoding.text = "";
+        const startIter = this.buffer_number_encoding.get_start_iter();
+        this.buffer_number_encoding.insert_markup(startIter, encodedString, -1);
         return;
       }
 
@@ -374,7 +378,19 @@ export const EncodingExplorerWindow = GObject.registerClass(
           .getBigUint64(0)
           .toString(2)
           .padStart(64, padChar);
-        this.buffer_number_encoding.text = encodedNumber;
+
+        const storedNumber = dataView.getFloat64(0);
+
+        const bitFields = getIEEEBitFields(encodedNumber, format);
+        const encodedString = getIEEEEncodedString(
+          bitFields,
+          number,
+          storedNumber
+        );
+
+        this.buffer_number_encoding.text = "";
+        const startIter = this.buffer_number_encoding.get_start_iter();
+        this.buffer_number_encoding.insert_markup(startIter, encodedString, -1);
         return;
       }
     };
@@ -583,6 +599,10 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this.settings.connect("changed::encoding", this.encodeText);
       this.settings.connect("changed::endianness", this.encodeText);
       this.settings.connect("changed::preferred-theme", this.setColorScheme);
+      this.settings.connect(
+        "changed::floating-point-format",
+        this.encodeNumber
+      );
     };
 
     bindEndianness = () => {
