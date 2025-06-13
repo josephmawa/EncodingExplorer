@@ -51,5 +51,13 @@
       </choices>
       <default>"UTF-8"</default>
     </key>
+    <key name="floating-point-format" type="s">
+      <choices>
+        <choice value="half_precision" />
+        <choice value="single_precision" />
+        <choice value="double_precision" />
+      </choices>
+      <default>"single_precision"</default>
+    </key>
   </schema>
 </schemalist>
