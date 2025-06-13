@@ -3,32 +3,28 @@
   <img src="./data/icons/hicolor/scalable/apps/io.github.josephmawa.EncodingExplorer.svg" alt="Encoding Explorer" width="128" height="128"/>
 </div>
 <h1 align="center">Encoding Explorer</h1>
-<p align="center"><b>Enhance your English vocabulary while having fun</b></p>
+<p align="center"><b>Learn character encoding</b></p>
 <div align="center">
   <a href="https://flathub.org/apps/io.github.josephmawa.EncodingExplorer">
     <img width="240" alt="Get it on Flathub" src="https://flathub.org/api/badge?locale=en"/>
   </a>
 </div>
 <p align="center">
-  <img src="./screenshots/encoding-explorer-dark-mode.png" alt="Encoding Explorer in dark mode" width="770" height="729"/>
+  <img src="./screenshots/encoding-explorer-dark-mode.png" alt="Encoding Explorer in dark mode" width="915" height="702"/>
 </p>
 <p align="center">
-  <img src="./screenshots/encoding-explorer-light-mode.png" alt="Encoding Explorer in light mode" width="770" height="729"/>
+  <img src="./screenshots/encoding-explorer-light-mode.png" alt="Encoding Explorer in light mode" width="915" height="702"/>
 </p>
 
 <!-- markdownlint-enable -->
 <!-- markdownlint-disable headings -->
 
-Encoding Explorer is a simple game that requires you to create words from the
-given letters.
+Encoding Explorer is a simple desktop app for learning character encoding.
 
  ## Main features
 
-- Provides thousands of words
-- You can play it offline
-- It provides links to the meaning of words
-- You can view puzzle history
-- You can view your score
+- Learn ASCII, UTF-8, UTF-16, and UTF-32
+- Learn IEEE-754 floating point format
 - Switch to dark, light, or system mode
 
 ## Contributing
