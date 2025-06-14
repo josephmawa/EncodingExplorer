@@ -17,6 +17,12 @@ GObject.type_ensure(GtkSource.View.$gtype);
 import "./src-view.js";
 import "./scrolled-win.js";
 
+/**
+ * Polyfill getFloat16 setFloat16 on DataView.prototype
+ */
+import "./get-float-16.js";
+import "./set-float-16.js";
+
 import {
   clamp,
   getRadix,
@@ -326,13 +332,6 @@ export const EncodingExplorerWindow = GObject.registerClass(
       const format = this.settings.get_string("floating-point-format");
 
       if (format === "half_precision") {
-        /**
-         * org.gnome.Platform//48 bundles gjs 1.84.2 which
-         * is based on SpiderMonkey 128. It doesn't have
-         * DataView.prototype.setFloat16 method yet.
-         */
-        this.displayToast("Not implemented yet");
-        return;
         const arrayBuffer = new ArrayBuffer(2);
         const dataView = new DataView(arrayBuffer);
 
