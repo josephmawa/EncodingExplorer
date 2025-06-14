@@ -4,6 +4,8 @@
     <!-- src/float-16/*.js -->
     <file compressed="yes" alias="get-float-16.js">float-16/get-float-16.js</file>
     <file compressed="yes" alias="set-float-16.js">float-16/set-float-16.js</file>
+    <!-- src/lib/*.js -->
+    <file compressed="yes" alias="big-number.js">lib/big-number.js</file>
     <!-- src/*.js -->
     <file compressed="yes">about.js</file>
     <file compressed="yes">app.js</file>

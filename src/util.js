@@ -85,22 +85,38 @@ export function getEncodingOffsets(encoding, byteSep = " ") {
   return encodingOffsets;
 }
 
-export function getIEEEEncodedString(bitFields, actualNumber, numberStored) {
+export function getActualStoredNumber(storedNum) {
+  return new BigNumber(storedNum.toString(16), 16).toString(10);
+}
+
+export function getConversionError(actualNum, storedNum) {
+  const actualBigNum = new BigNumber(actualNum.toString());
+  const storedBigNum = new BigNumber(getActualStoredNumber(storedNum));
+
+  return actualBigNum.minus(storedBigNum).absoluteValue().toString();
+}
+
+export function getIEEEEncodedString({
+  number,
+  bitFields,
+  conversionError,
+  actualStoredNumber,
+}) {
   const [signBit, exponentBits, mantissaBits] = bitFields;
   return (
-    `<span weight="ultraheavy">Binary encoding</span>\n` +
+    `<span weight="ultraheavy">${_("Binary encoding")}</span>\n` +
     `<span>${signBit}</span> <span>${exponentBits}</span> <span>${mantissaBits}</span>\n\n` +
-    `<span weight="bold">Sign Bit</span>\n` +
+    `<span weight="bold">${_("Sign Bit")}</span>\n` +
     `<span>${signBit}</span>\n\n` +
-    `<span weight="bold">Exponent bits</span>\n` +
+    `<span weight="bold">${_("Exponent bits")}</span>\n` +
     `<span>${exponentBits}</span>\n\n` +
-    `<span weight="bold">Mantissa bits</span>\n` +
+    `<span weight="bold">${_("Mantissa bits")}</span>\n` +
     `<span>${mantissaBits}</span>\n\n` +
-    `<span weight="bold">Actual number</span>\n` +
-    `<span>${actualNumber}</span>\n\n` +
-    `<span weight="bold">Stored number</span>\n` +
-    `<span>${numberStored}</span>\n\n` +
-     `<span weight="bold">Conversion Error</span>\n` +
-    `<span>${numberStored}</span>\n\n`
+    `<span weight="bold">${_("Actual number")}</span>\n` +
+    `<span>${number}</span>\n\n` +
+    `<span weight="bold">${_("Stored number")}</span>\n` +
+    `<span>${actualStoredNumber}</span>\n\n` +
+    `<span weight="bold">${_("Conversion Error")}</span>\n` +
+    `<span>${conversionError}</span>\n\n`
   );
 }

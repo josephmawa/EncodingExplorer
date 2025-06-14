@@ -22,6 +22,11 @@ import "./scrolled-win.js";
  */
 import "./get-float-16.js";
 import "./set-float-16.js";
+/**
+ * Big number library for large number manipulation and
+ * formatting.
+ */
+import "./big-number.js";
 
 import {
   clamp,
@@ -30,8 +35,10 @@ import {
   getTextOffsets,
   getIEEEBitFields,
   getEncodingOffsets,
+  getConversionError,
   getIEEEEncodedString,
   floatingPointFormats,
+  getActualStoredNumber,
 } from "./util.js";
 import { MoreSettings } from "./more-settings.js";
 
@@ -43,6 +50,8 @@ const segmenter = new Intl.Segmenter(locale, {
 
 const padChar = "0";
 const byteSeparator = " ";
+
+BigNumber.config({ DECIMAL_PLACES: 1100 });
 
 export const EncodingExplorerWindow = GObject.registerClass(
   {
@@ -336,11 +345,22 @@ export const EncodingExplorerWindow = GObject.registerClass(
         const dataView = new DataView(arrayBuffer);
 
         dataView.setFloat16(0, number);
-        const encodedNumber = dataView
-          .getUint16(0)
-          .toString(2)
-          .padStart(16, padChar);
-        console.log(encodedNumber);
+        const bits = dataView.getUint16(0).toString(2).padStart(16, padChar);
+
+        const storedNumber = dataView.getFloat16(0);
+        const actualStoredNumber = getActualStoredNumber(storedNumber);
+        const bitFields = getIEEEBitFields(bits, format);
+        const conversionError = getConversionError(number, storedNumber);
+        const encodedString = getIEEEEncodedString({
+          number,
+          bitFields,
+          conversionError,
+          actualStoredNumber,
+        });
+
+        this.buffer_number_encoding.text = "";
+        const startIter = this.buffer_number_encoding.get_start_iter();
+        this.buffer_number_encoding.insert_markup(startIter, encodedString, -1);
         return;
       }
 
@@ -349,18 +369,18 @@ export const EncodingExplorerWindow = GObject.registerClass(
         const dataView = new DataView(arrayBuffer);
 
         dataView.setFloat32(0, number);
-        const encodedNumber = dataView
-          .getUint32(0)
-          .toString(2)
-          .padStart(32, padChar);
+        const bits = dataView.getUint32(0).toString(2).padStart(32, padChar);
 
         const storedNumber = dataView.getFloat32(0);
-        const bitFields = getIEEEBitFields(encodedNumber, format);
-        const encodedString = getIEEEEncodedString(
-          bitFields,
+        const actualStoredNumber = getActualStoredNumber(storedNumber);
+        const bitFields = getIEEEBitFields(bits, format);
+        const conversionError = getConversionError(number, storedNumber);
+        const encodedString = getIEEEEncodedString({
           number,
-          storedNumber
-        );
+          bitFields,
+          conversionError,
+          actualStoredNumber,
+        });
 
         this.buffer_number_encoding.text = "";
         const startIter = this.buffer_number_encoding.get_start_iter();
@@ -373,19 +393,18 @@ export const EncodingExplorerWindow = GObject.registerClass(
         const dataView = new DataView(arrayBuffer);
 
         dataView.setFloat64(0, number);
-        const encodedNumber = dataView
-          .getBigUint64(0)
-          .toString(2)
-          .padStart(64, padChar);
+        const bits = dataView.getBigUint64(0).toString(2).padStart(64, padChar);
 
         const storedNumber = dataView.getFloat64(0);
-
-        const bitFields = getIEEEBitFields(encodedNumber, format);
-        const encodedString = getIEEEEncodedString(
-          bitFields,
+        const actualStoredNumber = getActualStoredNumber(storedNumber);
+        const bitFields = getIEEEBitFields(bits, format);
+        const conversionError = getConversionError(number, storedNumber);
+        const encodedString = getIEEEEncodedString({
           number,
-          storedNumber
-        );
+          bitFields,
+          conversionError,
+          actualStoredNumber,
+        });
 
         this.buffer_number_encoding.text = "";
         const startIter = this.buffer_number_encoding.get_start_iter();
