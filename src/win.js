@@ -18,7 +18,7 @@ import "./src-view.js";
 import "./scrolled-win.js";
 
 /**
- * Polyfill getFloat16 setFloat16 on DataView.prototype
+ * Polyfill getFloat16 and setFloat16 on DataView.prototype
  */
 import "./get-float-16.js";
 import "./set-float-16.js";
@@ -318,38 +318,18 @@ export const EncodingExplorerWindow = GObject.registerClass(
     };
 
     encodeNumber = () => {
-      const text = this.buffer_number.text;
-    /**
-     * This check will mark entries such as 3. or In as
-     * incomplete. For an entry to be considered complete,
-     * it must be a valid number without a trailing decimal
-     * point or one of Infinity, -Infinity, and NaN. This
-     * method is invoked when text is added or deleted from
-     * the text buffer.
-     */
+      let text = this.buffer_number.text;
+      /**
+       * This check will mark entries such as 3. or In as
+       * incomplete. For an entry to be considered complete,
+       * it must be a valid number without a trailing decimal
+       * point or one of Infinity, -Infinity, and NaN. This
+       * method is invoked when text is added or deleted from
+       * the text buffer.
+       */
       if (!regexes.completeEntry.test(text)) return;
 
-      if (text === "Infinity") {
-        console.log(text);
-        return;
-      }
-
-      if (text === "-Infinity") {
-        console.log(text);
-        return;
-      }
-
-      if (text === "NaN") {
-        console.log(text);
-        return;
-      }
-
       const number = +text;
-      if (Number.isNaN(number)) {
-        this.displayToast(_("Invalid number"));
-        return;
-      }
-
       const format = this.settings.get_string("floating-point-format");
 
       if (format === "half_precision") {
