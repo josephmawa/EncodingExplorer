@@ -5,6 +5,37 @@ const radixObject = {
   Hexadecimal: 16,
 };
 
+export const regexes = {
+  /**
+   * FIXME:
+   * This regex is AI-generated. I'm not sure I've fully understood
+   * what it does. Read more to ensure I've fully understood what it
+   * does or how it works.
+   *
+   * It checks for the validity of the string after inserting the 
+   * yet-to-be-inserted character in the buffer text. It is used in the
+   * insert-text signal handler. The entry is blocked if the result
+   * of the entry is not a valid string i.e. it is not a valid number,
+   * Infinity, -Infinity, NaN, or a valid substring of the mentioned strings.
+   */
+  validEntry:
+    /^(?:(?:-?(?:\d*(?:\.\d*)?)?)|(?:-?I(?:n(?:f(?:i(?:n(?:i(?:t(?:y)?)?)?)?)?)?)?)|(?:-)?|(?:N(?:a(?:N)?)?))$/,
+  /**
+   * This regex checks whether the character being inserted
+   * in the text buffer is a valid character. Valid characters are
+   * those that constitute valid numbers and characters in the words
+   * Infinity, -Infinity, and NaN. It is for blocking non-valid character
+   * key presses when converting numbers to IEEE-754 floating point format.
+   */
+  validCharacter: /[-.0-9InfityNa]/,
+  /**
+   * This regex checkers whether an entry is complete. An entry must
+   * be complete before processing. Incomplete entries include -, I, In,
+   * N, Na e.t.c. Either a user is still entering or deleting text.
+   */
+  completeEntry: /^(?:-?(?:\d+\.\d+|\d+|\.\d+)|Infinity|-Infinity|NaN)$/,
+};
+
 export const floatingPointFormats = [
   {
     key: "half_precision",

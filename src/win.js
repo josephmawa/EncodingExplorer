@@ -30,6 +30,7 @@ import "./big-number.js";
 
 import {
   clamp,
+  regexes,
   getRadix,
   getMaxLength,
   getTextOffsets,
@@ -298,21 +299,14 @@ export const EncodingExplorerWindow = GObject.registerClass(
       );
 
       GObject.signal_handler_block(textBuffer, handlerId);
-      /**
-       * FIXME
-       * This Regex is AI generated. I'm not sure I completely
-       * understand what it does. It doesn't allow inserting a
-       * negative sign if the buffer already has some text.
-       *
-       * Besides, it checks for the validity of the current string
-       * in the text buffer concatenated with the text yet to be
-       * inserted. This makes it impossible to copy and paste text
-       * if there is already an existing text in the buffer. The same
-       * applies when inserting text in the middle of an existing text.
-       */
-      const numberRegex = /^(?:-?(\d+(\.\d*)?|\.\d+)|-)$/;
-      if (numberRegex.test(bufferText + text)) {
-        textBuffer.insert(location, text, len);
+
+      if (regexes.validCharacter.test(text)) {
+        const codePoints = [...bufferText];
+        codePoints.splice(location.get_offset(), 0, text);
+        const finalText = codePoints.join("");
+        if (regexes.validEntry.test(finalText)) {
+          textBuffer.insert(location, text, len);
+        }
       }
 
       GObject.signal_handler_unblock(textBuffer, handlerId);
@@ -324,13 +318,31 @@ export const EncodingExplorerWindow = GObject.registerClass(
     };
 
     encodeNumber = () => {
-      /**
-       * FIXME
-       * Use JavaScript library like bignumber.js to
-       * perform these kinds of encoding.
-       */
       const text = this.buffer_number.text;
-      if (text === "-") return;
+    /**
+     * This check will mark entries such as 3. or In as
+     * incomplete. For an entry to be considered complete,
+     * it must be a valid number without a trailing decimal
+     * point or one of Infinity, -Infinity, and NaN. This
+     * method is invoked when text is added or deleted from
+     * the text buffer.
+     */
+      if (!regexes.completeEntry.test(text)) return;
+
+      if (text === "Infinity") {
+        console.log(text);
+        return;
+      }
+
+      if (text === "-Infinity") {
+        console.log(text);
+        return;
+      }
+
+      if (text === "NaN") {
+        console.log(text);
+        return;
+      }
 
       const number = +text;
       if (Number.isNaN(number)) {
