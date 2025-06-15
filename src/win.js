@@ -17,15 +17,29 @@ GObject.type_ensure(GtkSource.View.$gtype);
 import "./src-view.js";
 import "./scrolled-win.js";
 
+/**
+ * Polyfill getFloat16 and setFloat16 on DataView.prototype
+ */
+import "./get-float-16.js";
+import "./set-float-16.js";
+/**
+ * Big number library for large number manipulation and
+ * formatting.
+ */
+import "./big-number.js";
+
 import {
   clamp,
+  regexes,
   getRadix,
   getMaxLength,
   getTextOffsets,
   getIEEEBitFields,
   getEncodingOffsets,
+  getConversionError,
   getIEEEEncodedString,
   floatingPointFormats,
+  getActualStoredNumber,
 } from "./util.js";
 import { MoreSettings } from "./more-settings.js";
 
@@ -37,6 +51,8 @@ const segmenter = new Intl.Segmenter(locale, {
 
 const padChar = "0";
 const byteSeparator = " ";
+
+BigNumber.config({ DECIMAL_PLACES: 1100 });
 
 export const EncodingExplorerWindow = GObject.registerClass(
   {
@@ -283,21 +299,14 @@ export const EncodingExplorerWindow = GObject.registerClass(
       );
 
       GObject.signal_handler_block(textBuffer, handlerId);
-      /**
-       * FIXME
-       * This Regex is AI generated. I'm not sure I completely
-       * understand what it does. It doesn't allow inserting a
-       * negative sign if the buffer already has some text.
-       *
-       * Besides, it checks for the validity of the current string
-       * in the text buffer concatenated with the text yet to be
-       * inserted. This makes it impossible to copy and paste text
-       * if there is already an existing text in the buffer. The same
-       * applies when inserting text in the middle of an existing text.
-       */
-      const numberRegex = /^(?:-?(\d+(\.\d*)?|\.\d+)|-)$/;
-      if (numberRegex.test(bufferText + text)) {
-        textBuffer.insert(location, text, len);
+
+      if (regexes.validCharacter.test(text)) {
+        const codePoints = [...bufferText];
+        codePoints.splice(location.get_offset(), 0, text);
+        const finalText = codePoints.join("");
+        if (regexes.validEntry.test(finalText)) {
+          textBuffer.insert(location, text, len);
+        }
       }
 
       GObject.signal_handler_unblock(textBuffer, handlerId);
@@ -309,39 +318,41 @@ export const EncodingExplorerWindow = GObject.registerClass(
     };
 
     encodeNumber = () => {
+      let text = this.buffer_number.text;
       /**
-       * FIXME
-       * Use JavaScript library like bignumber.js to
-       * perform these kinds of encoding.
+       * This check will mark entries such as 3. or In as
+       * incomplete. For an entry to be considered complete,
+       * it must be a valid number without a trailing decimal
+       * point or one of Infinity, -Infinity, and NaN. This
+       * method is invoked when text is added or deleted from
+       * the text buffer.
        */
-      const text = this.buffer_number.text;
-      if (text === "-") return;
+      if (!regexes.completeEntry.test(text)) return;
 
       const number = +text;
-      if (Number.isNaN(number)) {
-        this.displayToast(_("Invalid number"));
-        return;
-      }
-
       const format = this.settings.get_string("floating-point-format");
 
       if (format === "half_precision") {
-        /**
-         * org.gnome.Platform//48 bundles gjs 1.84.2 which
-         * is based on SpiderMonkey 128. It doesn't have
-         * DataView.prototype.setFloat16 method yet.
-         */
-        this.displayToast("Not implemented yet");
-        return;
         const arrayBuffer = new ArrayBuffer(2);
         const dataView = new DataView(arrayBuffer);
 
         dataView.setFloat16(0, number);
-        const encodedNumber = dataView
-          .getUint16(0)
-          .toString(2)
-          .padStart(16, padChar);
-        console.log(encodedNumber);
+        const bits = dataView.getUint16(0).toString(2).padStart(16, padChar);
+
+        const storedNumber = dataView.getFloat16(0);
+        const actualStoredNumber = getActualStoredNumber(storedNumber);
+        const bitFields = getIEEEBitFields(bits, format);
+        const conversionError = getConversionError(number, storedNumber);
+        const encodedString = getIEEEEncodedString({
+          number,
+          bitFields,
+          conversionError,
+          actualStoredNumber,
+        });
+
+        this.buffer_number_encoding.text = "";
+        const startIter = this.buffer_number_encoding.get_start_iter();
+        this.buffer_number_encoding.insert_markup(startIter, encodedString, -1);
         return;
       }
 
@@ -350,18 +361,18 @@ export const EncodingExplorerWindow = GObject.registerClass(
         const dataView = new DataView(arrayBuffer);
 
         dataView.setFloat32(0, number);
-        const encodedNumber = dataView
-          .getUint32(0)
-          .toString(2)
-          .padStart(32, padChar);
+        const bits = dataView.getUint32(0).toString(2).padStart(32, padChar);
 
         const storedNumber = dataView.getFloat32(0);
-        const bitFields = getIEEEBitFields(encodedNumber, format);
-        const encodedString = getIEEEEncodedString(
-          bitFields,
+        const actualStoredNumber = getActualStoredNumber(storedNumber);
+        const bitFields = getIEEEBitFields(bits, format);
+        const conversionError = getConversionError(number, storedNumber);
+        const encodedString = getIEEEEncodedString({
           number,
-          storedNumber
-        );
+          bitFields,
+          conversionError,
+          actualStoredNumber,
+        });
 
         this.buffer_number_encoding.text = "";
         const startIter = this.buffer_number_encoding.get_start_iter();
@@ -374,19 +385,18 @@ export const EncodingExplorerWindow = GObject.registerClass(
         const dataView = new DataView(arrayBuffer);
 
         dataView.setFloat64(0, number);
-        const encodedNumber = dataView
-          .getBigUint64(0)
-          .toString(2)
-          .padStart(64, padChar);
+        const bits = dataView.getBigUint64(0).toString(2).padStart(64, padChar);
 
         const storedNumber = dataView.getFloat64(0);
-
-        const bitFields = getIEEEBitFields(encodedNumber, format);
-        const encodedString = getIEEEEncodedString(
-          bitFields,
+        const actualStoredNumber = getActualStoredNumber(storedNumber);
+        const bitFields = getIEEEBitFields(bits, format);
+        const conversionError = getConversionError(number, storedNumber);
+        const encodedString = getIEEEEncodedString({
           number,
-          storedNumber
-        );
+          bitFields,
+          conversionError,
+          actualStoredNumber,
+        });
 
         this.buffer_number_encoding.text = "";
         const startIter = this.buffer_number_encoding.get_start_iter();
