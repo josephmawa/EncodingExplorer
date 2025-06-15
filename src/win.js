@@ -18,10 +18,10 @@ import "./src-view.js";
 import "./scrolled-win.js";
 
 /**
- * Polyfill getFloat16 and setFloat16 on DataView.prototype
+ * Polyfill getFloat16 and setFloat16
  */
-import "./get-float-16.js";
-import "./set-float-16.js";
+import { getFloat16, setFloat16 } from "./float-16.js";
+
 /**
  * Big number library for large number manipulation and
  * formatting.
@@ -335,6 +335,9 @@ export const EncodingExplorerWindow = GObject.registerClass(
       if (format === "half_precision") {
         const arrayBuffer = new ArrayBuffer(2);
         const dataView = new DataView(arrayBuffer);
+
+        dataView.setFloat16 = (...args) => setFloat16(dataView, ...args);
+        dataView.getFloat16 = (...args) => getFloat16(dataView, ...args);
 
         dataView.setFloat16(0, number);
         const bits = dataView.getUint16(0).toString(2).padStart(16, padChar);
