@@ -12,7 +12,7 @@ export const regexes = {
    * what it does. Read more to ensure I've fully understood what it
    * does or how it works.
    *
-   * It checks for the validity of the string after inserting the 
+   * It checks for the validity of the string after inserting the
    * yet-to-be-inserted character in the buffer text. It is used in the
    * insert-text signal handler. The entry is blocked if the result
    * of the entry is not a valid string i.e. it is not a valid number,
@@ -120,15 +120,27 @@ export function getActualStoredNumber(storedNum) {
   return new BigNumber(storedNum.toString(16), 16).toString(10);
 }
 
-export function getConversionError(actualNum, storedNum) {
-  const actualBigNum = new BigNumber(actualNum.toString());
-  const storedBigNum = new BigNumber(getActualStoredNumber(storedNum));
+export function getConversionError(enteredText, storedNum) {
+  const numbers = [+enteredText, storedNum];
+  if (
+    numbers.every((number) => number === Infinity) ||
+    numbers.every((number) => number === -Infinity)
+  ) {
+    return "0";
+  }
 
-  return actualBigNum.minus(storedBigNum).absoluteValue().toString();
+  if (numbers.every((number) => Number.isFinite(number))) {
+    const actualBigNum = new BigNumber(enteredText);
+    const storedBigNum = new BigNumber(getActualStoredNumber(storedNum));
+
+    return actualBigNum.minus(storedBigNum).absoluteValue().toString();
+  }
+
+  return "Undefined";
 }
 
 export function getIEEEEncodedString({
-  number,
+  text,
   bitFields,
   conversionError,
   actualStoredNumber,
@@ -144,7 +156,7 @@ export function getIEEEEncodedString({
     `<span weight="bold">${_("Mantissa bits")}</span>\n` +
     `<span>${mantissaBits}</span>\n\n` +
     `<span weight="bold">${_("Actual number")}</span>\n` +
-    `<span>${number}</span>\n\n` +
+    `<span>${text}</span>\n\n` +
     `<span weight="bold">${_("Stored number")}</span>\n` +
     `<span>${actualStoredNumber}</span>\n\n` +
     `<span weight="bold">${_("Conversion Error")}</span>\n` +

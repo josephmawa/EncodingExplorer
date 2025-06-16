@@ -345,9 +345,9 @@ export const EncodingExplorerWindow = GObject.registerClass(
         const storedNumber = dataView.getFloat16(0);
         const actualStoredNumber = getActualStoredNumber(storedNumber);
         const bitFields = getIEEEBitFields(bits, format);
-        const conversionError = getConversionError(number, storedNumber);
+        const conversionError = getConversionError(text, storedNumber);
         const encodedString = getIEEEEncodedString({
-          number,
+          text,
           bitFields,
           conversionError,
           actualStoredNumber,
@@ -369,9 +369,9 @@ export const EncodingExplorerWindow = GObject.registerClass(
         const storedNumber = dataView.getFloat32(0);
         const actualStoredNumber = getActualStoredNumber(storedNumber);
         const bitFields = getIEEEBitFields(bits, format);
-        const conversionError = getConversionError(number, storedNumber);
+        const conversionError = getConversionError(text, storedNumber);
         const encodedString = getIEEEEncodedString({
-          number,
+          text,
           bitFields,
           conversionError,
           actualStoredNumber,
@@ -393,9 +393,9 @@ export const EncodingExplorerWindow = GObject.registerClass(
         const storedNumber = dataView.getFloat64(0);
         const actualStoredNumber = getActualStoredNumber(storedNumber);
         const bitFields = getIEEEBitFields(bits, format);
-        const conversionError = getConversionError(number, storedNumber);
+        const conversionError = getConversionError(text, storedNumber);
         const encodedString = getIEEEEncodedString({
-          number,
+          text,
           bitFields,
           conversionError,
           actualStoredNumber,
