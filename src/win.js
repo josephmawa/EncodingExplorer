@@ -410,11 +410,18 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
     encodeText = () => {
       const text = this.buffer_text.text;
-      if (text.length * 2 > 5_000) {
-        this.displayToast(_("Text is too large"));
-        this.buffer_text.text = "";
+      /**
+       * The app becomes slow and unresponsive for large text files. This is
+       * especially true when the user copies and pastes text. Truncating the 
+       * text to only 2_500 characters.
+       */
+      const codePoints = [...text];
+      if (codePoints.length > 2_500) {
+        this.displayToast(_("Truncating text to 2500 characters"));
+        this.buffer_text.text = codePoints.slice(0, 2_500).join("");
         return;
       }
+      
       const radix = this.settings.get_string("radix");
       const encoding = this.settings.get_string("encoding");
       const endianness = this.settings.get_string("endianness");
