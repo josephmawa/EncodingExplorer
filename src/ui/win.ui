@@ -16,7 +16,7 @@
                 <child type="end">
                   <object class="GtkMenuButton">
                     <property name="primary">True</property>
-                    <property name="icon-name">open-menu-symbolic</property>
+                    <property name="icon-name">encoding-explorer-open-menu-symbolic</property>
                     <property name="tooltip-text" translatable="yes">Main Menu</property>
                     <property name="menu-model">primary_menu</property>
                   </object>
@@ -75,7 +75,7 @@
                                                 </style>
                                                 <child>
                                                   <object class="GtkButton">
-                                                    <property name="icon-name">go-previous-symbolic</property>
+                                                    <property name="icon-name">encoding-explorer-go-previous-symbolic</property>
                                                     <property name="action-name">win.move-mark</property>
                                                     <property name="action-target">"backward"</property>
                                                     <property name="tooltip-text" translatable="yes" context="Move to previous character">Previous Character</property>
@@ -89,7 +89,7 @@
                                                 </child>
                                                 <child>
                                                   <object class="GtkButton">
-                                                    <property name="icon-name">go-previous-symbolic-rtl</property>
+                                                    <property name="icon-name">encoding-explorer-go-next-symbolic</property>
                                                     <property name="action-name">win.move-mark</property>
                                                     <property name="action-target">"forward"</property>
                                                     <property name="tooltip-text" translatable="yes" context="Move to next character">Next character</property>

@@ -12,8 +12,11 @@
     <file compressed="yes" alias="index.css">styles/index.css</file>
   </gresource>
   <gresource prefix="/io/github/josephmawa/EncodingExplorer/icons">
-    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-panel-bottom-symbolic.svg">icons/panel-bottom-symbolic.svg</file>
     <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-edit-copy-symbolic.svg">icons/edit-copy-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-go-next-symbolic.svg">icons/go-next-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-go-previous-symbolic.svg">icons/go-previous-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-open-menu-symbolic.svg">icons/open-menu-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-panel-bottom-symbolic.svg">icons/panel-bottom-symbolic.svg</file>
     <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/encoding-explorer-view-more-symbolic.svg">icons/view-more-symbolic.svg</file>
   </gresource>
 </gresources>
