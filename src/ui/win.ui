@@ -108,7 +108,11 @@
                                         <property name="content">
                                           <object class="ScrolledWin">
                                             <property name="child">
-                                              <object class="SourceView" id="source_view_text" />
+                                              <object class="SourceView" id="source_view_text">
+                                                <accessibility>
+                                                  <property name="label" translatable="yes" context="accessibility">Text to encode</property>
+                                                </accessibility>
+                                              </object>
                                             </property>
                                           </object>
                                         </property>
@@ -189,6 +193,9 @@
                                             <property name="child">
                                               <object class="SourceView" id="source_view_text_encoding">
                                                 <property name="editable">false</property>
+                                                <accessibility>
+                                                  <property name="label" translatable="yes" context="accessibility">Text encoding</property>
+                                                </accessibility>
                                               </object>
                                             </property>
                                           </object>
@@ -318,6 +325,9 @@
                                         <property name="child">
                                           <object class="SourceView" id="source_view_number">
                                             <property name="show-line-numbers">false</property>
+                                            <accessibility>
+                                              <property name="label" translatable="yes" context="accessibility">Number to encode</property>
+                                            </accessibility>
                                           </object>
                                         </property>
                                       </object>
@@ -339,7 +349,7 @@
                                             <property name="spacing">16</property>
                                             <child>
                                               <object class="GtkLabel">
-                                                <property name="label" translatable="yes">&lt;b&gt;IEE-754 Floating Point&lt;/b&gt;</property>
+                                                <property name="label" translatable="yes">&lt;b&gt;IEEE-754 encoding&lt;/b&gt;</property>
                                                 <property name="use-markup">true</property>
                                                 <style>
                                                   <class name="dim-label" />
@@ -361,6 +371,9 @@
                                           <object class="SourceView" id="source_view_number_encoding">
                                             <property name="editable">false</property>
                                             <property name="show-line-numbers">false</property>
+                                            <accessibility>
+                                              <property name="label" translatable="yes" context="accessibility">Number encoding</property>
+                                            </accessibility>
                                           </object>
                                         </property>
                                       </object>

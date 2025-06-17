@@ -9,6 +9,7 @@ const aboutParams = {
   version: pkg.version,
   developer_name: "Joseph Mawa",
   developers: ["Joseph Mawa"],
+  artists: ["Joseph Mawa"],
   license_type: Gtk.License.LGPL_3_0,
   translator_credits: _("translator-credits"),
   copyright: "Copyright © 2025 Joseph Mawa",

@@ -98,7 +98,7 @@
                 </style>
                 <child>
                   <object class="GtkCheckButton" id="ieee_754">
-                    <property name="label" translatable="yes" context="IEEE 754">IEEE 754</property>
+                    <property name="label" translatable="yes" context="IEEE-754 encoding">IEEE-754 encoding</property>
                     <property name="group">text_encoding</property>
                   </object>
                 </child>
