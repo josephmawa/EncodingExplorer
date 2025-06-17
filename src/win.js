@@ -37,8 +37,8 @@ import {
   getIEEEBitFields,
   getEncodingOffsets,
   getConversionError,
-  getIEEEEncodedString,
   floatingPointFormats,
+  getIEEEEncodedString,
   getActualStoredNumber,
 } from "./util.js";
 import { MoreSettings } from "./more-settings.js";
@@ -320,10 +320,10 @@ export const EncodingExplorerWindow = GObject.registerClass(
     encodeNumber = () => {
       let text = this.buffer_number.text;
       /**
-       * This check will mark entries such as 3. or In as
+       * This check will mark entries such as "3."" or "In" as
        * incomplete. For an entry to be considered complete,
        * it must be a valid number without a trailing decimal
-       * point or one of Infinity, -Infinity, and NaN. This
+       * point or one of "Infinity", "-Infinity", and "NaN". This
        * method is invoked when text is added or deleted from
        * the text buffer.
        */
@@ -414,7 +414,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
        * The app becomes slow and unresponsive for large text. This is
        * especially true when the user copies and pastes text into the
        * TextView. To remain performant, there's need to truncate the
-       * text to only 2_500 characters.
+       * text to about 2,500 characters.
        */
       const codePoints = [...text];
       if (codePoints.length > 2_500) {

@@ -29,9 +29,9 @@ export const regexes = {
    */
   validCharacter: /[-.0-9InfityNa]/,
   /**
-   * This regex checkers whether an entry is complete. An entry must
-   * be complete before processing. Incomplete entries include -, I, In,
-   * N, Na e.t.c. Either a user is still entering or deleting text.
+   * This regex checks whether an entry is complete. An entry must
+   * be complete before processing. Incomplete entries include "-"", "I", "In",
+   * "N", "Na" e.t.c. This happens when a user is entering or deleting text.
    */
   completeEntry: /^(?:-?(?:\d+\.\d+|\d+|\.\d+)|Infinity|-Infinity|NaN)$/,
 };
