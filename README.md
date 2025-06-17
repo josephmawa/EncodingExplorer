@@ -23,9 +23,12 @@ Encoding Explorer is a simple desktop app for learning character encoding.
 
  ## Main features
 
-- Learn ASCII, UTF-8, UTF-16, and UTF-32
-- Learn IEEE-754 floating point format
-- Switch to dark, light, or system mode
+- Encode characters to ASCII, UTF-8, UTF-16, and UTF-32.
+- Encode numbers to IEEE-754 half, single, and double precision format.
+- Supports real-time encoding.
+- Change the endianness of a multi-byte encoding.
+- Provides user-friendly interface for exploring encodings.
+- Switch to light, dark, or system mode.
 
 ## Contributing
 
@@ -54,11 +57,7 @@ combination to run the project after opening it in GNOME builder. You can also
 
 Encoding Explorer is a [free software](https://www.gnu.org/philosophy/free-sw.html)
 and will always be free. It is released under the terms of the
-[GNU General Public License v3.0](./LICENSE).
-
-## License
-
-This project is [GPL-3.0 Licensed](./COPYING).
+[GNU General Public License v3.0](./COPYING).
 
 ## Copyright
 

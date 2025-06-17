@@ -7,7 +7,7 @@
   <name>Encoding Explorer</name>
   <summary>Transform characters into binary</summary>
   <description>
-    <p>Encoding Explorer is a tool for learning character encoding. Below are the main features.</p>
+    <p>Encoding Explorer is a tool for learning character encoding. Below are the main features:</p>
     <ul>
       <li>Encode characters to ASCII, UTF-8, UTF-16, and UTF-32.</li>
       <li>Encode numbers to IEEE-754 half, single, and double precision format.</li>
@@ -33,8 +33,8 @@
   <content_rating type="oars-1.1" />
 
   <branding>
-    <color type="primary" scheme_preference="light">#ff00ff</color>
-    <color type="primary" scheme_preference="dark">#993d3d</color>
+    <color type="primary" scheme_preference="light">#f5e8b8</color>
+    <color type="primary" scheme_preference="dark">#3c2f0a</color>
   </branding>
 
   <screenshots>
@@ -43,8 +43,8 @@
       <caption>Encoding Explorer in dark mode</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/josephmawa/EncodingExplorer/main/screenshots/encoding-explorer-dark-mode.png</image>
-      <caption>Encoding Explorer in dark mode</caption>
+      <image>https://raw.githubusercontent.com/josephmawa/EncodingExplorer/main/screenshots/encoding-explorer-light-mode.png</image>
+      <caption>Encoding Explorer in light mode</caption>
     </screenshot>
   </screenshots>
 

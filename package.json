@@ -1,5 +1,5 @@
 {
-  "name": "encoding_explorer",
+  "name": "encoding-explorer",
   "version": "0.1.0",
   "description": "Character Encoding Explorer",
   "main": "index.js",
