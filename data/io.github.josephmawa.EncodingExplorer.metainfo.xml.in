@@ -49,10 +49,19 @@
   </screenshots>
 
   <releases>
+    <release version="0.1.1" date="2025-06-18">
+      <description translate="no">
+        <ul>
+          <li>Update screenshots.</li>
+          <li>Update brand colors.</li>
+          <li>Fix theme bug.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.0" date="2025-06-16">
       <description translate="no">
         <ul>
-          <li>Initial release</li>
+          <li>Initial release.</li>
         </ul>
       </description>
     </release>
