@@ -1,9 +1,9 @@
-import GObject from "gi://GObject";
 import Adw from "gi://Adw";
 import Gtk from "gi://Gtk";
 import Gio from "gi://Gio";
 import Gdk from "gi://Gdk";
 import GLib from "gi://GLib";
+import GObject from "gi://GObject";
 import GtkSource from "gi://GtkSource?version=5";
 
 GObject.type_ensure(GtkSource.View.$gtype);
@@ -111,6 +111,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this.createDropdownModel();
       this.bindSettings();
       this.setColorScheme();
+      this.bindSourceViewColorScheme();
     }
 
     createActions = () => {
@@ -422,7 +423,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.buffer_text.text = codePoints.slice(0, 2_500).join("");
         return;
       }
-      
+
       const radix = this.settings.get_string("radix");
       const encoding = this.settings.get_string("encoding");
       const endianness = this.settings.get_string("endianness");
@@ -742,7 +743,17 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
       const styleManager = this.application.get_style_manager();
       styleManager.color_scheme = colorScheme;
+    };
 
+    bindSourceViewColorScheme = () => {
+      const styleManager = this.application.get_style_manager();
+      styleManager.connect("notify::dark", () => {
+        this.setSourceViewColorScheme(styleManager);
+      });
+      this.setSourceViewColorScheme(styleManager);
+    };
+
+    setSourceViewColorScheme = (styleManager) => {
       const editorColorScheme = styleManager.dark ? "Adwaita-dark" : "Adwaita";
       const schemeManager = GtkSource.StyleSchemeManager.get_default();
       const scheme = schemeManager.get_scheme(editorColorScheme);
