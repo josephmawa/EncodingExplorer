@@ -61,4 +61,4 @@ and will always be free. It is released under the terms of the
 
 ## Copyright
 
-Copyright © 2025 [Joseph Mawa](https://github.com/josephmawa)
+© 2025 [Joseph Mawa](https://github.com/josephmawa)
