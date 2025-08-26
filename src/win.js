@@ -412,10 +412,10 @@ export const EncodingExplorerWindow = GObject.registerClass(
     encodeText = () => {
       const text = this.buffer_text.text;
       /**
-       * The app becomes slow and unresponsive for large text. This is
-       * especially true when the user copies and pastes text into the
-       * TextView. To remain performant, there's need to truncate the
-       * text to about 2,500 characters.
+       * The app becomes slow and unresponsive for large text when 
+       * the user copies and pastes text into the TextView. To keep
+       * tha app performant, we're truncating the text to 2,500
+       * characters.
        */
       const codePoints = [...text];
       if (codePoints.length > 2_500) {
