@@ -9,12 +9,12 @@
   <description>
     <p>Encoding Explorer is a tool for learning character encoding. Below are the main features:</p>
     <ul>
-      <li>Encode characters to ASCII, UTF-8, UTF-16, and UTF-32.</li>
-      <li>Encode numbers to IEEE-754 half, single, and double precision format.</li>
-      <li>Supports real-time encoding.</li>
-      <li>Change the endianness of a multi-byte encoding.</li>
-      <li>Provides user-friendly interface for exploring encodings.</li>
-      <li>Switch to light, dark, or system mode.</li>
+      <li>Encode characters to ASCII, UTF-8, UTF-16, and UTF-32</li>
+      <li>Encode numbers to IEEE-754 half, single, and double precision format</li>
+      <li>Supports real-time encoding</li>
+      <li>Change the endianness of a multi-byte encoding</li>
+      <li>Provides user-friendly interface for exploring encodings</li>
+      <li>Switch to light, dark, or system mode</li>
     </ul>
   </description>
 
@@ -49,19 +49,26 @@
   </screenshots>
 
   <releases>
+    <release version="0.1.2" date="2025-08-29">
+      <description translate="no">
+        <ul>
+          <li>Add Turkish translation</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.1" date="2025-06-18">
       <description translate="no">
         <ul>
-          <li>Update screenshots.</li>
-          <li>Update brand colors.</li>
-          <li>Fix theme bug.</li>
+          <li>Update screenshots</li>
+          <li>Update brand colors</li>
+          <li>Fix theme bug</li>
         </ul>
       </description>
     </release>
     <release version="0.1.0" date="2025-06-16">
       <description translate="no">
         <ul>
-          <li>Initial release.</li>
+          <li>Initial release</li>
         </ul>
       </description>
     </release>
