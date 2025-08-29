@@ -1,6 +1,6 @@
+import Gio from "gi://Gio";
 import Adw from "gi://Adw";
 import GObject from "gi://GObject";
-import Gio from "gi://Gio";
 
 /**
  * These CheckButton Ids should be the same as

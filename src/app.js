@@ -1,5 +1,5 @@
-import GObject from "gi://GObject";
 import Gio from "gi://Gio";
+import GObject from "gi://GObject";
 import Adw from "gi://Adw?version=1";
 
 import { EncodingExplorerWindow } from "./win.js";
