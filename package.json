@@ -1,6 +1,6 @@
 {
   "name": "encoding-explorer",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Character Encoding Explorer",
   "main": "index.js",
   "scripts": {
