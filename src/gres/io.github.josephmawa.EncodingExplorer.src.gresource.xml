@@ -3,7 +3,6 @@
   <gresource prefix="/io/github/josephmawa/EncodingExplorer/js">
     <!-- src/lib/*.js -->
     <file compressed="yes" alias="big-number.js">lib/big-number.js</file>
-    <file compressed="yes" alias="float-16.js">lib/float-16.js</file>
     <!-- src/*.js -->
     <file compressed="yes">about.js</file>
     <file compressed="yes">app.js</file>
