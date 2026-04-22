@@ -22,6 +22,9 @@
                   <object class="GtkCheckButton" id="system">
                     <property name="active">true</property>
                     <property name="valign">center</property>
+                    <property name="action-name">app.color-scheme</property>
+                    <!-- Adw.ColorScheme.DEFAULT -->
+                    <property name="action-target">0</property>
                   </object>
                 </child>
               </object>
@@ -34,6 +37,9 @@
                   <object class="GtkCheckButton" id="light">
                     <property name="group">system</property>
                     <property name="valign">center</property>
+                    <property name="action-name">app.color-scheme</property>
+                    <!-- Adw.ColorScheme.FORCE_LIGHT -->
+                    <property name="action-target">1</property>
                   </object>
                 </child>
               </object>
@@ -46,6 +52,9 @@
                   <object class="GtkCheckButton" id="dark">
                     <property name="group">system</property>
                     <property name="valign">center</property>
+                     <property name="action-name">app.color-scheme</property>
+                    <!-- Adw.ColorScheme.FORCE_DARK -->
+                    <property name="action-target">4</property>
                   </object>
                 </child>
               </object>

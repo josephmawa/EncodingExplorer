@@ -71,21 +71,21 @@ export const EncodingExplorerWindow = GObject.registerClass(
         "Encoding",
         "Text encoding",
         GObject.ParamFlags.READWRITE,
-        "UTF-8"
+        "UTF-8",
       ),
       floating_point_format: GObject.ParamSpec.string(
         "floating_point_format",
         "floatingPointFormat",
         "IEEE 754 encoding format",
         GObject.ParamFlags.READWRITE,
-        "single_precision"
+        "single_precision",
       ),
       endianness: GObject.ParamSpec.string(
         "endianness",
         "Endianness",
         "Byte order",
         GObject.ParamFlags.READWRITE,
-        "LE"
+        "LE",
       ),
     },
   },
@@ -105,8 +105,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
        */
       this.createDropdownModel();
       this.bindSettings();
-      this.setColorScheme();
-      this.bindSourceViewColorScheme();
+      this.createColorSchemeAction();
     }
 
     createActions = () => {
@@ -129,7 +128,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
 
       const moveMark = Gio.SimpleAction.new(
         "move-mark",
-        GLib.VariantType.new("s")
+        GLib.VariantType.new("s"),
       );
 
       moveMark.connect("activate", (action, param) => {
@@ -174,23 +173,23 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this.buffer_text.apply_tag_by_name(
         "blueForeground",
         this.buffer_text.get_iter_at_offset(txtOffsetA),
-        this.buffer_text.get_iter_at_offset(txtOffsetB)
+        this.buffer_text.get_iter_at_offset(txtOffsetB),
       );
       this.buffer_text.apply_tag_by_name(
         "blueBackground",
         this.buffer_text.get_iter_at_offset(txtOffsetA),
-        this.buffer_text.get_iter_at_offset(txtOffsetB)
+        this.buffer_text.get_iter_at_offset(txtOffsetB),
       );
 
       this.buffer_text_encoding.apply_tag_by_name(
         "blueForeground",
         this.buffer_text_encoding.get_iter_at_offset(encOffsetA),
-        this.buffer_text_encoding.get_iter_at_offset(encOffsetB)
+        this.buffer_text_encoding.get_iter_at_offset(encOffsetB),
       );
       this.buffer_text_encoding.apply_tag_by_name(
         "blueBackground",
         this.buffer_text_encoding.get_iter_at_offset(encOffsetA),
-        this.buffer_text_encoding.get_iter_at_offset(encOffsetB)
+        this.buffer_text_encoding.get_iter_at_offset(encOffsetB),
       );
     };
 
@@ -231,26 +230,26 @@ export const EncodingExplorerWindow = GObject.registerClass(
         new Gtk.TextTag({
           name: "blueForeground",
           foreground: "#406619",
-        })
+        }),
       );
       tagTableText.add(
         new Gtk.TextTag({
           name: "blueBackground",
           background: "#eaf2c2",
-        })
+        }),
       );
 
       tagTableEncoding.add(
         new Gtk.TextTag({
           name: "blueForeground",
           foreground: "#406619",
-        })
+        }),
       );
       tagTableEncoding.add(
         new Gtk.TextTag({
           name: "blueBackground",
           background: "#eaf2c2",
-        })
+        }),
       );
 
       this._source_view_text.buffer = this.buffer_text;
@@ -261,23 +260,23 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this.buffer_text.remove_tag_by_name(
         "blueForeground",
         this.buffer_text.get_start_iter(),
-        this.buffer_text.get_end_iter()
+        this.buffer_text.get_end_iter(),
       );
       this.buffer_text.remove_tag_by_name(
         "blueBackground",
         this.buffer_text.get_start_iter(),
-        this.buffer_text.get_end_iter()
+        this.buffer_text.get_end_iter(),
       );
 
       this.buffer_text_encoding.remove_tag_by_name(
         "blueForeground",
         this.buffer_text_encoding.get_start_iter(),
-        this.buffer_text_encoding.get_end_iter()
+        this.buffer_text_encoding.get_end_iter(),
       );
       this.buffer_text_encoding.remove_tag_by_name(
         "blueBackground",
         this.buffer_text_encoding.get_start_iter(),
-        this.buffer_text_encoding.get_end_iter()
+        this.buffer_text_encoding.get_end_iter(),
       );
     };
 
@@ -291,7 +290,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         GLib.quark_to_string(0),
         null,
         null,
-        null
+        null,
       );
 
       GObject.signal_handler_block(textBuffer, handlerId);
@@ -309,7 +308,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
       GObject.signal_stop_emission(
         textBuffer,
         signalId,
-        GLib.quark_to_string(0)
+        GLib.quark_to_string(0),
       );
     };
 
@@ -404,7 +403,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
     encodeText = () => {
       const text = this.buffer_text.text;
       /**
-       * The app becomes slow and unresponsive for large text when 
+       * The app becomes slow and unresponsive for large text when
        * the user copies and pastes text into the TextView. To keep
        * tha app performant, we're truncating the text to 2,500
        * characters.
@@ -558,32 +557,32 @@ export const EncodingExplorerWindow = GObject.registerClass(
         "window-width",
         this,
         "default-width",
-        Gio.SettingsBindFlags.DEFAULT
+        Gio.SettingsBindFlags.DEFAULT,
       );
       this.settings.bind(
         "window-height",
         this,
         "default-height",
-        Gio.SettingsBindFlags.DEFAULT
+        Gio.SettingsBindFlags.DEFAULT,
       );
       this.settings.bind(
         "window-maximized",
         this,
         "maximized",
-        Gio.SettingsBindFlags.DEFAULT
+        Gio.SettingsBindFlags.DEFAULT,
       );
 
       this.settings.bind(
         "encoding",
         this,
         "encoding",
-        Gio.SettingsBindFlags.DEFAULT
+        Gio.SettingsBindFlags.DEFAULT,
       );
       this.settings.bind(
         "floating-point-format",
         this,
         "floating_point_format",
-        Gio.SettingsBindFlags.DEFAULT
+        Gio.SettingsBindFlags.DEFAULT,
       );
       this.bindEncoding();
 
@@ -591,7 +590,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         "endianness",
         this,
         "endianness",
-        Gio.SettingsBindFlags.DEFAULT
+        Gio.SettingsBindFlags.DEFAULT,
       );
       this.bindEndianness();
 
@@ -599,14 +598,14 @@ export const EncodingExplorerWindow = GObject.registerClass(
         "radix",
         this._radix_label,
         "label",
-        Gio.SettingsBindFlags.DEFAULT
+        Gio.SettingsBindFlags.DEFAULT,
       );
 
       this.settings.bind(
         "encoding-mode",
         this._encoding_stack,
         "visible-child-name",
-        Gio.SettingsBindFlags.DEFAULT
+        Gio.SettingsBindFlags.DEFAULT,
       );
 
       this.settings.connect("changed::radix", this.encodeText);
@@ -615,7 +614,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
       this.settings.connect("changed::preferred-theme", this.setColorScheme);
       this.settings.connect(
         "changed::floating-point-format",
-        this.encodeNumber
+        this.encodeNumber,
       );
     };
 
@@ -628,7 +627,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         (binding, endianness) => {
           return [true, endianness.toUpperCase()];
         },
-        null
+        null,
       );
     };
 
@@ -638,7 +637,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
       const expression = Gtk.PropertyExpression.new(
         Gtk.StringObject,
         null,
-        "string"
+        "string",
       );
       this._dropdown_floating_point_format.model = model;
       this._dropdown_floating_point_format.expression = expression;
@@ -665,7 +664,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
           const encoding =
             this._dropdown_encoding.model.get_item(selected)?.string;
           return [true, encoding];
-        }
+        },
       );
 
       this.bind_property_full(
@@ -676,7 +675,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         (binding, encoding) => {
           let selected;
           const encodingObj = floatingPointFormats.find(
-            ({ key }) => key === encoding
+            ({ key }) => key === encoding,
           );
 
           const model = this._dropdown_floating_point_format.model;
@@ -693,11 +692,11 @@ export const EncodingExplorerWindow = GObject.registerClass(
             this._dropdown_floating_point_format.model.get_item(selected);
 
           const encodingObj = floatingPointFormats.find(
-            ({ format }) => stringObj?.string === format
+            ({ format }) => stringObj?.string === format,
           );
 
           return [true, encodingObj?.key];
-        }
+        },
       );
     };
 
@@ -708,33 +707,29 @@ export const EncodingExplorerWindow = GObject.registerClass(
       Gtk.StyleContext.add_provider_for_display(
         this.display,
         cssProvider,
-        Gtk.STYLE_PROVIDER_PRIORITY_USER
+        Gtk.STYLE_PROVIDER_PRIORITY_USER,
       );
     };
 
-    setColorScheme = () => {
+    createColorSchemeAction = () => {
       if (!this.settings) {
         this.settings = Gio.Settings.new(pkg.name);
       }
-      const prefColorScheme = this.settings.get_string("preferred-theme");
+      this.application.add_action(this.settings.create_action("color-scheme"));
 
-      const { DEFAULT, FORCE_LIGHT, FORCE_DARK } = Adw.ColorScheme;
-      let colorScheme = DEFAULT;
+      this.bindColorScheme();
+      this.bindSourceViewColorScheme();
+    };
 
-      if (prefColorScheme === "system") {
-        colorScheme = DEFAULT;
-      }
+    bindColorScheme = () => {
+      this.settings.connect("changed::color-scheme", this.setColorScheme);
+      this.setColorScheme();
+    };
 
-      if (prefColorScheme === "light") {
-        colorScheme = FORCE_LIGHT;
-      }
-
-      if (prefColorScheme === "dark") {
-        colorScheme = FORCE_DARK;
-      }
-
+    setColorScheme = () => {
+      const colorScheme = this.settings.get_int("color-scheme");
       const styleManager = this.application.get_style_manager();
-      styleManager.color_scheme = colorScheme;
+      styleManager.set_color_scheme(colorScheme);
     };
 
     bindSourceViewColorScheme = () => {
@@ -787,5 +782,5 @@ export const EncodingExplorerWindow = GObject.registerClass(
         });
       };
     };
-  }
+  },
 );
