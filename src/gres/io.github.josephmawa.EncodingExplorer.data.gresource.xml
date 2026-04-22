@@ -2,7 +2,7 @@
 <gresources>
   <gresource prefix="/io/github/josephmawa/EncodingExplorer">
     <file preprocess="xml-stripblanks" compressed="yes" alias="win.ui">ui/win.ui</file>
-    <file preprocess="xml-stripblanks" compressed="yes" alias="gtk/help-overlay.ui">ui/help.ui</file>
+    <file preprocess="xml-stripblanks" compressed="yes" alias="shortcuts-dialog.ui">ui/shortcuts-dialog.ui</file>
     <file preprocess="xml-stripblanks" compressed="yes" alias="more-settings.ui">ui/more-settings.ui</file>
     <file preprocess="xml-stripblanks" compressed="yes" alias="pref.ui">ui/pref.ui</file>
     <file preprocess="xml-stripblanks" compressed="yes" alias="src-view.ui">ui/src-view.ui</file>
