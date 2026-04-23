@@ -20,7 +20,6 @@
                 <property name="title" translatable="yes" context="System color theme">System</property>
                 <child type="prefix">
                   <object class="GtkCheckButton" id="system">
-                    <property name="active">true</property>
                     <property name="valign">center</property>
                     <property name="action-name">app.color-scheme</property>
                     <!-- Adw.ColorScheme.DEFAULT -->
@@ -71,8 +70,9 @@
                 <property name="title" translatable="yes">Text Encoding</property>
                 <child type="prefix">
                   <object class="GtkCheckButton" id="text_encoding">
-                    <property name="active">true</property>
                     <property name="valign">center</property>
+                     <property name="action-name">app.encoding-mode</property>
+                    <property name="action-target">"text_encoding"</property>
                   </object>
                 </child>
               </object>
@@ -85,6 +85,8 @@
                   <object class="GtkCheckButton" id="ieee_754">
                     <property name="group">text_encoding</property>
                     <property name="valign">center</property>
+                     <property name="action-name">app.encoding-mode</property>
+                    <property name="action-target">"ieee_754"</property>
                   </object>
                 </child>
               </object>

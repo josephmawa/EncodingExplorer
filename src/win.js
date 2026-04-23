@@ -616,6 +616,8 @@ export const EncodingExplorerWindow = GObject.registerClass(
         "changed::floating-point-format",
         this.encodeNumber,
       );
+
+      this.application.add_action(this.settings.create_action("encoding-mode"));
     };
 
     bindEndianness = () => {
