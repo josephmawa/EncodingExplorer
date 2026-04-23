@@ -617,6 +617,7 @@ export const EncodingExplorerWindow = GObject.registerClass(
         this.encodeNumber,
       );
 
+      this.application.add_action(this.settings.create_action("endianness"));
       this.application.add_action(this.settings.create_action("encoding-mode"));
     };
 

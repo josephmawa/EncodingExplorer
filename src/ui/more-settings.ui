@@ -20,8 +20,9 @@
                 <property name="title" translatable="yes">Little Endian</property>
                 <child type="prefix">
                   <object class="GtkCheckButton" id="le">
-                    <property name="active">true</property>
                     <property name="valign">center</property>
+                    <property name="action-name">app.endianness</property>
+                    <property name="action-target">"le"</property>
                   </object>
                 </child>
               </object>
@@ -34,6 +35,8 @@
                   <object class="GtkCheckButton" id="be">
                     <property name="valign">center</property>
                     <property name="group">le</property>
+                    <property name="action-name">app.endianness</property>
+                    <property name="action-target">"be"</property>
                   </object>
                 </child>
               </object>

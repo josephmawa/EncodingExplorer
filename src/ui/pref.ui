@@ -51,7 +51,7 @@
                   <object class="GtkCheckButton" id="dark">
                     <property name="group">system</property>
                     <property name="valign">center</property>
-                     <property name="action-name">app.color-scheme</property>
+                    <property name="action-name">app.color-scheme</property>
                     <!-- Adw.ColorScheme.FORCE_DARK -->
                     <property name="action-target">4</property>
                   </object>
@@ -71,7 +71,7 @@
                 <child type="prefix">
                   <object class="GtkCheckButton" id="text_encoding">
                     <property name="valign">center</property>
-                     <property name="action-name">app.encoding-mode</property>
+                    <property name="action-name">app.encoding-mode</property>
                     <property name="action-target">"text_encoding"</property>
                   </object>
                 </child>
@@ -85,7 +85,7 @@
                   <object class="GtkCheckButton" id="ieee_754">
                     <property name="group">text_encoding</property>
                     <property name="valign">center</property>
-                     <property name="action-name">app.encoding-mode</property>
+                    <property name="action-name">app.encoding-mode</property>
                     <property name="action-target">"ieee_754"</property>
                   </object>
                 </child>
