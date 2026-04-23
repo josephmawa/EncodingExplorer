@@ -17,8 +17,9 @@ src/util.js
 src/win.js
 
 # src/ui/*.ui
-src/ui/help.ui
 src/ui/more-settings.ui
 src/ui/pref.ui
 src/ui/scrolled-win.ui
+src/ui/shortcuts-dialog.ui
+src/ui/src-view.ui
 src/ui/win.ui
