@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EncodingExplorer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-16 17:42+0300\n"
+"POT-Creation-Date: 2026-04-23 22:21+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/io.github.josephmawa.EncodingExplorer.desktop.in:3
+#: data/io.github.josephmawa.EncodingExplorer.desktop.in:2
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:7 src/ui/win.ui:6
 msgid "Encoding Explorer"
 msgstr ""
 
 #. Translators: These are search terms to find this application. Do NOT translate or localize the semicolons. The list MUST also end with a semicolon.
-#: data/io.github.josephmawa.EncodingExplorer.desktop.in:10
-msgid ""
-"Learn;Character;Number;Text;Binary;Encoding;Encoder;ASCII;UTF-8;UTF-16;"
-"UTF-32;"
+#: data/io.github.josephmawa.EncodingExplorer.desktop.in:9
+msgid "Learn;Character;Number;Text;Binary;Octal;Hexadecimal;Unicode;Encoding;Encoder;ASCII;UTF-8;UTF-16;UTF-32;"
 msgstr ""
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:8
@@ -36,31 +34,31 @@ msgstr ""
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:10
 msgid ""
 "Encoding Explorer is a tool for learning character encoding. Below are the "
-"main features."
+"main features:"
 msgstr ""
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:12
-msgid "Encode characters to ASCII, UTF-8, UTF-16, and UTF-32."
+msgid "Encode characters to ASCII, UTF-8, UTF-16, and UTF-32"
 msgstr ""
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:13
-msgid "Encode numbers to IEEE-754 half, single, and double precision format."
+msgid "Encode numbers to IEEE-754 half, single, and double precision format"
 msgstr ""
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:14
-msgid "Supports real-time encoding."
+msgid "Supports real-time encoding"
 msgstr ""
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:15
-msgid "Change the endianness of a multi-byte encoding."
+msgid "Change the endianness of a multi-byte encoding"
 msgstr ""
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:16
-msgid "Provides user-friendly interface for exploring encodings."
+msgid "Provides user-friendly interface for exploring encodings"
 msgstr ""
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:17
-msgid "Switch to light, dark, or system mode."
+msgid "Switch to light, dark, or system mode"
 msgstr ""
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:22
@@ -68,11 +66,15 @@ msgid "Joseph Mawa"
 msgstr ""
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:43
-#: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:47
 msgid "Encoding Explorer in dark mode"
 msgstr ""
 
-#: src/about.js:13
+#: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:47
+msgid "Encoding Explorer in light mode"
+msgstr ""
+
+#. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
+#: src/about.js:15
 msgid "translator-credits"
 msgstr ""
 
@@ -116,70 +118,43 @@ msgstr ""
 msgid "Conversion Error"
 msgstr ""
 
-#: src/win.js:121
+#: src/win.js:116
 msgid "No encoding to copy"
 msgstr ""
 
-#: src/win.js:125
+#: src/win.js:120
 msgid "Copied encoding"
 msgstr ""
 
-#: src/win.js:421
+#: src/win.js:413
 msgid "Truncating text to 2500 characters"
 msgstr ""
 
-#: src/win.js:444
+#: src/win.js:436
 msgid "Invalid ASCII"
 msgstr ""
 
-#: src/win.js:490
+#: src/win.js:482
 msgid "Lone Surrogate"
 msgstr ""
 
-#: src/ui/help.ui:11
-msgctxt "shortcut window"
-msgid "General"
-msgstr ""
-
-#: src/ui/help.ui:14
-msgctxt "shortcut window"
-msgid "Toggle Menu"
-msgstr ""
-
-#: src/ui/help.ui:20
-msgctxt "shortcut window"
-msgid "Show Shortcuts"
-msgstr ""
-
-#: src/ui/help.ui:26
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr ""
-
-#: src/ui/help.ui:32
-msgctxt "shortcut window"
-msgid "Show Preferences"
-msgstr ""
-
-#: src/ui/more-settings.ui:7 src/ui/more-settings.ui:13
+#: src/ui/more-settings.ui:6 src/ui/more-settings.ui:12
 msgid "Settings"
 msgstr ""
 
-#: src/ui/more-settings.ui:16
+#: src/ui/more-settings.ui:15
 msgid "Endianness"
 msgstr ""
 
-#: src/ui/more-settings.ui:17
+#: src/ui/more-settings.ui:16
 msgid "Select byte order"
 msgstr ""
 
-#: src/ui/more-settings.ui:25
-msgctxt "Little Endian"
+#: src/ui/more-settings.ui:20
 msgid "Little Endian"
 msgstr ""
 
-#: src/ui/more-settings.ui:38
-msgctxt "Big Endian"
+#: src/ui/more-settings.ui:33
 msgid "Big Endian"
 msgstr ""
 
@@ -195,49 +170,72 @@ msgstr ""
 msgid "Number base"
 msgstr ""
 
-#: src/ui/pref.ui:7 src/ui/pref.ui:13 src/ui/win.ui:388
+#: src/ui/pref.ui:6 src/ui/pref.ui:12 src/ui/win.ui:401
 msgid "Preferences"
 msgstr ""
 
-#: src/ui/pref.ui:16
+#: src/ui/pref.ui:15
 msgid "Color Theme"
 msgstr ""
 
-#: src/ui/pref.ui:17
+#: src/ui/pref.ui:16
 msgid "Set color theme"
 msgstr ""
 
-#: src/ui/pref.ui:37
+#: src/ui/pref.ui:20
 msgctxt "System color theme"
 msgid "System"
 msgstr ""
 
-#: src/ui/pref.ui:51
+#: src/ui/pref.ui:34
 msgctxt "Light color theme"
 msgid "Light"
 msgstr ""
 
-#: src/ui/pref.ui:65
+#: src/ui/pref.ui:49
 msgctxt "Dark color theme"
 msgid "Dark"
 msgstr ""
 
-#: src/ui/pref.ui:79
-msgid "Mode"
+#: src/ui/pref.ui:65
+msgid "Encoding mode"
 msgstr ""
 
-#: src/ui/pref.ui:80
+#: src/ui/pref.ui:66
 msgid "Select encoding mode"
 msgstr ""
 
-#: src/ui/pref.ui:88
-msgctxt "Text Encoding"
+#: src/ui/pref.ui:70
 msgid "Text Encoding"
 msgstr ""
 
-#: src/ui/pref.ui:101
-msgctxt "IEEE 754"
-msgid "IEEE 754"
+#: src/ui/pref.ui:83
+msgid "IEEE-754 encoding"
+msgstr ""
+
+#: src/ui/shortcuts-dialog.ui:6
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
+
+#: src/ui/shortcuts-dialog.ui:9
+msgctxt "shortcut window"
+msgid "Toggle Menu"
+msgstr ""
+
+#: src/ui/shortcuts-dialog.ui:15
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr ""
+
+#: src/ui/shortcuts-dialog.ui:21
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr ""
+
+#: src/ui/shortcuts-dialog.ui:27
+msgctxt "shortcut window"
+msgid "Show Preferences"
 msgstr ""
 
 #: src/ui/win.ui:20
@@ -258,55 +256,75 @@ msgctxt "Move to next character"
 msgid "Next character"
 msgstr ""
 
-#: src/ui/win.ui:135
+#: src/ui/win.ui:113
+msgctxt "accessibility"
+msgid "Text to encode"
+msgstr ""
+
+#: src/ui/win.ui:139
 msgid "<b>Encoding</b>"
 msgstr ""
 
-#: src/ui/win.ui:155
+#: src/ui/win.ui:159
 msgid "Switch Encoding"
 msgstr ""
 
-#: src/ui/win.ui:164 src/ui/win.ui:169
+#: src/ui/win.ui:168 src/ui/win.ui:173
 msgctxt "accessibility"
 msgid "More Settings"
 msgstr ""
 
-#: src/ui/win.ui:179
+#: src/ui/win.ui:183
 msgctxt "Copy encoded text to clipboard"
 msgid "Copy Encoding"
 msgstr ""
 
-#: src/ui/win.ui:181
+#: src/ui/win.ui:185
 msgctxt "accessibility"
 msgid "Copy Encoding"
 msgstr ""
 
-#: src/ui/win.ui:273
+#: src/ui/win.ui:197
+msgctxt "accessibility"
+msgid "Text encoding"
+msgstr ""
+
+#: src/ui/win.ui:280
 msgctxt "Toggle bottom panel"
 msgid "Toggle Bottom Panel"
 msgstr ""
 
-#: src/ui/win.ui:275
+#: src/ui/win.ui:282
 msgctxt "accessibility"
 msgid "Toggle Bottom Panel"
 msgstr ""
 
-#: src/ui/win.ui:307
+#: src/ui/win.ui:314
 msgid "<b>Number</b>"
 msgstr ""
 
-#: src/ui/win.ui:342
-msgid "<b>IEE-754 Floating Point</b>"
+#: src/ui/win.ui:329
+msgctxt "accessibility"
+msgid "Number to encode"
 msgstr ""
 
-#: src/ui/win.ui:351
+#: src/ui/win.ui:352
+msgid "<b>IEEE-754 encoding</b>"
+msgstr ""
+
+#: src/ui/win.ui:361
 msgid "Switch floating point format"
 msgstr ""
 
-#: src/ui/win.ui:392
+#: src/ui/win.ui:375
+msgctxt "accessibility"
+msgid "Number encoding"
+msgstr ""
+
+#: src/ui/win.ui:405
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: src/ui/win.ui:396
+#: src/ui/win.ui:409
 msgid "About Encoding Explorer"
 msgstr ""

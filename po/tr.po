@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EncodingExplorer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-16 17:42+0300\n"
+"POT-Creation-Date: 2026-04-23 22:21+0300\n"
 "PO-Revision-Date: 2025-08-05 14:00+0300\n"
 "Last-Translator: Erdem Uygun <uygun.erdem@proton.me>\n"
 "Language-Team: \n"
@@ -18,53 +18,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: data/io.github.josephmawa.EncodingExplorer.desktop.in:3
+#: data/io.github.josephmawa.EncodingExplorer.desktop.in:2
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:7 src/ui/win.ui:6
 msgid "Encoding Explorer"
 msgstr "Encoding Explorer"
 
 #. Translators: These are search terms to find this application. Do NOT translate or localize the semicolons. The list MUST also end with a semicolon.
-#: data/io.github.josephmawa.EncodingExplorer.desktop.in:10
-msgid ""
-"Learn;Character;Number;Text;Binary;Encoding;Encoder;ASCII;UTF-8;UTF-16;"
-"UTF-32;"
-msgstr ""
-"Öğren;Karakter;Sayı;Metin;İkilik;Kodlama;Kodlayıcı;ASCII;UTF-8;UTF-16;UTF-32;"
+#: data/io.github.josephmawa.EncodingExplorer.desktop.in:9
+#, fuzzy
+msgid "Learn;Character;Number;Text;Binary;Octal;Hexadecimal;Unicode;Encoding;Encoder;ASCII;UTF-8;UTF-16;UTF-32;"
+msgstr "Öğren;Karakter;Sayı;Metin;İkilik;Kodlama;Kodlayıcı;ASCII;UTF-8;UTF-16;UTF-32;"
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:8
 msgid "Transform characters into binary"
 msgstr "Karakterleri ikiliye dönüştür"
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:10
+#, fuzzy
 msgid ""
 "Encoding Explorer is a tool for learning character encoding. Below are the "
-"main features."
+"main features:"
 msgstr ""
 "Encoding Explorer, karakter kodlamasını öğrenmek için bir araçtır. Başlıca "
 "özellikleri aşağıdadır."
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:12
-msgid "Encode characters to ASCII, UTF-8, UTF-16, and UTF-32."
+#, fuzzy
+msgid "Encode characters to ASCII, UTF-8, UTF-16, and UTF-32"
 msgstr "Karakterleri ASCII, UTF-8, UTF-16 ve UTF-32'ye kodla."
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:13
-msgid "Encode numbers to IEEE-754 half, single, and double precision format."
+#, fuzzy
+msgid "Encode numbers to IEEE-754 half, single, and double precision format"
 msgstr "Sayıları IEEE-754 yarım, tek ve çift hassasiyetli formata kodla."
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:14
-msgid "Supports real-time encoding."
+#, fuzzy
+msgid "Supports real-time encoding"
 msgstr "Gerçek zamanlı kodlamayı destekler."
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:15
-msgid "Change the endianness of a multi-byte encoding."
+#, fuzzy
+msgid "Change the endianness of a multi-byte encoding"
 msgstr "Çok baytlı bir kodlamanın bayt düzenini değiştir."
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:16
-msgid "Provides user-friendly interface for exploring encodings."
+#, fuzzy
+msgid "Provides user-friendly interface for exploring encodings"
 msgstr "Kodlamaları keşfetmek için kullanıcı dostu bir arayüz sağlar."
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:17
-msgid "Switch to light, dark, or system mode."
+#, fuzzy
+msgid "Switch to light, dark, or system mode"
 msgstr "Açık, koyu veya sistem moduna geç."
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:22
@@ -72,11 +77,16 @@ msgid "Joseph Mawa"
 msgstr "Joseph Mawa"
 
 #: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:43
-#: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:47
 msgid "Encoding Explorer in dark mode"
 msgstr "Koyu modda Encoding Explorer"
 
-#: src/about.js:13
+#: data/io.github.josephmawa.EncodingExplorer.metainfo.xml.in:47
+#, fuzzy
+msgid "Encoding Explorer in light mode"
+msgstr "Koyu modda Encoding Explorer"
+
+#. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
+#: src/about.js:15
 msgid "translator-credits"
 msgstr "çevirmenler"
 
@@ -120,70 +130,45 @@ msgstr "Depolanan sayı"
 msgid "Conversion Error"
 msgstr "Dönüştürme Hatası"
 
-#: src/win.js:121
+#: src/win.js:116
 msgid "No encoding to copy"
 msgstr "Kopyalanacak kodlama yok"
 
-#: src/win.js:125
+#: src/win.js:120
 msgid "Copied encoding"
 msgstr "Kodlama kopyalandı"
 
-#: src/win.js:421
+#: src/win.js:413
 msgid "Truncating text to 2500 characters"
 msgstr "Metin 2500 karakterle kısaltılıyor"
 
-#: src/win.js:444
+#: src/win.js:436
 msgid "Invalid ASCII"
 msgstr "Geçersiz ASCII"
 
-#: src/win.js:490
+#: src/win.js:482
 msgid "Lone Surrogate"
 msgstr "Yalnız Vekil"
 
-#: src/ui/help.ui:11
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Genel"
-
-#: src/ui/help.ui:14
-msgctxt "shortcut window"
-msgid "Toggle Menu"
-msgstr "Menüyü Aç/Kapat"
-
-#: src/ui/help.ui:20
-msgctxt "shortcut window"
-msgid "Show Shortcuts"
-msgstr "Kısayolları Göster"
-
-#: src/ui/help.ui:26
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "Çıkış"
-
-#: src/ui/help.ui:32
-msgctxt "shortcut window"
-msgid "Show Preferences"
-msgstr "Tercihleri Göster"
-
-#: src/ui/more-settings.ui:7 src/ui/more-settings.ui:13
+#: src/ui/more-settings.ui:6 src/ui/more-settings.ui:12
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: src/ui/more-settings.ui:16
+#: src/ui/more-settings.ui:15
 msgid "Endianness"
 msgstr "Bayt Düzeni"
 
-#: src/ui/more-settings.ui:17
+#: src/ui/more-settings.ui:16
 msgid "Select byte order"
 msgstr "Bayt sırasını seçin"
 
-#: src/ui/more-settings.ui:25
-msgctxt "Little Endian"
+#: src/ui/more-settings.ui:20
+#, fuzzy
 msgid "Little Endian"
 msgstr "Küçük Bayt Dizimi"
 
-#: src/ui/more-settings.ui:38
-msgctxt "Big Endian"
+#: src/ui/more-settings.ui:33
+#, fuzzy
 msgid "Big Endian"
 msgstr "Büyük Bayt Dizimi"
 
@@ -199,50 +184,75 @@ msgstr "Sayı tabanını seçin"
 msgid "Number base"
 msgstr "Sayı tabanı"
 
-#: src/ui/pref.ui:7 src/ui/pref.ui:13 src/ui/win.ui:388
+#: src/ui/pref.ui:6 src/ui/pref.ui:12 src/ui/win.ui:401
 msgid "Preferences"
 msgstr "Tercihler"
 
-#: src/ui/pref.ui:16
+#: src/ui/pref.ui:15
 msgid "Color Theme"
 msgstr "Renk Teması"
 
-#: src/ui/pref.ui:17
+#: src/ui/pref.ui:16
 msgid "Set color theme"
 msgstr "Renk temasını ayarla"
 
-#: src/ui/pref.ui:37
+#: src/ui/pref.ui:20
 msgctxt "System color theme"
 msgid "System"
 msgstr "Sistem"
 
-#: src/ui/pref.ui:51
+#: src/ui/pref.ui:34
 msgctxt "Light color theme"
 msgid "Light"
 msgstr "Açık"
 
-#: src/ui/pref.ui:65
+#: src/ui/pref.ui:49
 msgctxt "Dark color theme"
 msgid "Dark"
 msgstr "Koyu"
 
-#: src/ui/pref.ui:79
-msgid "Mode"
-msgstr "Mod"
+#: src/ui/pref.ui:65
+#, fuzzy
+msgid "Encoding mode"
+msgstr "Encoding Explorer"
 
-#: src/ui/pref.ui:80
+#: src/ui/pref.ui:66
 msgid "Select encoding mode"
 msgstr "Kodlama modunu seçin"
 
-#: src/ui/pref.ui:88
-msgctxt "Text Encoding"
+#: src/ui/pref.ui:70
+#, fuzzy
 msgid "Text Encoding"
 msgstr "Metin Kodlaması"
 
-#: src/ui/pref.ui:101
-msgctxt "IEEE 754"
-msgid "IEEE 754"
-msgstr "IEEE 754"
+#: src/ui/pref.ui:83
+msgid "IEEE-754 encoding"
+msgstr ""
+
+#: src/ui/shortcuts-dialog.ui:6
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Genel"
+
+#: src/ui/shortcuts-dialog.ui:9
+msgctxt "shortcut window"
+msgid "Toggle Menu"
+msgstr "Menüyü Aç/Kapat"
+
+#: src/ui/shortcuts-dialog.ui:15
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Kısayolları Göster"
+
+#: src/ui/shortcuts-dialog.ui:21
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Çıkış"
+
+#: src/ui/shortcuts-dialog.ui:27
+msgctxt "shortcut window"
+msgid "Show Preferences"
+msgstr "Tercihleri Göster"
 
 #: src/ui/win.ui:20
 msgid "Main Menu"
@@ -262,55 +272,89 @@ msgctxt "Move to next character"
 msgid "Next character"
 msgstr "Sonraki karakter"
 
-#: src/ui/win.ui:135
+#: src/ui/win.ui:113
+#, fuzzy
+msgctxt "accessibility"
+msgid "Text to encode"
+msgstr "Metin Kodlaması"
+
+#: src/ui/win.ui:139
 msgid "<b>Encoding</b>"
 msgstr "<b>Kodlama</b>"
 
-#: src/ui/win.ui:155
+#: src/ui/win.ui:159
 msgid "Switch Encoding"
 msgstr "Kodlamayı Değiştir"
 
-#: src/ui/win.ui:164 src/ui/win.ui:169
+#: src/ui/win.ui:168 src/ui/win.ui:173
 msgctxt "accessibility"
 msgid "More Settings"
 msgstr "Daha Fazla Ayar"
 
-#: src/ui/win.ui:179
+#: src/ui/win.ui:183
 msgctxt "Copy encoded text to clipboard"
 msgid "Copy Encoding"
 msgstr "Kodlamayı Kopyala"
 
-#: src/ui/win.ui:181
+#: src/ui/win.ui:185
 msgctxt "accessibility"
 msgid "Copy Encoding"
 msgstr "Kodlamayı Kopyala"
 
-#: src/ui/win.ui:273
+#: src/ui/win.ui:197
+#, fuzzy
+msgctxt "accessibility"
+msgid "Text encoding"
+msgstr "Metin Kodlaması"
+
+#: src/ui/win.ui:280
 msgctxt "Toggle bottom panel"
 msgid "Toggle Bottom Panel"
 msgstr "Alt Paneli Göster/Gizle"
 
-#: src/ui/win.ui:275
+#: src/ui/win.ui:282
 msgctxt "accessibility"
 msgid "Toggle Bottom Panel"
 msgstr "Alt Paneli Göster/Gizle"
 
-#: src/ui/win.ui:307
+#: src/ui/win.ui:314
 msgid "<b>Number</b>"
 msgstr "<b>Sayı</b>"
 
-#: src/ui/win.ui:342
-msgid "<b>IEE-754 Floating Point</b>"
-msgstr "<b>IEE-754 Ondalık Sayı</b>"
+#: src/ui/win.ui:329
+msgctxt "accessibility"
+msgid "Number to encode"
+msgstr ""
 
-#: src/ui/win.ui:351
+#: src/ui/win.ui:352
+#, fuzzy
+msgid "<b>IEEE-754 encoding</b>"
+msgstr "<b>Kodlama</b>"
+
+#: src/ui/win.ui:361
 msgid "Switch floating point format"
 msgstr "Ondalık sayı formatını değiştirin"
 
-#: src/ui/win.ui:392
+#: src/ui/win.ui:375
+#, fuzzy
+msgctxt "accessibility"
+msgid "Number encoding"
+msgstr "İkilik kodlama"
+
+#: src/ui/win.ui:405
 msgid "Keyboard Shortcuts"
 msgstr "Klavye Kısayolları"
 
-#: src/ui/win.ui:396
+#: src/ui/win.ui:409
 msgid "About Encoding Explorer"
 msgstr "Encoding Explorer Hakkında"
+
+#~ msgid "Mode"
+#~ msgstr "Mod"
+
+#~ msgctxt "IEEE 754"
+#~ msgid "IEEE 754"
+#~ msgstr "IEEE 754"
+
+#~ msgid "<b>IEE-754 Floating Point</b>"
+#~ msgstr "<b>IEE-754 Ondalık Sayı</b>"
