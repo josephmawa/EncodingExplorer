@@ -2,16 +2,16 @@
 <gresources>
   <gresource prefix="/io/github/josephmawa/EncodingExplorer/js">
     <!-- src/lib/*.js -->
-    <file compressed="yes" alias="big-number.js">lib/big-number.js</file>
+    <file compressed="true" alias="big-number.js">lib/big-number.js</file>
     <!-- src/*.js -->
-    <file compressed="yes">about.js</file>
-    <file compressed="yes">app.js</file>
-    <file compressed="yes">main.js</file>
-    <file compressed="yes">more-settings.js</file>
-    <file compressed="yes">pref.js</file>
-    <file compressed="yes">src-view.js</file>
-    <file compressed="yes">scrolled-win.js</file>
-    <file compressed="yes">util.js</file>
-    <file compressed="yes">win.js</file>
+    <file compressed="true">about.js</file>
+    <file compressed="true">app.js</file>
+    <file compressed="true">main.js</file>
+    <file compressed="true">more-settings.js</file>
+    <file compressed="true">pref.js</file>
+    <file compressed="true">src-view.js</file>
+    <file compressed="true">scrolled-win.js</file>
+    <file compressed="true">util.js</file>
+    <file compressed="true">win.js</file>
   </gresource>
 </gresources>
